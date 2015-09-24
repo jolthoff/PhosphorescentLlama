@@ -1,0 +1,22 @@
+{
+  "name": "parrot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "paths.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PhosphorescentLlama/PhosphorescentLlama.git"
+  },
+  "author": "[\"Jordan Olthoff\", \"Kyle Cho\", \"Naomi Jacobs\", \"Rodrigo Delgado\"]",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/PhosphorescentLlama/PhosphorescentLlama/issues"
+  },
+  "homepage": "https://github.com/PhosphorescentLlama/PhosphorescentLlama#readme",
+  "dependencies": {
+    "express": "^4.13.3"
+  }
+}
