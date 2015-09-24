@@ -1,0 +1,17 @@
+.sound, .beat{
+  float: left;
+  width: 100px;
+  height: 100px;
+}
+
+.gameSpace, .targetSequencer {
+  width: 500px;
+}
+
+.beat {
+  text-align: center;
+}
+
+.playing {
+  background-color: yellow;
+}

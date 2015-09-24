@@ -4,13 +4,29 @@
     <title>Parrot</title>
     <link rel="stylesheet" href="styles/styles.css">
   </head>
-  <body>
-    <script src="bower_components/angular/angular.min.js"></script>
-    <script src="bower_components/underscore/underscore.min.js"></script>
+  <body ng-app="app">
+
+    <div class="gameSpace" ng-controller="GameController"> game goes here
+      <div class="playerSequencer" ng-controller="SequencerController">
+        <div class="sequence" ng-repeat="sequence in sequences | orderBy: $index">
+          <div class="sound">img</div>
+          <div class="beat" ng-repeat="beat in sequence.beats" ng-click="sequencer.toggleBeat($parent.$index, $index)">{{beat}}</div>
+        </div>
+      </div>
+    </div>
+    <div class="targetSequencer">
+      target sequencer goes here
+    </div>
+
+    <!-- SCRIPTS -->
     <!-- these will get minimized for deployment; we'll need to change these to the minified scripts -->
+    <script src="bower_components/angular/angular.min.js"></script>
+    <script src="bower_components/underscore/underscore-min.js"></script>
     <script src="app/classes/Beat.js"></script>
     <script src="app/classes/Sequence.js"></script>
     <script src="app/classes/Sequencer.js"></script>
     <script src="app/app.js"></script>
+    <script src="app/playerSequencerFactory.js"></script>
+    <script src="app/targetSequencerFactory.js"></script>
   </body>
 </html>
