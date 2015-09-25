@@ -50,6 +50,15 @@ app.controller('GameController' , ['$scope', 'playerSequencer', 'targetSequencer
     });
   };
 
+  ////////////////LISTENERS///////////////
+  $scope.$on('madePlayerSequencer', function ( event, data ) {
+    $scope.playerSequencer = data;
+  });
+
+  $scope.$on('madeTargetSequencer', function ( event, data ) {
+    $scope.targetSequencer = data;
+  });
+
 
   $scope.startLevel = function () {
     //play through sounds, 1 measure each
@@ -62,15 +71,11 @@ app.controller('GameController' , ['$scope', 'playerSequencer', 'targetSequencer
   };
 
   $scope.submit = function () {
-    if ($scope.sequencer.match($scope.targetSequencer)) {
-      //initiate playerWon function
+    if ($scope.playerSequencer.match($scope.targetSequencer)) {
+      console.log('IT\'S A MATCH!');
     } else {
-      //get difference between right and wrong
+      console.log('YOU SUCK!');
     }
-  };
-
-  $scope.isMatch = function () {
-    //return bool
   };
 
   $scope.playerWon = function () {
@@ -110,7 +115,7 @@ app.controller('GameController' , ['$scope', 'playerSequencer', 'targetSequencer
     //   $scope.$broadcast('createTargetSequencer', data);
     // });
     $scope.$broadcast('createSequencer');
-    $scope.$broadcast('createTargetSequencer');
+    $scope.$broadcast('createTargetSequencer', [240, 16, ['kick', 'clap', 'hihat']]);
 
     
   });
@@ -125,6 +130,7 @@ app.controller('PlayerSequencerController', ['$scope', 'playerSequencer', functi
     $scope.sequencer = playerSequencer.build(240, 16, ['kick', 'clap', 'hihat']);
     $scope.sequences = $scope.sequencer._sequences;
     $scope.sequencer.beatClass = "sixteen";
+    $scope.$emit('madePlayerSequencer', $scope.sequencer);
   });
 
 }]);
@@ -132,8 +138,15 @@ app.controller('PlayerSequencerController', ['$scope', 'playerSequencer', functi
 app.controller('TargetSequencerController', ['$scope', 'targetSequencer', function ( $scope, targetSequencer ) {
 
 
-  $scope.$on('createTargetSequencer', function(data) {
-    console.log("will I make the target sequencer?");
+  $scope.$on('createTargetSequencer', function(event, data) {
+    console.log(data);
+    $scope.sequencer = targetSequencer.build.apply(this, data);
+    console.log($scope.sequencer);
+    $scope.sequencer.toggleBeat(0,0);
+    $scope.sequencer.toggleBeat(0,2);
+    $scope.sequencer.toggleBeat(0,4);
+    $scope.sequencer.toggleBeat(0,6);
+    $scope.$emit('madeTargetSequencer', $scope.sequencer);
     // $scope.sequencer = Sequencer.prototype.retrieve(data.body);
   });
 
