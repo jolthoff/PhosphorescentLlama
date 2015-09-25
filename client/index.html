@@ -15,7 +15,10 @@
       <div class="playerSequencer" ng-controller="SequencerController">
         <button ng-click="sequencer.play()">CLICK ME</button>
         <div class="sequence" ng-repeat="sequence in sequences | orderBy: $index">
-          <div class="beat {{sequencer.beatClass}}" ng-repeat="beat in sequence._beats" ng-click="sequencer.toggleBeat($parent.$index, $index)">blah</div>
+          <div class="beat {{sequencer.beatClass}}"
+          ng-class="{ playing: sequencer.getBeat($parent.$index, $index).isOn() }"
+          ng-repeat="beat in sequence._beats"
+          ng-click="sequencer.toggleBeat($parent.$index, $index)">a</div>
         </div>
       </div>
       <div class="submit" ng-click="submit()">Submit</div>

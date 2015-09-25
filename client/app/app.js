@@ -90,11 +90,23 @@ app.controller('GameController' , ['$scope', 'playerSequencer', 'httpFactory', '
     initialize.initialize(callback);
   };
 
+  $scope.toggleBeat = function(sequenceIndex, beatIndex) {
 
+    $scope.sequencer.toggleBeat(sequenceIndex, beatIndex);
+
+    
+    if ($scope.sequencer.getBeat(sequenceIndex, beatIndex).isOn()) {
+
+      
+
+    }
+
+  }
 
   $scope.initialize(function() {
-    $scope.sequencer = playerSequencer.sequencer(120, 4, ['kick', 'clap', 'hihat']);
+    $scope.sequencer = playerSequencer.sequencer(240, 16, ['kick', 'clap', 'hihat']);
     $scope.sequences = $scope.sequencer._sequences;
+    $scope.sequencer.beatClass = "sixteen";
   });
 
 }]);
@@ -106,7 +118,7 @@ app.controller('SequencerController', ['$scope', 'playerSequencer', function ( $
 
   // $scope.sequencer = {};
 
-  // $scope.sequencer.beatClass = "sixteen";
+  // $scope.sequencer.beatClass = "eight";
 
   // $scope.sequencer.toggleBeat = function(sequencerIndex, beatIndex) { console.log(sequencerIndex, beatIndex);};
 
