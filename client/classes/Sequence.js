@@ -1,10 +1,28 @@
-var Sequence = function( ) {
+var Sequence = function( soundID, tickNumber, track ) {
+
+  this._beats = [];
+
+  this._soundID = soundID;
+
+  // A track is an instance
+
+  // of a bus that is dedicated
+
+  // to a single sequence.
+
+  this._track = track;
+
+  for ( var i = 0 ; i < tickNumber; i ++ ) {
+
+    this._beats.push( new Beat( soundID, this) );
+
+  }
 
 };
 
-Sequence.prototype.soundID = function( ) {
+Sequence.prototype.getSoundID = function( ) {
 
-  // returns a string
+  return this._soundID;
 
 };
 
