@@ -1,4 +1,4 @@
-app.factory('playerSequencer', function () {
+app.factory('targetSequencer', function () {
 
   //create new empty sequencer for the player
   return {
