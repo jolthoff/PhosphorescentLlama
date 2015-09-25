@@ -54,6 +54,26 @@ Sequencer.prototype.getSoundIDs = function( ) {
 
 };
 
+Sequencer.prototype.getSequence = function( sequenceIndex ) {
+
+  // returns a sequence instance
+  return this._sequences[ sequenceIndex ];
+
+
+};
+
+Sequencer.prototype.getBeat = function( sequenceIndex, beatIndex ) {
+
+  // returns a beat instance
+  return this.getSequence( sequenceIndex )._beats[ beatIndex ];
+
+};
+
+Sequencer.prototype.toggleBeat = function( sequenceIndex, beatIndex ) {
+
+  this.getBeat( sequenceIndex, beatIndex ).toggle( );
+
+};
 
 Sequencer.prototype.play = function( onTickSchedule ) {
 
@@ -92,6 +112,68 @@ Sequencer.prototype.stop = function( ) {
   if ( this._playing ) {
 
     this._playing = !this._playing;
+
+  }
+
+};
+
+Sequencer.prototype.scheduleTicks = function( onTickSchedule ) {
+
+  // This method schedules both the next
+
+  // iteration of itself in 25 ms and all of the
+
+  // ticks to be played in the next 100 ms.
+
+  // Only two things within this function
+
+  // should ever be changed: the windowLength
+
+  // and the timeout. The timeout should always
+
+  // be smaller than the window length. Otherwise,
+
+  // this function would become an unnecessarily
+
+  // convoluted way of scheduling events imprecisely.
+
+  // For that, we have setTimeout.
+
+  // WARNING: windowLength is is seconds even though
+
+  // timeout is in milliseconds!!!
+
+  if ( this._playing ) {
+
+    var windowLength = 0.1; // seconds or 100 milliseconds.
+
+    var timeout = 25; // milliseconds
+
+    var windowEndTime = context.currentTime + windowLength;
+
+    setTimeout(this.scheduleTicks.bind(this, onTickSchedule), timeout);
+
+    while ( this._lastTickTime + 60 / this._tempo < windowEndTime ) {
+
+      for ( var i = 0; i < this._sequences.length; i ++ ) {
+
+        var beatToBeChecked = this.getBeat(i, this._currentTick);
+
+        if ( beatToBeChecked.isOn() ) {
+
+          beatToBeChecked.play( this._lastTickTime + 60 / this._tempo );
+
+        }
+
+      }
+
+      onTickSchedule( this._lastTickTime + 60 / this._tempo - context.currentTime );
+
+      this._lastTickTime = this._lastTickTime + 60 / this._tempo;
+
+      this._currentTick  = ( this._currentTick + 1 ) % this.getTickNumber( );
+
+    }
 
   }
 
@@ -251,85 +333,3 @@ Sequencer.prototype.match = function( sequencer ) {
 
 
 
-Sequencer.prototype.getSequence = function( sequenceIndex ) {
-
-  // returns a sequence instance
-  return this._sequences[ sequenceIndex ];
-
-
-};
-
-Sequencer.prototype.getBeat = function( sequenceIndex, beatIndex ) {
-
-  // returns a beat instance
-  return this.getSequence( sequenceIndex )._beats[ beatIndex ];
-
-};
-
-Sequencer.prototype.toggleBeat = function( sequenceIndex, beatIndex ) {
-
-  this.getBeat( sequenceIndex, beatIndex ).toggle( );
-
-};
-
-Sequencer.prototype.scheduleTicks = function( onTickSchedule ) {
-
-  // This method schedules both the next
-
-  // iteration of itself in 25 ms and all of the
-
-  // ticks to be played in the next 100 ms.
-
-  // Only two things within this function
-
-  // should ever be changed: the windowLength
-
-  // and the timeout. The timeout should always
-
-  // be smaller than the window length. Otherwise,
-
-  // this function would become an unnecessarily
-
-  // convoluted way of scheduling events imprecisely.
-
-  // For that, we have setTimeout.
-
-  // WARNING: windowLength is is seconds even though
-
-  // timeout is in milliseconds!!!
-
-  if ( this._playing ) {
-
-    var windowLength = 0.1; // seconds or 100 milliseconds.
-
-    var timeout = 25; // milliseconds
-
-    var windowEndTime = context.currentTime + windowLength;
-
-    setTimeout(this.scheduleTicks.bind(this, onTickSchedule), timeout);
-
-    while ( this._lastTickTime + 60 / this._tempo < windowEndTime ) {
-
-      for ( var i = 0; i < this._sequences.length; i ++ ) {
-
-        var beatToBeChecked = this.getBeat(i, this._currentTick);
-
-        if ( beatToBeChecked.isOn() ) {
-
-          beatToBeChecked.play( this._lastTickTime + 60 / this._tempo );
-
-        }
-
-      }
-
-      onTickSchedule( this._lastTickTime + 60 / this._tempo - context.currentTime );
-
-      this._lastTickTime = this._lastTickTime + 60 / this._tempo;
-
-      this._currentTick  = ( this._currentTick + 1 ) % this.getTickNumber( );
-
-    }
-
-  }
-
-};
