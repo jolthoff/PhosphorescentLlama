@@ -3,6 +3,8 @@
   <head>
     <title>Parrot</title>
     <link rel="stylesheet" href="styles/styles.css">
+  
+
   </head>
   <body ng-app="app">
 
@@ -11,8 +13,9 @@
 
       <!-- Sequence Controller holds all of the player controls for editing player sequence -->
       <div class="playerSequencer" ng-controller="SequencerController">
+        <button ng-click="sequencer.play()">CLICK ME</button>
         <div class="sequence" ng-repeat="sequence in sequences | orderBy: $index">
-          <div class="beat {{sequencer.beatClass}}" ng-repeat="beat in sequence.beats" ng-click="sequencer.toggleBeat($parent.$index, $index)">{{beat}}</div>
+          <div class="beat {{sequencer.beatClass}}" ng-repeat="beat in sequence._beats" ng-click="sequencer.toggleBeat($parent.$index, $index)">blah</div>
         </div>
       </div>
       <div class="submit" ng-click="submit()">Submit</div>
@@ -27,8 +30,10 @@
     <script src="bower_components/underscore/underscore-min.js"></script>
     <script src="app/classes/Beat.js"></script>
     <script src="app/classes/Sequence.js"></script>
+    <script src="app/classes/Bus.js"></script>
     <script src="app/classes/Sequencer.js"></script>
     <script src="app/app.js"></script>
+    <script src="app/init.js"></script>
     <script src="app/playerSequencerFactory.js"></script>
     <script src="app/httpFactory.js"></script>
   </body>

@@ -8,9 +8,6 @@ app.factory( 'httpFactory', ['$http', function ( $http ) {
         });
     }
   };
-  //request for sequencer
-  //.then takes response.body
-  //var targetSequencer Sequencer.prototype.retrieve(response.body)
 
   return requests;
 

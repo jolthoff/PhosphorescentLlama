@@ -1,30 +1,72 @@
 var app = angular.module( 'app', [] );
 
-app.controller('GameController' , ['$scope', 'playerSequencer', 'httpFactory', function ( $scope, playerSequencer, httpFactory ) {
+
+app.controller('GameController' , ['$scope', 'playerSequencer', 'httpFactory', 'initialize',  function ( $scope, playerSequencer, httpFactory, initialize ) {
+
+  $scope.playerTurnOn = false;
+
+  $scope.level = 1;
   
-  //at loading time
+ 
+    // $scope.targetSequencer.play(); //for two loops?
+    
+ 
+
+  //init
+    //start level
+      //start playing their loop
+    //wait for player input
+      //player can toggle beats
+      //player can play target again
+    //player clicks submit
+      //call submit fn
+        //check if player sequencer matches target sequencer
+        //if so
+          //call winning function
+            //fun winning animation
+            //option to go to next level or exit? or try level again?
+              //if next level
+                //increment level
+                //call start level fn on new level
+              //else if exit
+                //say goodbye and make them feel guilty for leaving
+              //else if try again
+                //call start level fn on current level
+        //else
+          //get difference
+          //highlight correct
+          //erase incorrect
+
 
   //use http call to fetch target sequence
-  // httpFactory.getSequencer(1, function (data) {
-  //   $scope.targetSequencer = Sequencer.prototype.retrieve(data.body);
-  //   $scope.sequencer = playerSequencer.sequencer(
-  //     $scope.targetSequencer.getTicknumber(),
-  //     $scope.targetSequencer.getTempo(),
-  //     $scope.targetSequencer.getSoundIDs());
-  // });
 
-  //.then takes response.body
-  //var targetSequencer Sequencer.prototype.retrieve(response.body)
-    //on success
-      //set target sequencer
-      //set player sequencer;
+  $scope.getSequencer = function () {
+    httpFactory.getSequencer(1, function (data) {
+      $scope.targetSequencer = Sequencer.prototype.retrieve(data.body);
+      // $scope.sequencer = playerSequencer.sequencer(
+      //   $scope.targetSequencer.getTicknumber(),
+      //   $scope.targetSequencer.getTempo(),
+      //   $scope.targetSequencer.getSoundIDs());
+    });
+  };
+
+
+  $scope.startLevel = function () {
+    //play through sounds, 1 measure each
+    //toggle player turn off
+    $scope.playerTurnOn = false;
+    //play target sequencer twice
+    $scope.targetSequencer.play();
+    //toggle player turn on
+    $scope.playerTurnOn = true;
+  };
 
   $scope.submit = function () {
-    //call isMatch on playerSeq and targetSeq
-    //if true
-      //call playerWon
-    //else
-      //failed match
+    if ($scope.sequencer.match($scope.targetSequencer)) {
+      //initiate playerWon function
+    } else {
+      //get difference between right and wrong
+    }
   };
 
   $scope.isMatch = function () {
@@ -44,42 +86,43 @@ app.controller('GameController' , ['$scope', 'playerSequencer', 'httpFactory', f
     //all with visual cues
   };
 
+  $scope.initialize = function(callback) {
+    initialize.initialize(callback);
+  };
+
+
+
+  $scope.initialize(function() {
+    $scope.sequencer = playerSequencer.sequencer(120, 4, ['kick', 'clap', 'hihat']);
+    $scope.sequences = $scope.sequencer._sequences;
+  });
+
 }]);
 
 app.controller('SequencerController', ['$scope', 'playerSequencer', function ( $scope, playerSequencer ) {
 
+  // $scope.sequencer = playerSequencer.sequencer(120, 4, ['kick', 'clap', 'hihat']);
+  // $scope.sequences = $scope.sequencer._sequences;
 
-  $scope.sequencer = {};
+  // $scope.sequencer = {};
 
-  $scope.sequencer.beatClass = "eight";
+  // $scope.sequencer.beatClass = "sixteen";
 
-  $scope.sequencer.toggleBeat = function(sequencerIndex, beatIndex) { console.log(sequencerIndex, beatIndex);};
+  // $scope.sequencer.toggleBeat = function(sequencerIndex, beatIndex) { console.log(sequencerIndex, beatIndex);};
 
-  $scope.sequences = [
-    {
-      beats: [1, 2, 3, 4, 5, 6, 7, 8]
-    },
-    {
-      beats: [1, 2, 3, 4]
-    },
-    {
-      beats: [1, 2, 3, 4]
-    },
-    {
-      beats: [1, 2, 3, 4]
-    }
-  ];
-  //associated with a sequencer instance
+  // $scope.sequences = [
+  //   {
+  //     beats: [1, 2, 3, 4, 5, 6, 7, 8]
+  //   },
+  //   {
+  //     beats: [1, 2, 3, 4]
+  //   },
+  //   {
+  //     beats: [1, 2, 3, 4]
+  //   },
+  //   {
+  //     beats: [1, 2, 3, 4]
+  //   }
+  // ];
 
-  //init THIS OR $SCOPE?!
-  // $scope.play = $sequencer.play;
-  // $scope.stop = $sequencer.stop;
-  // $scope.save = $sequencer.save;
-
-
-
-  //play function
-  //stop function
-  //save function
-  //getSequence function
 }]);

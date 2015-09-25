@@ -8,8 +8,3 @@ app.factory('playerSequencer', function () {
   };
 
 });
-
-//tempo, tickNumber, soundIDs
-//getTickNumber
-//getTempo
-//getSoundIDs
