@@ -12,7 +12,7 @@
     <div class="gameSpace" ng-controller="GameController"> game goes here
 
       <!-- Sequence Controller holds all of the player controls for editing player sequence -->
-      <div class="playerSequencer" ng-controller="SequencerController">
+      <div class="playerSequencer" ng-controller="PlayerSequencerController">
         <button ng-click="sequencer.play()">CLICK ME</button>
         <div class="sequence" ng-repeat="sequence in sequences | orderBy: $index">
           <div class="beat {{sequencer.beatClass}}"
@@ -22,9 +22,10 @@
         </div>
       </div>
       <div class="submit" ng-click="submit()">Submit</div>
-    </div>
-    <div class="targetSequencer">
-      target sequencer goes here
+
+      <div class="targetSequencer" ng-controller="TargetSequencerController">
+        <button ng-click="sequencer.play()">PLAY TARGET</button>
+      </div>
     </div>
 
     <!-- SCRIPTS -->
@@ -38,6 +39,7 @@
     <script src="app/app.js"></script>
     <script src="app/init.js"></script>
     <script src="app/playerSequencerFactory.js"></script>
+    <script src="app/targetSequencerFactory.js"></script>
     <script src="app/httpFactory.js"></script>
   </body>
 </html>

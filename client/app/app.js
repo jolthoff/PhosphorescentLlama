@@ -1,7 +1,7 @@
 var app = angular.module( 'app', [] );
 
 
-app.controller('GameController' , ['$scope', 'playerSequencer', 'httpFactory', 'initialize',  function ( $scope, playerSequencer, httpFactory, initialize ) {
+app.controller('GameController' , ['$scope', 'playerSequencer', 'targetSequencer', 'httpFactory', 'initialize',  function ( $scope, playerSequencer, targetSequencer, httpFactory, initialize ) {
 
   $scope.playerTurnOn = false;
 
@@ -101,40 +101,40 @@ app.controller('GameController' , ['$scope', 'playerSequencer', 'httpFactory', '
 
     }
 
-  }
+  };
 
+
+  //THIS IS A TEST - DELETE THIS LATER SO THAT ACTUAL INIT WORKS
   $scope.initialize(function() {
-    $scope.sequencer = playerSequencer.sequencer(240, 16, ['kick', 'clap', 'hihat']);
+    // http.getSequencer(1, function ( data ) {
+    //   $scope.$broadcast('createTargetSequencer', data);
+    // });
+    $scope.$broadcast('createSequencer');
+    $scope.$broadcast('createTargetSequencer');
+
+    
+  });
+
+}]);
+
+app.controller('PlayerSequencerController', ['$scope', 'playerSequencer', function ( $scope, playerSequencer ) {
+
+
+  $scope.$on('createSequencer', function() {
+    console.log("am i listening?");
+    $scope.sequencer = playerSequencer.build(240, 16, ['kick', 'clap', 'hihat']);
     $scope.sequences = $scope.sequencer._sequences;
     $scope.sequencer.beatClass = "sixteen";
   });
 
 }]);
 
-app.controller('SequencerController', ['$scope', 'playerSequencer', function ( $scope, playerSequencer ) {
+app.controller('TargetSequencerController', ['$scope', 'targetSequencer', function ( $scope, targetSequencer ) {
 
-  // $scope.sequencer = playerSequencer.sequencer(120, 4, ['kick', 'clap', 'hihat']);
-  // $scope.sequences = $scope.sequencer._sequences;
 
-  // $scope.sequencer = {};
-
-  // $scope.sequencer.beatClass = "eight";
-
-  // $scope.sequencer.toggleBeat = function(sequencerIndex, beatIndex) { console.log(sequencerIndex, beatIndex);};
-
-  // $scope.sequences = [
-  //   {
-  //     beats: [1, 2, 3, 4, 5, 6, 7, 8]
-  //   },
-  //   {
-  //     beats: [1, 2, 3, 4]
-  //   },
-  //   {
-  //     beats: [1, 2, 3, 4]
-  //   },
-  //   {
-  //     beats: [1, 2, 3, 4]
-  //   }
-  // ];
+  $scope.$on('createTargetSequencer', function(data) {
+    console.log("will I make the target sequencer?");
+    // $scope.sequencer = Sequencer.prototype.retrieve(data.body);
+  });
 
 }]);
