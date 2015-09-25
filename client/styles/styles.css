@@ -3,6 +3,7 @@
   width: 100px;
   height: 100px;
   text-align: center;
+  border: black 1px solid;
 }
 
 .sequence {
@@ -16,15 +17,15 @@
 }
 
 .four {
-  width: 25%;
+  width: 22%;
 }
 
 .eight {
-  width: 12.5%;
+  width: 10%;
 }
 
 .sixteen {
-  width: 6.25%;
+  width: 5.5%;
 }
 
 .playing {
