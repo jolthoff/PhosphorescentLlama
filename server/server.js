@@ -3,13 +3,21 @@ var express = require('express');
 // var morgan = require('morgan');
 // var bodyParser = require('body-parser');
 var app = express();
-
+var paths = require('../paths.js');
 // mongoose.connect('mongodb://localhost/parrot');
 
 // app.use(morgan('dev'));
 // app.use(bodyParser.urlencoded({extended: true}));
 // app.use(bodyParser.json());
-app.use(express.static(__dirname + '../client'));
+console.log(__dirname);
+
+app.get('/', function(req, res) {
+
+  res.sendFile(paths.index);
+
+});
+
+app.use(express.static(paths.client));
 app.use('/samples', express.static(__dirname + '/samples'));
 
 var sequencerRouter = express.Router();

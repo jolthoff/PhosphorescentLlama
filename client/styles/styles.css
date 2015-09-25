@@ -1,0 +1,32 @@
+.beat {
+  float: left;
+  width: 100px;
+  height: 100px;
+  text-align: center;
+}
+
+.sequence {
+  display: block;
+  width: 100%;
+  height: 100px;
+}
+
+.gameSpace, .targetSequencer {
+  width: 500px;
+}
+
+.four {
+  width: 25%;
+}
+
+.eight {
+  width: 12.5%;
+}
+
+.sixteen {
+  width: 6.25%;
+}
+
+.playing {
+  background-color: yellow;
+}
