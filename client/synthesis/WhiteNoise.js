@@ -12,7 +12,7 @@ window.AudioContext.prototype.createWhiteNoise = function( ) {
 
   whiteNoise.output = null;
 
-  var channel = whiteNoise.buffer.getChannelData( );
+  var channel = whiteNoise.buffer.getChannelData( 0 );
 
   for( var i = 0; i < whiteNoise.length; i++ ) {
 
