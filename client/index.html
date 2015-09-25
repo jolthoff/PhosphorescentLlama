@@ -6,13 +6,16 @@
   </head>
   <body ng-app="app">
 
+<!--     Game controller holds everything except the target sequencer -->
     <div class="gameSpace" ng-controller="GameController"> game goes here
+
+      <!-- Sequence Controller holds all of the player controls for editing player sequence -->
       <div class="playerSequencer" ng-controller="SequencerController">
         <div class="sequence" ng-repeat="sequence in sequences | orderBy: $index">
-          <div class="sound">img</div>
-          <div class="beat" ng-repeat="beat in sequence.beats" ng-click="sequencer.toggleBeat($parent.$index, $index)">{{beat}}</div>
+          <div class="beat {{sequencer.beatClass}}" ng-repeat="beat in sequence.beats" ng-click="sequencer.toggleBeat($parent.$index, $index)">{{beat}}</div>
         </div>
       </div>
+      <div class="submit" ng-click="submit()">Submit</div>
     </div>
     <div class="targetSequencer">
       target sequencer goes here
@@ -27,6 +30,6 @@
     <script src="app/classes/Sequencer.js"></script>
     <script src="app/app.js"></script>
     <script src="app/playerSequencerFactory.js"></script>
-    <script src="app/targetSequencerFactory.js"></script>
+    <script src="app/httpFactory.js"></script>
   </body>
 </html>

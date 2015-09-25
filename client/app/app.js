@@ -1,30 +1,63 @@
 var app = angular.module( 'app', [] );
 
-app.controller('GameController' , ['$scope', 'playerSequencer', 'targetSequencer', function ( $scope, playerSequencer, targetSequencer ) {
-  //will hold game logic
+app.controller('GameController' , ['$scope', 'playerSequencer', 'httpFactory', function ( $scope, playerSequencer, httpFactory ) {
+  
+  //at loading time
 
-  //upon initialization
-  //use http thing to make request to the server for the sequence
-  //call the sequencer function on the target sequencer with the stuff from the http response
-  //call the getTickNumber, getTempo, and getSoundIDs on the targetSequencer
-  //pass those results on to the player sequencer and set that to the $scope as sequencer
+  //use http call to fetch target sequence
+  // httpFactory.getSequencer(1, function (data) {
+  //   $scope.targetSequencer = Sequencer.prototype.retrieve(data.body);
+  //   $scope.sequencer = playerSequencer.sequencer(
+  //     $scope.targetSequencer.getTicknumber(),
+  //     $scope.targetSequencer.getTempo(),
+  //     $scope.targetSequencer.getSoundIDs());
+  // });
 
-  //store result of httpreq in a variable (response)
-  //targetSequencer.sequencer(stuff from response)
-  //$scope.sequencer = playerSequencer.sequencer(targetSequencer.getTicknumber, targetSequencer.getTempo, targetSequencer.getSoundIDs)
+  //.then takes response.body
+  //var targetSequencer Sequencer.prototype.retrieve(response.body)
+    //on success
+      //set target sequencer
+      //set player sequencer;
 
+  $scope.submit = function () {
+    //call isMatch on playerSeq and targetSeq
+    //if true
+      //call playerWon
+    //else
+      //failed match
+  };
+
+  $scope.isMatch = function () {
+    //return bool
+  };
+
+  $scope.playerWon = function () {
+    //render some stuff to show that they won
+    //hide some things
+    //end level
+  };
+
+  $scope.failedMatch = function () {
+    //tells them they were wrong
+    //keeps their correct guesses
+    //deletes their wrong guesses
+    //all with visual cues
+  };
 
 }]);
 
-app.controller('SequencerController', ['$scope', 'playerSequencer', 'targetSequencer', function ( $scope, playerSequencer, targetSequencer ) {
+app.controller('SequencerController', ['$scope', 'playerSequencer', function ( $scope, playerSequencer ) {
+
 
   $scope.sequencer = {};
+
+  $scope.sequencer.beatClass = "eight";
 
   $scope.sequencer.toggleBeat = function(sequencerIndex, beatIndex) { console.log(sequencerIndex, beatIndex);};
 
   $scope.sequences = [
     {
-      beats: [1, 2, 3, 4]
+      beats: [1, 2, 3, 4, 5, 6, 7, 8]
     },
     {
       beats: [1, 2, 3, 4]
