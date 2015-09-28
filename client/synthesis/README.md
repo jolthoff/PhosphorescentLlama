@@ -4,7 +4,7 @@ Synthesis
 AudioContext.createEnvelope
 ---------------------------
 
-### input:
+### Input:
 
 Four arguments are passed in during instatiation. Each argument is an
 array tuple that contains the time in seconds and target value for it's corresponding
@@ -14,16 +14,16 @@ envelope phase. The expected order is
 [ sustainTime, sustainTarget ],  
 [ releaseTime, releaseTarget ].
 
-### output/behavior:
+### Output/behavior:
 
 Returns an envelope node with a trigger method
 All phase ramps are linear. Only the sustain phase is constant.
 
-### methods:
+### Methods:
 
 #### envelope.connect:
 
-##### input:
+##### Input:
 
 One parameter is passed in during invocation. It represents
 the audio node or audio param that the envelope's output
@@ -32,25 +32,25 @@ nor an audio param, this method will work only if the argument
 is an object with an input property that holds either an audio
 node or an audio param.
 
-##### output/behavior:
+##### Output/behavior:
 
 Behaves similarly to AudioNode.connect( ).
 
 #### envelope.trigger:
 
-##### input:
+##### Input:
 
 One parameter is passed in during invocation. It
 represents the trigger start time in seconds relative to the
 context's time coordinates.
 
-##### output/behvaior:
+##### Output/behvaior:
 
 Creates a source instance with envelope buffer as buffer,
 connects that instance to the output, and schedules it to
 start at the time specified by the first argument.
 
-### example:
+### Example:
 
     var context = new AudioContext( );
 
@@ -95,26 +95,26 @@ start at the time specified by the first argument.
 AudioContext.createWhiteNoise:
 ------------------------------
 
-### input:
+### Input:
 
 This constructor takes no parameters.
 
-### output/behavior:
+### Output/behavior:
 
 Creates an instance of white noise. This is intended to interface as if
 it were an Audio Oscillator Node. That is, via connect, start, and stop methods.
 Note, however, that the start method of white noise can be triggered
 more that once. 
 
-### methods:
+### Methods:
 
 #### whiteNoise.connect:
 
-##### input:
+##### Input:
 
 Takes in the target destination as the first parameter.
 
-##### output/behavior:
+##### Output/behavior:
 
 If the destination is an audio node or an audio parameter,
 the, whiteNoise.output is set to reference that audio node
@@ -125,12 +125,12 @@ that input property.
 
 #### whiteNoise.start:
 
-#### input:
+#### Input:
 
 Takes in the starting time relative to the current context's
 time coordinates as the first parameter.
 
-#### output/behavior:
+#### Output/behavior:
 
 Sets whiteNoise to output white noise for an indeterminate
 amount of time. This is achieved by looping a five
@@ -143,7 +143,7 @@ whiteNoise.
 If start has been invoked before stop is invoked, the output
 of white noise will be stopped.
 
-### example:
+### Example:
 
     var context = new AudioContext( );
 
