@@ -9,10 +9,10 @@ AudioContext.createEnvelope
 Four arguments are passed in during instatiation. Each argument is an
 array tuple that contains the time in seconds and target value for it's corresponding
 envelope phase. The expected order is  
-  [ attackTime, attackTarget ],  
-  [ decayTime, decayTarget ],  
-  [ sustainTime, sustainTarget ],  
-  [ releaseTime, releaseTarget ].
+`  `[ attackTime, attackTarget ],  
+`  `[ decayTime, decayTarget ],  
+`  `[ sustainTime, sustainTarget ],  
+`  `[ releaseTime, releaseTarget ].
 
 ### output/behavior:
 
