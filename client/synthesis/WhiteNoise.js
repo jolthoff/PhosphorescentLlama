@@ -38,15 +38,17 @@ window.AudioContext.prototype.createWhiteNoise = function( ) {
 
   };
 
-  whiteNoise.start = function( when, offset, duration ) {
+  whiteNoise.start = function( when ) {
 
     whiteNoise.source = context.createBufferSource( );
 
-    whiteNoise.source.buffer = whiteNoise.source;
+    whiteNoise.source.buffer = whiteNoise.buffer;
 
     whiteNoise.source.connect( whiteNoise.output );
 
-    whiteNoise.source.start( when, offset, duration );
+    whiteNoise.source.loop = true;
+
+    whiteNoise.source.start( when );
 
   };
 
