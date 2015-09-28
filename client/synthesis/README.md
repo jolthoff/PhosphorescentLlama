@@ -95,11 +95,53 @@ start at the time specified by the first argument.
 AudioContext.createWhiteNoise:
 ------------------------------
 
-###  input:
+### input:
+
+This constructor takes no parameters.
 
 ### output/behavior:
 
+Creates an instance of white noise. This is intended to interface as if
+it were an Audio Oscillator Node. That is, via connect, start, and stop methods.
+Note, however, that the start method of white noise can be triggered
+more that once. 
+
 ### methods:
+
+#### whiteNoise.connect:
+
+##### input:
+
+Takes in the target destination as the first parameter.
+
+##### output/behavior:
+
+If the destination is an audio node or an audio parameter,
+the, whiteNoise.output is set to reference that audio node
+or that audio parameter. If, instead, the destination is
+an object with an input property that is an audio
+node or an audio param, whiteNoise.output is set to reference
+that input property.
+
+#### whiteNoise.start:
+
+#### input:
+
+Takes in the starting time relative to the current context's
+time coordinates as the first parameter.
+
+#### output/behavior:
+
+Sets whiteNoise to output white noise for an indeterminate
+amount of time. This is achieved by looping a five
+second white noise buffer. Note that, unlike native audio nodes,
+start can be triggered many times on the same instance of
+whiteNoise.
+
+#### whiteNoise.stop:
+
+If start has been invoked before stop is invoked, the output
+of white noise will be stopped.
 
 ### example:
 
