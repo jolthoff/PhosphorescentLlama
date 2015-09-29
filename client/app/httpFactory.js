@@ -13,6 +13,18 @@ app.factory( 'httpFactory', [ '$http', function ( $http ) {
 
         });
 
+    },
+
+    postSequencer: function ( level, savedSequencer, callback ) {
+
+      return $http.post( '/levels/', { level: level, data: savedSequencer } )
+
+        .then( function( response ) {
+
+          callback( response );
+
+        });
+
     }
 
   };

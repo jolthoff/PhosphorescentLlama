@@ -126,6 +126,22 @@ app.controller( 'GameController' , [ '$scope', 'playerSequencer', 'httpFactory',
     //all with visual cues
   };
 
+  $scope.saveToDatabase = function( ) {
+
+    var savedSequencer = $scope.playerSequencer.save( );
+
+    playerSequencer.store( $scope.inputLevel, savedSequencer, function( response ) {
+
+      if ( response ) {
+
+        $scope.inputLevel = '';
+
+      }
+
+    });
+
+  };
+
   //THIS IS A TEST - DELETE THIS LATER SO THAT ACTUAL initialize WORKS
     //tests
     // $scope.$broadcast('createSequencer');
