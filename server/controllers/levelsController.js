@@ -1,12 +1,9 @@
-var express = require( 'express' );
+var Sequencer = require('../models/sequencerModel.js');
 
-var router = express.Router( );
+var controller = {};
 
-var paths = require( '../../paths.js' );
-
-var Sequencer = require(paths.models + '/sequencerModel.js');
-
-router.get( /^\/\d{1,}$/, function( request, response, next ) {
+  // get data from database by making POST request
+controller.getLevel = function( request, response, next ) {
 
   var level = +request.url.split('/')[1];
 
@@ -17,7 +14,7 @@ router.get( /^\/\d{1,}$/, function( request, response, next ) {
       response.send( 500, error );
 
     } else if ( !sequencer ) {
-      
+
       error = "Level " + level + " does not exist.";
 
       error += "\nTo create a new level, post to /levels with 'content-type' as 'application/json',";
@@ -28,19 +25,20 @@ router.get( /^\/\d{1,}$/, function( request, response, next ) {
 
       error += "\nSequencer.prototype.save on the level's sequencer.";
 
-      response.send( 404, error );
+      response.status( 404 ).send( error );
 
     } else {
 
-      response.send( 200, sequencer.data );
+      response.status( 200 ).send( sequencer.data );
 
     }
 
   });
 
-});
+};
 
-router.post( '/', function( request, response, next ) {
+// save data to database by making GET request
+controller.saveLevel = function( request, response, next ) {
 
   var sequencer = new Sequencer();
 
@@ -52,16 +50,16 @@ router.post( '/', function( request, response, next ) {
 
     if ( error ) {
 
-      response.send( 500, error );
+      response.status( 500 ).send( error );
 
     } else {
 
-      response.send( 201 );
+      response.status( 201 );
 
     }
 
   });
 
-});
+};
 
-module.exports = router;
+module.exports = controller;

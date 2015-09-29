@@ -1,36 +1,35 @@
+Classes:
+========
+
 Bus:
+----
 
-  input:
+### Input:
 
-    To be used with new keyword.
+To be used with new keyword.
+The first parameter is the audio node that
+the output of the bus will be routed to.
 
-    The first parameter is the audio node that
+### Output/behavior:
 
-    the output of the bus will be routed to.
+Returns a bus instance with an input property
+such that, whenever an audio node is connected
+to that input, the output of said node is routed
+through each audio node in the bus.
 
-  output/behavior:
+### Methods:
 
-    Returns a bus instance with an input property
+#### bus.getInput:
 
-    such that, whenever an audio node is connected
+##### Input:
 
-    to that input, the output of said node is routed
+No parameters.
 
-    through each audio node in the bus.
+##### Output:
 
-  methods:
+Returns the first node in the bus' node chain.
 
-    bus.getInput:
-
-      input:
-
-        No parameters.
-
-      output:
-
-        Returns the first node in the bus' node chain.
-
-  example:
+### Example:
 
     var context = new AudioContext( );
 
@@ -49,76 +48,63 @@ Bus:
     osc.stop( context.currentTime + 2 );
 
 Beat:
+-----
 
-  input:
+### Input:
 
-    The first parameter is a soundID that the beat will
+The first parameter is a soundID that the beat will
+use to identify how to produce sounds on playback, the second
+parameter is the sequence that the beat belongs to.
+It is important for the beat to know what sequence it belongs
+to in order to reference the appropriate bus track on playback.
 
-    use to identify how to produce sounds on playback, the second
+### Output/behavior:
 
-    parameter is the sequence that the beat belongs to.
+Returns a beat instance with a beat.isOn getter function
+that indicates whether or not the beat is to be played on the
+next scheduling loop.
+Beat instances are not intended to be used anywhere other
+than in the sequencer in a context that has the property
+context._sampleBuffers which matches soundIDs to
+audio buffers.
 
-    It is important for the beat to know what sequence it belongs
+### Methods:
 
-    to in order to reference the appropriate bus track on playback.
+#### beat.isOn:
 
-  output/behavior:
+##### Input:
 
-    Returns a beat instance with a beat.isOn getter function
+This method does not take any parameters.
 
-    that indicates whether or not the beat is to be played on the
+##### Output/behavior:
 
-    next scheduling loop.
+Returns true if the beat should be played on the following scheduling loop.
+Returns false otherwise.
 
-    Beat instances are not intended to be used anywhere other
+#### beat.toggle:
 
-    than in the sequencer in a context that has the property
+##### Input:
 
-    context._sampleBuffers which matches soundIDs to
+This method does not take any parameters.
 
-    audio buffers.
+##### Output/behavior:
 
-  methods:
+Negates whatever boolean value is held by beat_.isOn.
 
-    isOn:
+#### beat.play:
 
-      input:
+##### Input:
 
-        This method does not take any parameters.
+Takes one parameter that indicates the time, in seconds,
+relative to the context's coordinate system at which
+the appropriate sample should be schedules to start playing.
 
-      output/behavior:
+##### Output/behavior:
 
-        Returns true if the beat should be played on the following scheduling loop.
+Schedules the beat's sound for time when on the Web Audio
+API's run loop.
 
-        Returns false otherwise.
-
-    toggle:
-
-      input:
-
-        This method does not take any parameters.
-
-      output/behavior:
-
-        Negates whatever boolean value is held by beat_.isOn.
-
-    play:
-
-      input:
-
-        Takes one parameter that indicates the time, in seconds,
-
-        relative to the context's coordinate system at which
-
-        the appropriate sample should be schedules to start playing.
-
-      output/behavior:
-
-        Schedules the beat's sound for time when on the Web Audio
-
-        API's run loop.
-
-  example:
+### Example:
 
     var context = new AudioContext( );
 
@@ -167,52 +153,41 @@ Beat:
     //That is, sine wave should start playing in 2 seconds.
 
 Sequence:
+---------
 
-  input:
+### Input:
 
-    The first parameter is the soundID that specifies the sound
+The first parameter is the soundID that specifies the sound
+of the beats in the sequence, the second parameter is the number
+of ticks in the sequence (that is, how many beats there are for
+each loop of the sequence), and the third parameter is the
+sequence's bus track's input audio node. 
 
-    of the beats in the sequence, the second parameter is the number
+### Output/behavior:
 
-    of ticks in the sequence (that is, how many beats there are for
+Returns a sequence which is nothing but a collection of beats
+along with information about the routing of the output
+of each beat encapsulated in a track bus.
+Note that all of the beats that comprise the sequence
+play back the same sample. That is, beats in sequences
+are associated to each by the sound that they play.
+Like beats, sequences are intended to be used by
+sequencers, not elsewhere.
 
-    each loop of the sequence), and the third parameter is the
+### Methods:
 
-    sequence's bus track's input audio node. 
+#### sequence.getSoundID:
 
-  output/behavior:
+##### Input:
 
-    Returns a sequence which is nothing but a collection of beats
+This method does not take any parameters.
 
-    along with information about the routing of the output
+##### Output/behavior:
 
-    of each beat encapsulated in a track bus.
+Returns the soundID of the sound being played by
+the beats in the sequence.
 
-    Note that all of the beats that comprise the sequence
-
-    play back the same sample. That is, beats in sequences
-
-    are associated to each by the sound that they play.
-
-    Like beats, sequences are intended to be used by
-
-    sequencers, not elsewhere.
-
-  methods:
-
-    getSoundID:
-
-      input:
-
-        This method does not take any parameters.
-
-      output/behavior:
-
-        Returns the soundID of the sound being played by
-
-        the beats in the sequence.
-
-  example:
+### Example:
 
     var context = new AudioContext( );
 
@@ -261,228 +236,184 @@ Sequence:
     // every two seconds.
 
 Sequencer:
+----------
 
-  input:
+### Input:
 
-    The first parameter is the sequencer's
+The first parameter is the sequencer's
+tempo as the number of beats played per minute,
+the second parameter is the number of ticks in
+each of the sequences of the sequencer, and
+the third parameter is an array of sound IDs. Each
+sound ID in the third parameter will be mapped to
+a new sequence with as many ticks as the second
+parameter.
 
-    tempo as the number of beats played per minute,
+### Output/behavior:
 
-    the second parameter is the number of ticks in
+Returns a sequencer instace. Information about
+the instance should be retrieved using it's getter
+methods. Do not, for any means, mess with sequencer._lastBeatTime.
 
-    each of the sequences of the sequencer, and
+### Methods:
 
-    the third parameter is an array of sound IDs. Each
+#### sequencer.getTempo:
 
-    sound ID in the third parameter will be mapped to
+##### Input:
 
-    a new sequence with as many ticks as the second
+This method does not take parameters.
 
-    parameter.
+##### Output/behavior:
 
-  output/behavior:
+Returns the sequencer's tempo in beats per minute.
 
-    Returns a sequencer instace. Information about
+#### sequencer.getTickNumber:
 
-    the instance should be retrieved using it's getter
+##### Input:
 
-    methods. Do not, for any means, mess with sequencer._lastBeatTime.
+This method does not take parameters.
 
-  methods:
+##### Output/behavior:
 
-    getTempo:
+Returns the number of beats in each of the
+sequencer's sequences.
 
-      input:
+#### sequencer.getSoundIDs:
 
-        This method does not take parameters.
+##### Input:
 
-      output/behavior:
+This method does not take parameters.
 
-        Returns the sequencer's tempo in beats per minute.
+##### Output/behavior:
 
-    getTickNumber:
+Returns an array with one sound ID for
+each sequence in the sequencer.
 
-      input:
+#### sequencer.getSequence:
 
-        This method does not take parameters.
+##### Input:
 
-      output/behavior:
+The first parameter specifies the index
+of the targeted sequence.
 
-        Returns the number of beats in each of the
+##### Output:
 
-        sequencer's sequences.
+Returns the sequence at the sequence
+index specified by the first parameter.
 
-    getSoundIDs:
+#### sequencer.getBeat:
 
-      input:
+##### Input:
 
-        This method does not take parameters.
+The first parameter specifies the sequence's
+index, and the second parameter specifies
+the beat's index within that sequence.
 
-      output/behavior:
+##### Output:
 
-        Returns an array with one sound ID for
+Returns a the beat instance at the coordinates
+specified by the parameters.
 
-        each sequence in the sequencer.
+#### sequencer.toggleBeat:
 
-    getSequence:
+##### Input:
 
-      input:
+The first parameter specifies the sequence's
+index, and the second parameter specifies
+the beat's index within that sequence.
 
-        The first parameter specifies the index
+#### Output:
 
-        of the targeted sequence.
+Toggles the _isOn property of the beat
+found by getBeat for the same arguments.
 
-      output:
+#### sequencer.play:
 
-        Returns the sequence at the sequence
+##### Input:
 
-        index specified by the first parameter.
+Takes in a callback function that will be
+called each time a new tick is scheduled.
+This callback function should handle
+one parameters that represents the time between
+the moment the callback is triggered and the moment
+at which the sound was scheduled.
+This is meant to be used along with setTimeout
+to coordinate UI behavior with the progression
+of the sequencer's music.
 
-    getBeat:
+##### Output/behavior:
 
-      input:
+Begins playing the sequences in the sequencers
+concurrently starting at beat 0.
 
-        The first parameter specifies the sequence's
+#### sequencer.stop:
 
-        index, and the second parameter specifies
+##### Input:
 
-        the beat's index within that sequence.
+This method does not take a parameter.
 
-      output:
+##### Output/behavior:
 
-        Returns a the beat instance at the coordinates
+Stops the playback of the sequences and
+returns track header to beat 0.
 
-        specified by the parameters.
+#### sequencer.scheduleTicks:
 
-    toggleBeat:
+##### Input:
 
-      input:
+The first parameter of this function is the same
+callback function as is passed in to the play function.
 
-        The first parameter specifies the sequence's
+#### Output/behavior:
 
-        index, and the second parameter specifies
+This is where the groove's scheduled. It uses a combination
+of setTimeout and beat.play in order to schedule musical
+events precisely but not too far ahead in time. This is
+meant to reduce lag between user interaction and musical
+response.
 
-        the beat's index within that sequence.
+#### sequencer.save:
 
-      output:
+##### Input:
 
-        Toggles the _isOn property of the beat
+This method does not take a parameter.
 
-        found by getBeat for the same arguments.
+##### Output/behavior:
 
-    play:
+Returns the JSON stringified version of
+an object that can be used by Sequencer.prototype.retrieve
+to reconstruct the sequencer state that this method is called
+upon.
 
-      input:
+#### sequencer.retrieve:
 
-        Takes in a callback function that will be
+##### Input:
 
-        called each time a new tick is scheduled.
+This method takes in a the object parsed from the string produced
+by the sequencer.save method.
 
-        This callback function should handle
+##### Output/behavior:
 
-        one parameters that represents the time between
+Returns a sequencer that is identical to the
+sequencer on which sequencer.save was invoked
+to produce the string that is passed in as the first
+argument.
 
-        the moment the callback is triggered and the moment
+#### sequencer.match:
 
-        at which the sound was scheduled.
+##### Input:
 
-        This is meant to be used along with setTimeout
+A sequencer instance.
 
-        to coordinate UI behavior with the progression
+##### Output/behavior:
 
-        of the sequencer's music.
+Deeply compares this and the sequencer instance
+passed in as an argument and returns true if and only
+if both instances have the same tempo, the same number of
+ticks, the same sound IDs and the same _isOn state on
+each corresponding beat.
 
-      output/behavior:
-
-        Begins playing the sequences in the sequencers
-
-        concurrently starting at beat 0.
-
-    stop:
-
-      input:
-
-        This method does not take a parameter.
-
-      output/behavior:
-
-        Stops the playback of the sequences and
-
-        returns track header to beat 0.
-
-    scheduleTicks:
-
-      input:
-
-        The first parameter of this function is the same
-
-        callback function as is passed in to the play function.
-
-      output/behavior:
-
-        This is where the groove's scheduled. It uses a combination
-
-        of setTimeout and beat.play in order to schedule musical
-
-        events precisely but not too far ahead in time. This is
-
-        meant to reduce lag between user interaction and musical
-
-        response.
-
-    save:
-
-      input:
-
-        This method does not take a parameter.
-
-      output/behavior:
-
-        Returns the JSON stringified version of
-
-        an object that can be used by Sequencer.prototype.retrieve
-
-        to reconstruct the sequencer state that this method is called
-
-        upon.
-
-    retrieve:
-
-      input:
-
-        This method takes in a string produced
-
-        by sequencer.save.
-
-      output/behavior:
-
-        Returns a sequencer that is identical to the
-
-        sequencer on which sequencer.save was invoked
-
-        to produce the string that is passed in as the first
-
-        argument.
-
-    match:
-
-      input:
-
-        A sequencer instance.
-
-      output/behavior:
-
-        Deeply compares this and the sequencer instance
-
-        passed in as an argument and returns true if and only
-
-        if both instances have the same tempo, the same number of
-
-        ticks, the same sound IDs and the same _isOn state on
-
-        each corresponding beat.
-
-  example:
+### Example:
 
     var context = new AudioContext( );
 
