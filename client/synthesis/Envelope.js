@@ -84,7 +84,7 @@ AudioContext.prototype.createEnvelope = function( A, D, S, R ) {
 
   // to release target in release time
 
-  while( index++ < ( A[ 0 ] + D[ 0 ] + S[ 0 ] + R[ 0 ] ) ) {
+  while( index++ < ( A[ 0 ] + D[ 0 ] + S[ 0 ] + R[ 0 ] ) * envelope.sampleRate ) {
 
     channelData[ index ] =
 
@@ -100,21 +100,27 @@ AudioContext.prototype.createEnvelope = function( A, D, S, R ) {
 
   var context = this;
 
-  envelope.trigger = function( when, output ) {
+  envelope.connect = function( destination ) {
+
+    if( destination.hasOwnProperty( 'input' ) ) {
+
+      envelope.output = destination.input;
+
+    } else {
+
+      envelope.output = destination;
+
+    }
+
+  };
+
+  envelope.trigger = function( when ) {
 
     var source = context.createBufferSource( );
 
     source.buffer = envelope.buffer;
 
-    if( output.hasOwnProperty( 'input' ) ) {
-
-      source.connect( output.input );
-
-    } else {
-
-      source.connect( output );
-
-    }
+    source.connect( envelope.output );
 
     source.start( when );
 
