@@ -10,6 +10,8 @@ module.exports = {
 
   models: __dirname + '/server/models',
 
-  controllers: __dirname + '/server/controllers'
+  controllers: __dirname + '/server/controllers',
+
+  classes: __dirname + '/client/classes'
 
 };
