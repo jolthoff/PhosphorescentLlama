@@ -13,21 +13,32 @@
 
       <!-- Sequence Controller holds all of the player controls for editing player sequence -->
       <div class="playerSequencer" ng-controller="PlayerSequencerController">
-        <button ng-click="sequencer.play()">PLAY MY BEATS</button>
-        <button ng-click="sequencer.stop()">STOP PLAYING MY BEATS</button>
+
+        <button ng-click="sequencer.playToggle()">PLAY MY BEATS</button>
+
+        <!-- <button ng-click="sequencer.stop()">STOP PLAYING MY BEATS</button> -->
+
         <div class="sequence" ng-repeat="sequence in sequences | orderBy: $index">
+
           <div class="beat {{sequencer.beatClass}}"
+
           ng-class="{ playing: sequencer.getBeat($parent.$index, $index).isOn() }"
+
           ng-repeat="beat in sequence._beats"
+
           ng-click="sequencer.toggleBeat($parent.$index, $index)">a</div>
+
         </div>
+
       </div>
       
       <button class="submit" ng-click="submit()">Submit</button>
 
       <div class="targetSequencer" ng-controller="TargetSequencerController">
-        <button ng-click="sequencer.play()">PLAY TARGET</button>
-        <button ng-click="sequencer.stop()">STOP TARGET</button>
+
+        <button ng-click="sequencer.playToggle()">PLAY TARGET</button>
+        
+        <!-- <button ng-click="sequencer.stop()">STOP TARGET</button> -->
       </div>
     </div>
 
