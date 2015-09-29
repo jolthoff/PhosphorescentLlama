@@ -107,14 +107,6 @@ app.controller('GameController' , ['$scope', 'playerSequencer', 'httpFactory', '
     //all with visual cues
   };
 
-  //when player clicks button, toggle beat so it will play
-  $scope.toggleBeat = function(sequenceIndex, beatIndex) {
-
-    $scope.sequencer.toggleBeat(sequenceIndex, beatIndex);
-
-  };
-
-
   //THIS IS A TEST - DELETE THIS LATER SO THAT ACTUAL initialize WORKS
     //tests
     // $scope.$broadcast('createSequencer');
@@ -161,6 +153,13 @@ app.controller('PlayerSequencerController', ['$scope', 'playerSequencer', functi
       $scope.sequencer.play();
       $scope.$emit('playerSequencerPlaying');
     }
+  };
+
+  //when player clicks button, toggle beat so it will play
+  $scope.toggleBeat = function(sequenceIndex, beatIndex) {
+
+    $scope.sequencer.toggleBeat(sequenceIndex, beatIndex);
+
   };
 
 }]);
