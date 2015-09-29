@@ -145,9 +145,7 @@ Sequencer.prototype.save = function( ) {
 
 };
 
-Sequencer.prototype.retrieve = function( JSONString ) {
-
-  var data = JSON.parse(JSONString);
+Sequencer.prototype.retrieve = function( data ) {
 
   var sequencer = new Sequencer(data.tempo, data.tickNumber, data.soundIDs );
 

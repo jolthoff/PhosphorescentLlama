@@ -14,7 +14,7 @@
       <!-- Sequence Controller holds all of the player controls for editing player sequence -->
       <div class="playerSequencer" ng-controller="PlayerSequencerController">
 
-        <button ng-click="sequencer.playToggle()">PLAY MY BEATS</button>
+        <button ng-click="playToggle()">PLAY MY BEATS</button>
 
         <!-- <button ng-click="sequencer.stop()">STOP PLAYING MY BEATS</button> -->
 
@@ -36,8 +36,8 @@
 
       <div class="targetSequencer" ng-controller="TargetSequencerController">
 
-        <button ng-click="sequencer.playToggle()">PLAY TARGET</button>
-        
+        <button ng-click="playToggle()">PLAY TARGET</button>
+
         <!-- <button ng-click="sequencer.stop()">STOP TARGET</button> -->
       </div>
     </div>
@@ -53,7 +53,6 @@
     <script src="app/app.js"></script>
     <script src="app/init.js"></script>
     <script src="app/playerSequencerFactory.js"></script>
-    <script src="app/targetSequencerFactory.js"></script>
     <script src="app/httpFactory.js"></script>
   </body>
 </html>

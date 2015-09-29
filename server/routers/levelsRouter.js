@@ -28,7 +28,7 @@ router.get( /^\/\d{1,}$/, function( request, response, next ) {
 
       error += "\nSequencer.prototype.save on the level's sequencer.";
 
-      response.send( 404, error );
+      response.status( 404 ).send( error );
 
     } else {
 

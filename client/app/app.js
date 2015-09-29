@@ -47,14 +47,22 @@ app.controller('GameController' , ['$scope', 'playerSequencer', 'httpFactory', '
 
   //when target sequencer is created, set pointer to TS as property of game controller
   //then pass that to the player sequencer controller
-  $scope.$on('madeTargetSequencer', function ( event, data ) {
-    $scope.targetSequencer = data;
+  $scope.$on('madeTargetSequencer', function ( event, targetSequencer ) {
+    $scope.targetSequencer = targetSequencer;
     $scope.$broadcast('createPlayerSequencer', $scope.targetSequencer);
   });
 
   //when player sequencer is created, set pointer to PS as property of game controller
-  $scope.$on('madePlayerSequencer', function ( event, data ) {
-    $scope.playerSequencer = data;
+  $scope.$on('madePlayerSequencer', function ( event, playerSequencer ) {
+    $scope.playerSequencer = playerSequencer;
+  });
+
+  $scope.$on('targetSequencerPlaying', function () {
+    $scope.$broadcast('playerStopPlaying');
+  });
+
+  $scope.$on('playerSequencerPlaying', function () {
+    $scope.$broadcast('targetStopPlaying');
   });
 
   //(needs work)
@@ -126,7 +134,7 @@ app.controller('PlayerSequencerController', ['$scope', 'playerSequencer', functi
   //sets beatClass for proper rendering
   //sends playerSequencer back to gameController
   $scope.$on('createPlayerSequencer', function(event, data) {
-    var tickNumber = data.getTicknumber();
+    var tickNumber = data.getTickNumber();
     var tempo = data.getTempo();
     var soundIDs = data.getSoundIDs();
 
@@ -134,6 +142,10 @@ app.controller('PlayerSequencerController', ['$scope', 'playerSequencer', functi
     $scope.sequences = $scope.sequencer._sequences;
     $scope.sequencer.beatClass = numToWord[tickNumber];
     $scope.$emit('madePlayerSequencer', $scope.sequencer);
+  });
+
+  $scope.$on('playerStopPlaying', function () {
+    $scope.sequencer.stop();
   });
 
   $scope.playToggle = function () {
@@ -151,9 +163,13 @@ app.controller('TargetSequencerController', ['$scope', function ( $scope ) {
 
   //listens for event and creates targetSequencer from server data
   //sends targetSequencer back to gameController
-  $scope.$on('createTargetSequencer', function(event, data) {
-    $scope.sequencer = Sequencer.prototype.retrieve(data.body);
+  $scope.$on('createTargetSequencer', function(event, response) {
+    $scope.sequencer = Sequencer.prototype.retrieve(response.data);
     $scope.$emit('madeTargetSequencer', $scope.sequencer);
+  });
+
+  $scope.$on('targetStopPlaying', function () {
+    $scope.sequencer.stop();
   });
 
   $scope.playToggle = function () {
