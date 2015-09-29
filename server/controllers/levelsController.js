@@ -104,6 +104,4 @@ controller.updateLevel = function( request, response, next ) {
 
 };
 
-
-
 module.exports = controller;
