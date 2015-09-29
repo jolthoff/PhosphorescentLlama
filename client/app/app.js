@@ -115,7 +115,7 @@ app.controller('GameController' , ['$scope', 'playerSequencer', 'targetSequencer
     //   $scope.$broadcast('createTargetSequencer', data);
     // });
     $scope.$broadcast('createSequencer');
-    $scope.$broadcast('createTargetSequencer', [240, 16, ['kick', 'clap', 'hihat']]);
+    $scope.$broadcast('createTargetSequencer', [240, 4, ['kick', 'clap', 'hihat']]);
 
     
   });
@@ -127,9 +127,9 @@ app.controller('PlayerSequencerController', ['$scope', 'playerSequencer', functi
 
   $scope.$on('createSequencer', function() {
     console.log("am i listening?");
-    $scope.sequencer = playerSequencer.build(240, 16, ['kick', 'clap', 'hihat']);
+    $scope.sequencer = playerSequencer.build(240, 4, ['kick', 'clap', 'hihat']);
     $scope.sequences = $scope.sequencer._sequences;
-    $scope.sequencer.beatClass = "sixteen";
+    $scope.sequencer.beatClass = "four";
     $scope.$emit('madePlayerSequencer', $scope.sequencer);
   });
 
@@ -143,9 +143,9 @@ app.controller('TargetSequencerController', ['$scope', 'targetSequencer', functi
     $scope.sequencer = targetSequencer.build.apply(this, data);
     console.log($scope.sequencer);
     $scope.sequencer.toggleBeat(0,0);
-    $scope.sequencer.toggleBeat(0,2);
-    $scope.sequencer.toggleBeat(0,4);
-    $scope.sequencer.toggleBeat(0,6);
+    $scope.sequencer.toggleBeat(1,2);
+    // $scope.sequencer.toggleBeat(0,4);
+    // $scope.sequencer.toggleBeat(0,6);
     $scope.$emit('madeTargetSequencer', $scope.sequencer);
     // $scope.sequencer = Sequencer.prototype.retrieve(data.body);
   });
