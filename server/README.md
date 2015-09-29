@@ -21,6 +21,7 @@ getLevel method will handle a GET request made to `/levels/:id`. As a response, 
 Retrieved sequencer data will be a JSON string, which can be parsed and used to instantiate a new sequencer. An example of the retrieved JSON string will look like this:
 
 ```
+data =
 "{
   "tempo":120,
   "tickNumber":4,
@@ -30,6 +31,9 @@ Retrieved sequencer data will be a JSON string, which can be parsed and used to 
     "clap":[{"isOn":false},{"isOn":true},{"isOn":false},{"isOn":true}]
   }
 }"
+
+var sequencer = Sequencer.prototype.retrieve(JSON.parse(data));
+// Now we have a sequencer that corresponds to the sequencer that we stored at the level id.
 ```
 
 ### POST to `/levels`
