@@ -12,6 +12,8 @@ window.AudioContext.prototype.createWhiteNoise = function( ) {
 
   whiteNoise.output = null;
 
+  whiteNoise.source = null;
+
   var channel = whiteNoise.buffer.getChannelData( 0 );
 
   for( var i = 0; i < whiteNoise.length; i++ ) {
@@ -38,21 +40,43 @@ window.AudioContext.prototype.createWhiteNoise = function( ) {
 
   };
 
-  whiteNoise.start = function( when, offset, duration ) {
+  whiteNoise.start = function( when ) {
 
-    whiteNoise.source = context.createBufferSource( );
+    // Only start the white noise if it hasn't
 
-    whiteNoise.source.buffer = whiteNoise.source;
+    // been started before or if it has been stopped
 
-    whiteNoise.source.connect( whiteNoise.output );
+    // after the last time it was started.
 
-    whiteNoise.source.start( when, offset, duration );
+    if( whiteNoise.source === null ) {
+
+      whiteNoise.source = context.createBufferSource( );
+
+      whiteNoise.source.buffer = whiteNoise.buffer;
+
+      whiteNoise.source.connect( whiteNoise.output );
+
+      whiteNoise.source.loop = true;
+
+      whiteNoise.source.start( when );
+
+    }
 
   };
 
   whiteNoise.stop = function( when ) {
 
-    whiteNoise.source.stop( when );
+    // Only stop the white noise if it has already
+
+    // been started.
+
+    if( whiteNoise.source !== null ) {
+
+      whiteNoise.source.stop( when );
+
+      whiteNoise.source = null;
+
+    }
 
   };
 
