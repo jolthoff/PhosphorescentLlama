@@ -1,8 +1,6 @@
-app.factory('init', function() {
+app.factory('initialize', function() {
 
-return {
-
-  ialize: function( callback ) {
+return function( callback ) {
 
     // make sure that the audio context
 
@@ -111,8 +109,6 @@ return {
 
     }
 
-  }
-
-};
+  };
 
 });

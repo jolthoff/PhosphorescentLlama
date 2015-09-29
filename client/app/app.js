@@ -1,12 +1,12 @@
 var app = angular.module( 'app', [] );
 
 
-app.controller('GameController' , ['$scope', 'playerSequencer', 'httpFactory', 'init',  function ( $scope, playerSequencer, httpFactory, init ) {
+app.controller('GameController' , ['$scope', 'playerSequencer', 'httpFactory', 'initialize',  function ( $scope, playerSequencer, httpFactory, initialize ) {
 
  
     // $scope.targetSequencer.play(); //for two loops?
 
-  //init
+  //initialize
     //start level
       //start playing their loop
     //wait for player input
@@ -40,9 +40,13 @@ app.controller('GameController' , ['$scope', 'playerSequencer', 'httpFactory', '
 
   //makes call to server and passes sequencer data to the target sequencer controller
   $scope.getSequencer = function () {
+
     httpFactory.getSequencer($scope.level, function (data) {
+
       $scope.$broadcast('createTargetSequencer', data);
+
     });
+
   };
 
   //when target sequencer is created, set pointer to TS as property of game controller
@@ -57,10 +61,12 @@ app.controller('GameController' , ['$scope', 'playerSequencer', 'httpFactory', '
     $scope.playerSequencer = playerSequencer;
   });
 
+  //makes playing sequencers mutually exclusive
   $scope.$on('targetSequencerPlaying', function () {
     $scope.$broadcast('playerStopPlaying');
   });
 
+  //makes playing sequencers mutually exclusive
   $scope.$on('playerSequencerPlaying', function () {
     $scope.$broadcast('targetStopPlaying');
   });
@@ -109,14 +115,14 @@ app.controller('GameController' , ['$scope', 'playerSequencer', 'httpFactory', '
   };
 
 
-  //THIS IS A TEST - DELETE THIS LATER SO THAT ACTUAL INIT WORKS
+  //THIS IS A TEST - DELETE THIS LATER SO THAT ACTUAL initialize WORKS
     //tests
     // $scope.$broadcast('createSequencer');
     // $scope.$broadcast('createTargetSequencer', [240, 4, ['kick', 'clap', 'hihat']]);
 
   //call initialization function to set audio context on the window
   //which must exist before the sequencers are made
-  init.ialize($scope.getSequencer);
+  initialize($scope.getSequencer);
 
 }]);
 
@@ -167,6 +173,8 @@ app.controller('TargetSequencerController', ['$scope', function ( $scope ) {
     $scope.sequencer = Sequencer.prototype.retrieve(response.data);
     $scope.$emit('madeTargetSequencer', $scope.sequencer);
   });
+
+
 
   $scope.$on('targetStopPlaying', function () {
     $scope.sequencer.stop();
