@@ -1,3 +1,9 @@
+body {
+
+  background-color: black;
+
+}
+
 div {
 
   -webkit-user-select: none;
@@ -9,7 +15,7 @@ div {
   margin: auto;
   height: 17vw;
   text-align: center;
-  background-color: white;
+  background-color: black;
 }
 
 .sequence {
@@ -46,7 +52,7 @@ div {
 
 .outer-2 {
 
-  background-color: white;
+  background-color: black;
 
 }
 
@@ -58,7 +64,7 @@ div {
 
 .outer-4 {
 
-  background-color: white;
+  background-color: black;
 
 }
 
@@ -70,7 +76,7 @@ div {
 
 .middle {
 
-  background-color: white;
+  background-color: black;
 
 }
 
@@ -82,7 +88,7 @@ div {
 
 .inner-2 {
 
-  background-color: white;
+  background-color: black;
 
 }
 
@@ -94,7 +100,7 @@ div {
 
 .inner-4 {
 
-  background-color: white;
+  background-color: black;
 
 }
 
@@ -117,7 +123,7 @@ div {
 
 }
 
-._0.hoverable:hover, ._1.hoverable:hover, ._2.hoverable:hover {
+._0:hover, ._1:hover, ._2:hover {
 
   opacity: .7;
   transition: opacity .1s;
@@ -168,7 +174,6 @@ div {
 }
 
 ._0.playing:hover, ._1.playing:hover, ._2.playing:hover {
-
   
   opacity: 1;
 
