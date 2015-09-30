@@ -124,14 +124,14 @@ div {
 
 ._0, ._1, ._2 {
 
-  opacity: .6;
+  opacity: .7;
   transition: opacity .1s;
 
 }
 
 ._0:hover, ._1:hover, ._2:hover {
 
-  opacity: .7;
+  opacity: .8;
   transition: opacity .1s;
 
 }
@@ -174,13 +174,13 @@ div {
 
 .playing {
 
-  opacity: .8;
+  opacity: .9;
   transition: opacity .1s;
 
 }
 
 ._0.playing:hover, ._1.playing:hover, ._2.playing:hover {
   
-  opacity: .9;
+  opacity: 1;
 
 }
