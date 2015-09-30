@@ -11,11 +11,13 @@ div {
 }
 
 .beat {
+
   display: inline-block;
   margin: auto;
   height: 17vw;
   text-align: center;
   background-color: black;
+  
 }
 
 .sequence {
@@ -44,31 +46,13 @@ div {
 
 }
 
-.outer-1 {
-
-  background-color: gray;
-
-}
-
-.outer-2 {
+.outer {
 
   background-color: black;
 
 }
 
-.outer-3 {
-
-  background-color: gray;
-
-}
-
-.outer-4 {
-
-  background-color: black;
-
-}
-
-.outer-5 {
+.inner {
 
   background-color: gray;
 
@@ -76,37 +60,10 @@ div {
 
 .middle {
 
+  height: 90%;
+  width: 90%;
+  margin: 5% auto;
   background-color: black;
-
-}
-
-.inner-1 {
-
-  background-color: gray;
-
-}
-
-.inner-2 {
-
-  background-color: black;
-
-}
-
-.inner-3 {
-
-  background-color: gray;
-
-}
-
-.inner-4 {
-
-  background-color: black;
-
-}
-
-.inner-5 {
-
-  background-color: gray;
 
 }
 
@@ -118,14 +75,14 @@ div {
 
 ._0, ._1, ._2 {
 
-  opacity: .5;
+  opacity: .7;
   transition: opacity .1s;
 
 }
 
 ._0:hover, ._1:hover, ._2:hover {
 
-  opacity: .7;
+  opacity: .8;
   transition: opacity .1s;
 
 }
@@ -168,7 +125,7 @@ div {
 
 .playing {
 
-  opacity: 1;
+  opacity: .9;
   transition: opacity .1s;
 
 }
