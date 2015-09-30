@@ -1,4 +1,4 @@
-app.controller( 'PlayerSequencerController', [ '$scope', 'playerSequencer', function ( $scope, playerSequencer ) {
+app.controller( 'PlayerSequencerController', [ '$scope', 'playerSequencer', '$timeout', function ( $scope, playerSequencer, $timeout ) {
 
   //change tickNumber to word so that CSS class works properly
   var numToWord = {
@@ -49,6 +49,8 @@ app.controller( 'PlayerSequencerController', [ '$scope', 'playerSequencer', func
 
   });
 
+  $scope.currentColumn = 0;
+
   $scope.playToggle = function ( ) {
 
     if ( $scope.sequencer._playing ) {
@@ -62,6 +64,19 @@ app.controller( 'PlayerSequencerController', [ '$scope', 'playerSequencer', func
       $scope.$emit( 'playerSequencerPlaying' );
 
     }
+
+  };
+
+  $scope.animateLoop = function ( time ) {
+
+    $timeout( function( ) {
+
+      $scope.currentColumn += 1 % tickNumber;
+      console.log($scope.currentColumn);
+      
+      $scope.animateLoop( time );
+    }, time)
+
 
   };
 
