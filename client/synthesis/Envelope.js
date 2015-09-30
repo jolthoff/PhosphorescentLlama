@@ -1,131 +1,363 @@
-// Evenlope class
+AudioContext.prototype.createEnvelope =
 
-AudioContext.prototype.createEnvelope = function( A, D, S, R ) {
+  function( attack, decay, sustain, release ) {
 
-  // A = [attackTime, attackTarget]
+  // attack = 
 
-  // D = [decayTime, decayTarget]
+  //  { time: ...,
 
-  // S = [sustainTime, sustainTarget]
+  //    target: ... 
 
-  // R = [releaseTime]
+  //  } || attackTime, where target defaults to 1.
+
+  // decay = decayTime
+
+  // sustain = sustainTarget
+
+  // release =
+
+  //  { time: ...,
+
+  //    target: ...
+
+  //  } || releaseTime, where target defaults to 0.
 
   var envelope = {};
 
-  envelope.sampleRate = this.sampleRate;
+  // check if inputs conform to
 
-  envelope.length = ( A[ 0 ] + D[ 0 ] + S[ 0 ] + R[ 0 ] ) * this.sampleRate;
+  // interface.
 
-  envelope.buffer = this.createBuffer(
+  envelope.setAttack = function( attack ) {
 
-    1, // channel
+    var invalidAttack = "Unexpected attack value. ";
 
-    envelope.length, // in sample frames
+    invalidAttack += "Attack should be an object with a property ";
 
-    envelope.sampleRate
+    invalidAttack += "'time', which should reference a number, and a ";
 
-  );
+    invalidAttack += "property 'target', which should also reference a number. ";
 
-  // channelData is a 32FLoatArray
+    invalidAttack += "Alternatively, attack could be a number, not an object. ";
 
-  var channelData = envelope.buffer.getChannelData( 0 );
+    invalidAttack += "If attack is a number, that number specifies attack time and ";
 
-  var index = 0;
+    invalidAttack += "the attack target defaults to 1. As it makes no sense to specify ";
 
-  // attack phase
+    invalidAttack += "negative attack times, either attack or attack.time must be a positive ";
 
-  // create linear ramp to attack target ( A[ 1 ] )
+    invalidAttack += "number."
 
-  // in attack time ( A[ 0 ] )
+    if( typeof attack !== 'number' ) {
 
-  while( index++ < A[ 0 ] * envelope.sampleRate ) {
+      if( typeof attack === 'object' ) {
 
-    channelData[ index ] =
+        if(
 
-      ( A[ 1 ] * index ) / ( A[ 0 ] * envelope.sampleRate );
+          typeof attack.time !== 'number' ||
+
+          typeof attack.target !== 'number' ||
+
+          attack.time < 0
+
+        ) {
+
+          throw invalidAttack;
+
+        }
+
+      } else {
+
+        throw invalidAttack;
+
+      }
+
+    } else if( attack < 0 ) {
+
+      throw invalidAttack;
+
+    }
+
+    // At this point, attack has been validated.
+
+    envelope.attack = attack;
+
+  };
+
+  envelope.setDecay = function( decay ) {
+
+    var invalidDecay = "Unexpected decay value. ";
+
+    invalidDecay += "Decay should be a number. ";
+
+    invalidDecay += "When decay is a number, it specifies decay time. "
+
+    invalidDecay += "As it makes no sense to specify a negative decay time, "
+
+    invalidDecay += "envelopes cannot be constructed with negative decay times."
+
+    if( typeof decay !== 'number' ) {
+
+      throw invalidDecay;
+
+    } else if( decay < 0 ) {
+
+      throw invalidDecay;
+
+    }
+
+    // At this point, decay has been validated.
+
+    envelope.decay = decay;
+
+  };
+
+  envelope.setSustain = function( sustain ) {
+
+    var invalidSustain = "Unexpected sustain value. ";
+
+    invalidSustain += "Sustain should be a number."
+
+    if( typeof sustain !== 'number' ) {
+
+      throw invalidSustain;
+
+    }
+
+    // At this point, sustain has been validated.
+
+    envelope.sustain = sustain;
+
+  };
+
+  envelope.setRelease = function( release ) {
+
+    var invalidRelease = "Unexpected release value. ";
+
+    invalidRelease += "Release should be an object with a property ";
+
+    invalidRelease += "'time', which should reference a number, and a ";
+
+    invalidRelease += "property 'target', which should also reference a number. ";
+
+    invalidRelease += "Alternatively, release could be a number, not an object. ";
+
+    invalidRelease += "If release is a number, that number specifies release time and ";
+
+    invalidRelease += "the release target defaults to 0. As it makes no sense to specify ";
+
+    invalidRelease += "negative release times, either release or release.time must be a positive ";
+
+    invalidRelease += "number."
+
+    if( typeof release !== 'number' ) {
+
+      if( typeof release === 'object' ) {
+
+        if(
+
+          typeof release.time !== 'number' ||
+
+          typeof release.target !== 'number' ||
+
+          release.time < 0
+
+        ) {
+
+          throw invalidRelease;
+
+        }
+
+      } else {
+
+        throw invalidRelease;
+
+      }
+
+    } else if( attack < 0 ) {
+
+      throw invalidRelease;
+
+    }
+
+    // At this point, release has been validated.
+
+    envelope.release = release;
 
   }
 
-  // decay phase
+  envelope.setAttack( attack );
 
-  // create linear ramp to decay target ( D[ 1 ] )
+  envelope.setdDecay( decay );
 
-  // in decay time D[ 0 ]
+  envelope.setSustain( sustain );
 
-  while( index++ < ( A[ 0 ] + D[ 0 ] ) * envelope.sampleRate ) {
+  envelope.setRelease( release );
 
-    channelData[ index ] =
+  var computeTau = function( time, initialValue, targetValue ) {
 
-      A[ 1 ] -
+    if( initialValue !== targetValue ) {
 
-        ( A[ 1 ] - D[ 1 ] ) *
+      return -1 * time /
 
-        ( index - A[ 0 ] * envelope.sampleRate ) /
+              Math.log( -1 * 0.01 * targetValue /
 
-        ( D[ 0 ] * envelope.sampleRate );
-
-  }
-
-  // sustain  phase
-
-  // set value to sustain target S[ 1 ] for
-
-  // the duration of sustain time S[ 0 ]
-
-  while( index++ < ( A[ 0 ] + D[ 0 ] + S[ 0 ] ) * envelope.sampleRate ) {
-
-    channelData[ index ] = S[ 1 ];
-
-  }
-
-  //release phase
-
-  // create linear ramp from sustain target
-
-  // to release target in release time
-
-  while( index++ < ( A[ 0 ] + D[ 0 ] + S[ 0 ] + R[ 0 ] ) * envelope.sampleRate ) {
-
-    channelData[ index ] =
-
-      S[ 1 ] -
-
-        ( S[ 1 ] - R[ 1 ] ) *
-
-        ( index - ( A[ 0 ] + D[ 0 ] + S[ 0 ] ) * envelope.sampleRate ) /
-
-        ( R[ 0 ] * envelope.sampleRate );
-
-  }
-
-  var context = this;
-
-  envelope.connect = function( destination ) {
-
-    if( destination.hasOwnProperty( 'input' ) ) {
-
-      envelope.output = destination.input;
+                ( initialValue - targetValue ) );
 
     } else {
 
-      envelope.output = destination;
+      // In the case that the initialValue
+
+      // is the same as the targetValue,
+
+      // the time constant should be arbitrarily
+
+      // large.
+
+      return Number.MAX_VALUE;
 
     }
 
   };
 
-  envelope.trigger = function( when ) {
+  envelope.connect = function( audioParam ) {
 
-    var source = context.createBufferSource( );
+    if( audioParam instanceof AudioParam ) {
 
-    source.buffer = envelope.buffer;
+      envelope.param = audioParam;
 
-    source.connect( envelope.output );
+    } else {
 
-    source.start( when );
+      var error = "Invalid destination. ";
+
+      error += "Envelopes should only be ";
+
+      error += "connected to instances of AudioParam.";
+
+      throw error;
+
+    }
 
   };
 
-  return envelope;
+  envelope.on = function( when, sustainTime ) {
+
+    // If when is not defined, then the envelope
+
+    // triggers immediately.
+
+    when = when || context.currentTime;
+
+    if( typeof envelope.attack === 'number' ) {
+
+      envelope.attack = {
+
+        time: envelope.attack,
+
+        target: 1
+
+      };
+
+    }
+
+    // schedule attack phase.
+
+    envelope.param.setTargetAtTime(
+
+      envelope.attack.target,
+
+      when,
+
+      computeTau(
+
+        envelope.attack.time,
+
+        envelope.param.value,
+
+        envelope.attack.target
+
+      )
+
+    );
+
+    // Schedule decay phase.
+
+    envelope.param.setTargetAtTime(
+
+      envelope.decay,
+
+      when + envelope.attack.time,
+
+      computeTau(
+
+        envelope.decay,
+
+        envelope.attack.target,
+
+        envelope.sustain
+
+      )
+
+    );
+
+    if( sustainTime ) {
+
+      // In case that sustainTime is
+
+      // specified, trigger release phase.
+
+      envelope.off(
+
+        when +
+
+        envelope.attack.time +
+
+        envelope.decay.time +
+
+        sustainTime
+
+      );
+
+    }
+
+    // If sustainTime is undefined, the envelope
+
+    // sustains until off is scheduled otherwise.
+
+  };
+
+  envelope.off = function( when ) {
+
+    // If when is not defined, then the envelope
+
+    // releases immediately.
+
+    when = when || 0;
+
+    if( typeof envelope.release === 'number' ) {
+
+      envelope.release = {
+
+        time: envelope.release,
+
+        target: 0
+
+      };
+
+    }
+
+      // Schedule release phase.
+
+    envelope.param.setTargetAtTime(
+
+      envelope.release.time,
+
+      when,
+
+      envelope.release.target
+
+    );
+
+  };
 
 };

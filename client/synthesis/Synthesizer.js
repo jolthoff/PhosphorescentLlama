@@ -8,7 +8,7 @@ AudioContext.prototype.createSynthesizer = function( options ) {
 
   synthesizer._gain = context.createGain( );
 
-  synthesizer._gain.value = 0;
+  synthesizer._gain.value = options.gain || 0;
 
   if( Array.isArray( options.gainEnvelope ) ) {
 
@@ -38,6 +38,8 @@ AudioContext.prototype.createSynthesizer = function( options ) {
 
   synthesizer._biquadFilter.type = options.filterType || 'lowpass';
 
+  synthesizer._biquadFilter.frequency.value = options.cutoff || 0;
+
   if( Array.isArray( options.cutoffEnvelope ) ) {
 
     synthesizer._cutoffEnvelope =
@@ -61,8 +63,6 @@ AudioContext.prototype.createSynthesizer = function( options ) {
   }
 
   synthesizer._cutoffEnvelope.connect( synthesizer._biquadFilter.frequency );
-
-  synthesizer._biquadFilter.frequency.value = 0;
 
   synthesizer._biquadFilter.connect( synthesizer._gain );
 

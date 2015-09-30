@@ -36,7 +36,7 @@ node or an audio param.
 
 Behaves similarly to AudioNode.connect( ).
 
-#### envelope.trigger:
+#### envelope.start:
 
 ##### Input:
 
@@ -48,7 +48,9 @@ context's time coordinates.
 
 Creates a source instance with envelope buffer as buffer,
 connects that instance to the output, and schedules it to
-start at the time specified by the first argument.
+start at the time specified by the first argument. In the case
+that an envelope is in execution at the scheduling time, that envelope
+will be stopped and the new one will be triggered.
 
 ### Example:
 
@@ -58,7 +60,7 @@ start at the time specified by the first argument.
 
     osc.type = 'sine';
 
-    osc.frequency.value = 440; // A
+    osc.frequency.value = 60; // A
 
     var gain = context.createGain( );
 
@@ -70,13 +72,13 @@ start at the time specified by the first argument.
 
     var gainEnvelope = context.createEnvelope(
 
-      [ 1, 1 ], [ 0.5, 0.2 ], [ 0.5, 0.2 ], [ 1, 0 ]
+      [ 0.01, 1 ], [ 0.02, 0.5 ], [ 0.01, 0.5 ], [ 0.06, 0 ]
 
     );
 
     var frequencyEnvelope = context.createEnvelope(
 
-      [ 1, 450 ], [0.5, 430 ], [0.5, 430 ], [1, 440]
+      [ 0.01, 40 ], [0.02,  20], [0.01, 20 ], [0.06, 0]
 
     );
 
@@ -86,11 +88,9 @@ start at the time specified by the first argument.
 
     osc.start( context.currentTime );
 
-    gainEnvelope.trigger( context.currentTime );
+    gainEnvelope.start( context.currentTime );
 
-    frequencyEnvelope.trigger( context.currentTime );
-
-    osc.stop( context.currentTime + 5 );
+    frequencyEnvelope.start( context.currentTime );
 
 AudioContext.createWhiteNoise:
 ------------------------------

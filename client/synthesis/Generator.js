@@ -53,11 +53,11 @@ AudioContext.prototype.createGenerator = function( options ) {
 
   generator._oscillator.type = options.oscillatorType || 'sine';
 
-  generator._oscillator.frequency.value = 0;
+  generator._oscillator.frequency.value = options.frequency || 0;
 
   generator._gain = this.createGain( );
 
-  generator._gain.gain.value = 0;
+  generator._gain.gain.value = options.gain || 0;
 
   generator._frequencyEnvelope.connect( generator._oscillator.frequency );
 
