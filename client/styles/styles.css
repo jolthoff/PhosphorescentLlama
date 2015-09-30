@@ -1,28 +1,88 @@
+body {
+
+  background-color: black;
+
+}
+
 div {
 
   -webkit-user-select: none;
 
 }
 
-.beat {
-  display: inline-block;
-  margin: auto;
-  height: 175px;
-  text-align: center;
-  background-color: white;
+/*.nav-bar {
+
+  width: 105%;
+  position: fixed;
+  margin-top: -10px;
+  margin-left: -10px;
+  height: 60px;
+  background-color: #111111;
+
+}*/
+
+.gameSpace {
+
+  margin-top: 40px;
+  margin-left: 50px;
+  width: 90vw;
+  height: 90vw;
+
 }
 
 .sequence {
 
+  margin: auto;
   display: block;
   width: 100%;
-  height: 175px;
 
 }
 
-.gameSpace {
+.sequence.four {
 
-  width: 90%;
+  height: 15vw;
+
+}
+
+.sequencer.eight {
+
+  height: 11vw;
+
+}
+
+.sequencer.sixteen {
+
+  height: 11vw;
+
+}
+
+.beat {
+
+  display: inline-block;
+  margin: auto;
+  text-align: center;
+  background-color: black;
+
+}
+
+.beat.four {
+
+  width: 15vw;
+  height: 15vw;
+
+}
+
+.beat.eight {
+
+  height: 11vw;
+  width: 11vw;
+
+}
+
+.beat.sixteen {
+
+  height: 11vw;
+  width: 5.5vw;
 
 }
 
@@ -30,36 +90,18 @@ div {
 
   height: 95%;
   width: 95%;
-  margin: 2% auto;
+  margin: 2.5% auto;
   overflow: hidden;
 
 }
 
-.outer-1 {
+.outer {
 
-  background-color: gray;
-
-}
-
-.outer-2 {
-
-  background-color: white;
+  background-color: black;
 
 }
 
-.outer-3 {
-
-  background-color: gray;
-
-}
-
-.outer-4 {
-
-  background-color: white;
-
-}
-
-.outer-5 {
+.inner {
 
   background-color: gray;
 
@@ -67,37 +109,10 @@ div {
 
 .middle {
 
-  background-color: white;
-
-}
-
-.inner-1 {
-
-  background-color: gray;
-
-}
-
-.inner-2 {
-
-  background-color: white;
-
-}
-
-.inner-3 {
-
-  background-color: gray;
-
-}
-
-.inner-4 {
-
-  background-color: white;
-
-}
-
-.inner-5 {
-
-  background-color: gray;
+  height: 90%;
+  width: 90%;
+  margin: 5% auto;
+  background-color: black;
 
 }
 
@@ -109,12 +124,12 @@ div {
 
 ._0, ._1, ._2 {
 
-  opacity: .5;
+  opacity: .6;
   transition: opacity .1s;
 
 }
 
-._0.hoverable:hover, ._1.hoverable:hover, ._2.hoverable:hover {
+._0:hover, ._1:hover, ._2:hover {
 
   opacity: .7;
   transition: opacity .1s;
@@ -139,21 +154,33 @@ div {
 
 }
 
+._0.playing {
+
+  background-color: rgb(255, 0, 0);
+
+}
+
+._1.playing {
+
+  background-color: rgb(0, 255, 0);
+
+}
+
+._2.playing {
+
+  background-color: rgb(0, 0, 255);
+
+}
+
 .playing {
 
-  opacity: 1;
+  opacity: .8;
   transition: opacity .1s;
 
 }
 
-.four {
-  width: 22%;
-}
+._0.playing:hover, ._1.playing:hover, ._2.playing:hover {
+  
+  opacity: .9;
 
-.eight {
-  width: 10%;
-}
-
-.sixteen {
-  width: 5.5%;
 }
