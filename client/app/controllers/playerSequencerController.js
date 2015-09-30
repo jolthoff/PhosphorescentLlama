@@ -39,6 +39,16 @@ app.controller( 'PlayerSequencerController', [ '$scope', 'playerSequencer', func
 
   });
 
+  $scope.$on( 'toggleWrongBeatsOff', function ( event, wrongBeats ) {
+
+    for( var i = 0; i < wrongBeats.length; i++ ) {
+
+      $scope.toggleBeat( wrongBeats[ i ][ 0 ], wrongBeats[ i ][ 1 ] );
+
+    }
+
+  });
+
   $scope.playToggle = function ( ) {
 
     if ( $scope.sequencer._playing ) {

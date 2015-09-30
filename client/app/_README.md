@@ -170,6 +170,22 @@ None.
 
 Stops playerSequencer.
 
+##### toggleWrongBeatsOff:
+
+###### Origin:
+
+gameController.
+
+###### Input:
+
+Event: the broadcast event from the gameController.
+
+wrongBeats: an array of the incorrect beats to toggle off.
+
+###### Output/Behavior:
+
+Toggles off all beats on the playerSequencer that are in wrongBeats.
+
 #### Methods:
 
 ##### playToggle:
