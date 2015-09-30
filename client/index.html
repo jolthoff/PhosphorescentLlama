@@ -18,15 +18,39 @@
 
         <!-- <button ng-click="sequencer.stop()">STOP PLAYING MY BEATS</button> -->
 
-        <div class="sequence" ng-repeat="sequence in sequences | orderBy: $index">
+        <div class="sequence" ng-repeat="sequence in sequences | orderBy: $index"
 
-          <div class="beat {{sequencer.beatClass}}"
+        ng-class="{{ $index }}"
+        >
+
+          <div class="beat {{sequencer.beatClass}} {{ $parent.$index }}"
 
           ng-class="{ playing: sequencer.getBeat($parent.$index, $index).isOn() }"
 
           ng-repeat="beat in sequence._beats"
 
-          ng-click="sequencer.toggleBeat($parent.$index, $index)">a</div>
+          ng-click="sequencer.toggleBeat($parent.$index, $index)">
+
+
+            <div class="line-1">
+              <div class="line-2 _{{ $index }}">
+                <div class="line-3">
+                  <div class="line-4 _{{ $index }} ">
+                    <div class="line-5">
+                      <div class="line-6 _{{ $index }}">
+                        <div class="line-7">
+                          <div class="center_{{ $index }}">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+          </div>
 
         </div>
 
@@ -36,15 +60,27 @@
 
       <form class="save">
 
+        <div class="form">
+          <input type="text" placeholder="input a level" name="level" ng-model="inputLevel"></input>
+        </div>
+
+        <button class="submit" ng-click="saveToDatabase( )">Save to Database</button>
+
+      </form>
+
+      <form class="create">
+
       <div class="form">
-        <input type="text" placeholder="input a level" name="level" ng-model="inputLevel"></input>
+        <input type="text" placeholder="tempo" name="tempo" ng-model="inputTempo"></input>
+
+        <input type="text" placeholder="number of beats" name="beats" ng-model="inputBeats"></input>
+
+        <input type="text" placeholder="sounds" name="sounds" ng-model="inputSounds"></input>
       </div>
 
-      <button class="submit" ng-click="saveToDatabase( )">Save to Database</button>
+      <button class="submit" ng-click="createSequencer( )">Create a Sequencer</button>
 
     </form>
-
-      
 
       <div class="targetSequencer" ng-controller="TargetSequencerController">
 

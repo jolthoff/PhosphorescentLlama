@@ -142,6 +142,22 @@ app.controller( 'GameController' , [ '$scope', 'playerSequencer', 'httpFactory',
 
   };
 
+  $scope.createSequencer = function( ) {
+
+    var soundIDs = [ "hihat", "clap", "kick" ];
+
+    var userSequencer = playerSequencer.build( $scope.inputTempo, $scope.inputBeats, soundIDs );
+
+    $scope.$broadcast( 'createPlayerSequencer', userSequencer );
+
+    $scope.inputTempo = '';
+
+    $scope.inputBeats = '';
+
+    $scope.inputSounds = '';
+
+  };
+
   //THIS IS A TEST - DELETE THIS LATER SO THAT ACTUAL initialize WORKS
     //tests
     // $scope.$broadcast('createSequencer');
