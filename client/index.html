@@ -8,17 +8,27 @@
   </head>
   <body ng-app="app">
 
-<!--     Game controller holds everything except the target sequencer -->
-    <div class="gameSpace" ng-controller="GameController"> game goes here
+    <!-- <div class="nav-bar" ng-controller="GameController">
+
+      <div class="submit" ng-click="submit( )"></div>
+      <div class="play-pause" ng-controller="PlayerSequencerController" ng-click="playToggle( )"></div>
+      <div class="play-pause" ng-controller="TargetSequencerController" ng-click="playToggle( )"></div>
+
+    </div> -->
+
+    <!--     Game controller holds everything except the target sequencer -->
+    <div class="gameSpace" ng-controller="GameController">
+
+
 
       <!-- Sequence Controller holds all of the player controls for editing player sequence -->
       <div class="playerSequencer" ng-controller="PlayerSequencerController">
 
-        <button ng-click="playToggle()">PLAY/PAUSE MY BEATS</button>
+        <!-- <button ng-click="playToggle()">PLAY/PAUSE MY BEATS</button> -->
 
         <!-- <button ng-click="sequencer.stop()">STOP PLAYING MY BEATS</button> -->
 
-        <div class="sequence" ng-repeat="sequence in sequences | orderBy: $index"
+        <div class="sequence {{ sequencer.beatClass }}" ng-repeat="sequence in sequences | orderBy: $index"
         >
 
           <div class="beat {{sequencer.beatClass}}"
@@ -27,7 +37,7 @@
 
           ng-click="sequencer.toggleBeat($parent.$index, $index)">
 
-
+            <!-- inner class defaults to gray color and changes color based on row -->
             <div class="line inner _{{ $parent.$index }}"
 
             ng-class="{ playing: sequencer.getBeat($parent.$index, $index).isOn( ) }">
@@ -105,7 +115,7 @@
                                               </div>
 
                                             </div>
-                                            
+
                                           </div>
 
                                         </div>
@@ -144,7 +154,11 @@
 
       </div>
 
+    <button class="play-pause" ng-click="playToggle( )">Play/Pause</button>
+
     </div>
+
+      
       
       <button class="submit" ng-click="submit()">Submit</button>
 
@@ -175,8 +189,7 @@
       <div class="targetSequencer" ng-controller="TargetSequencerController">
 
         <button ng-click="playToggle()">PLAY/PAUSE TARGET</button>
-
-        <!-- <button ng-click="sequencer.stop()">STOP TARGET</button> -->
+<!--  -->
       </div>
     </div>
 
