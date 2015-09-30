@@ -54,7 +54,49 @@ controller.saveLevel = function( request, response, next ) {
 
     } else {
 
-      response.status( 201 );
+      response.status( 201 ).send();
+
+    }
+
+  });
+
+};
+
+controller.deleteLevel = function( request, response, next ) {
+
+  var level = +request.url.split('/')[1];
+
+  Sequencer.remove({'level':level}, function( error ) {
+
+    if ( error ) {
+
+      response.status( 400 ).send( error );
+
+    } else {
+
+      response.status( 200 ).send();
+
+    }
+
+  });
+
+};
+
+controller.updateLevel = function( request, response, next ) {
+
+  var level = request.body.level;
+
+  var data = request.body.data;
+
+  Sequencer.findOneAndUpdate({ 'level': level }, { $set: { 'data': data } }, function( error ) {
+
+    if ( error ) {
+
+      response.status( 400 ).send( error );
+
+    } else {
+
+      response.status( 200 ).send();
 
     }
 

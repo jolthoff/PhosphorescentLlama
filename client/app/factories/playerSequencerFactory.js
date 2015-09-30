@@ -1,4 +1,4 @@
-app.factory( 'playerSequencer', function ( ) {
+app.factory( 'playerSequencer', [ 'httpFactory', function ( httpFactory ) {
 
   //create new empty sequencer for the player
   return {
@@ -7,8 +7,14 @@ app.factory( 'playerSequencer', function ( ) {
 
       return new Sequencer( tempo, tickNumber, soundIDs );
 
+    },
+
+    store: function ( level, savedSequencer, callback ) {
+
+      httpFactory.postSequencer( level, savedSequencer, callback );
+
     }
 
   };
 
-});
+}]);
