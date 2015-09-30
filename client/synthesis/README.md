@@ -255,3 +255,182 @@ Triggers both of the generator's envelopes at the specified time.
     generator.connect( context.destination );
 
     generator.start( );
+
+AudioContext.createSynthesizer:
+-------------------------------
+
+### Input:
+
+This synthesizer takes an options object as its input. Options has two properties, cutoffEnvelope and gainEnvelope. CutoffEnvelope and gainEnvelope are either already created envelopes or arrays of four tuples, which specify the attack, decay, sustain, and release for the synthesizer's biquadFilter's  envelope and the synthesizer's gain's envelope, respectively.
+
+### Output/behavior:
+
+This returns a synthesizer that can be connected to another audio node or audio parameter or to another object with an input property that is an audio node or audio parameter.
+
+### Methods:
+
+#### synthesizer.connect:
+
+##### Input:
+
+Takes in the target destination.
+
+##### Output/behavior:
+
+If the destination is an audio node or an audio parameter,
+the, synthesizer.output is set to reference that audio node
+or that audio parameter. If, instead, the destination is
+an object with an input property that is an audio
+node or an audio param, synthesizer.output is set to reference
+that input property.
+
+#### synthesizer.start:
+
+#### Input:
+
+Takes in the starting time relative to the current context's
+time coordinates as the first parameter.
+
+#### Output/behavior:
+
+Triggers both of the synthesizer's envelopes and starts all of the synthesizer's generators at the specified time.
+
+### Example:
+
+    var context = new AudioContext( );
+
+    var rootStart = 440;
+
+    var rootEnd = rootStart * Math.pow( 2, 1/3 );
+
+    var thirdStart = rootEnd;
+
+    var thirdEnd = thirdStart * Math.pow( 2, 1/3 );
+
+    var fifthStart = rootStart * Math.pow( 2, 7/12 );
+
+    var fifthEnd = fifthStart * Math.pow( 2, 1/3 );
+
+    var options = {
+
+      cutoffEnvelope: [
+
+        [ 4, 10000 ],
+
+        [ 4, 1000 ],
+
+        [ 1, 1000 ],
+
+        [ 9, 0 ]
+
+      ],
+
+      gainEnvelope: [
+
+        [ 8, 1 ],
+
+        [ 0, 1 ],
+
+        [ 5, 1 ],
+
+        [ 5, 0 ]
+
+      ]
+
+    };
+
+    var synthesizer = context.createSynthesizer( options );
+
+    synthesizer.addGenerator( {
+
+        frequencyEnvelope: [
+
+          [ 4, rootStart ],
+
+          [ 4, rootEnd ],
+
+          [ 1, rootEnd ],
+
+          [ 9, 0 ]
+
+        ],
+
+        gainEnvelope: [
+
+          [ 0, 1 ],
+
+          [ 0, 1 ],
+
+          [ 18, 1 ],
+
+          [ 0, 0 ]
+
+        ],
+
+        oscillatorType: 'square'
+
+    });
+
+    synthesizer.addGenerator( {
+
+        frequencyEnvelope: [
+
+          [ 4, thirdStart ],
+
+          [ 4, thirdEnd ],
+
+          [ 1, thirdEnd ],
+
+          [ 9, 0 ]
+
+        ],
+
+        gainEnvelope: [
+
+          [ 0, 1 ],
+
+          [ 0, 1 ],
+
+          [ 18, 1 ],
+
+          [ 0, 0 ]
+
+        ],
+
+        oscillatorType: 'square'
+
+    });
+
+    synthesizer.addGenerator( {
+
+        frequencyEnvelope: [
+
+          [ 4, fifthStart ],
+
+          [ 4, fifthEnd ],
+
+          [ 1, fifthEnd ],
+
+          [ 9, 0 ]
+
+        ],
+
+        gainEnvelope: [
+
+          [ 0, 1 ],
+
+          [ 0, 1 ],
+
+          [ 18, 1 ],
+
+          [ 0, 0 ]
+
+        ],
+
+        oscillatorType: 'square'
+
+    });
+
+    synthesizer.connect( context.destination );
+
+    synthesizer.start( );

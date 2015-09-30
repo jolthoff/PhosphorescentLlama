@@ -51,15 +51,7 @@ AudioContext.prototype.createGenerator = function( options ) {
 
   generator._oscillator = this.createOscillator( );
 
-  if( options.oscillatorType ) {
-
-    generator._oscillator.type = options.oscillatorType;
-
-  } else {
-
-    generator._oscillator.type = 'sine';
-
-  }
+  generator._oscillator.type = options.oscillatorType || 'sine';
 
   generator._oscillator.frequency.value = 0;
 
