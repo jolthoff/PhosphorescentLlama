@@ -118,4 +118,36 @@ app.controller( 'GameController' , [ '$scope', 'playerSequencer', 'httpFactory',
 
   $scope.startLevel( );
 
+    $scope.saveToDatabase = function( ) {
+
+    var savedSequencer = $scope.playerSequencer.save( );
+
+    playerSequencer.store( $scope.inputLevel, savedSequencer, function( response ) {
+
+      if ( response ) {
+
+        $scope.inputLevel = '';
+
+      }
+
+    });
+
+  };
+
+  $scope.createSequencer = function( ) {
+
+    var soundIDs = [ "hihat", "clap", "kick" ];
+
+    var userSequencer = playerSequencer.build( $scope.inputTempo, $scope.inputBeats, soundIDs );
+
+    $scope.$broadcast( 'createPlayerSequencer', userSequencer );
+
+    $scope.inputTempo = '';
+
+    $scope.inputBeats = '';
+
+    $scope.inputSounds = '';
+
+  };
+
 }]);
