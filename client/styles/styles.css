@@ -88,21 +88,31 @@ div {
 
 .line {
 
+  height: 98%;
+  width: 98%;
+  margin: 1% auto;
+  overflow: hidden;
+  transition: height .1s, width .1s, margin .1s, opacity .1s;
+
+}
+
+.line.current:hover {
+
   height: 95%;
   width: 95%;
   margin: 2.5% auto;
   overflow: hidden;
-  transition: height .1s, width .1s, margin .1s;
+  transition: height .1s, width .1s, margin .1s, opacity .1s;
 
 }
 
-.line:hover {
+.line.current {
 
   height: 90%;
   width: 90%;
-  margin:5% auto;
+  margin: 5% auto;
   overflow: hidden;
-  transition: height .1s, width .1s, margin .1s;
+  transition: height .1s, width .1s, margin .1s, opacity .1s;
 
 }
 
@@ -136,14 +146,14 @@ div {
 ._0, ._1, ._2 {
 
   opacity: .7;
-  transition: opacity .1s;
+  transition: height .1s, width .1s, margin .1s, opacity .1s;
 
 }
 
 ._0:hover, ._1:hover, ._2:hover {
 
   opacity: .8;
-  transition: opacity .1s;
+  transition: height .1s, width .1s, margin .1s, opacity .1s;
 
 }
 
@@ -186,7 +196,7 @@ div {
 .playing {
 
   opacity: .9;
-  transition: opacity .1s;
+  transition: height .1s, width .1s, margin .1s, opacity .1s;
 
 }
 

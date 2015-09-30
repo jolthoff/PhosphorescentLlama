@@ -38,71 +38,71 @@
           ng-click="sequencer.toggleBeat($parent.$index, $index)">
 
             <!-- inner class defaults to gray color and changes color based on row -->
-            <div class="line inner _{{ $parent.$index }}"
+            <div class="line inner _{{ $parent.$index }} {{ $index }}"
 
             ng-class="{ playing: sequencer.getBeat($parent.$index, $index).isOn( ) }">
 
               <div class="line outer">
 
-                <div class="line inner _{{ $parent.$index }}"
+                <div class="line inner _{{ $parent.$index }} {{ $index }}"
 
                 ng-class="{ playing: sequencer.getBeat($parent.$index, $index).isOn( ) }">
 
                 <div class="line outer">
 
-                  <div class="line inner _{{ $parent.$index }}"
+                  <div class="line inner _{{ $parent.$index }} {{ $index }}"
 
                   ng-class="{ playing: sequencer.getBeat($parent.$index, $index).isOn( ) }">
                 
                     <div class="line outer">
 
-                      <div class="line inner _{{ $parent.$index }}"
+                      <div class="line inner _{{ $parent.$index }} {{ $index }}"
 
                         ng-class="{ playing: sequencer.getBeat($parent.$index, $index).isOn( ) }">
 
                         <div class="line outer">
 
-                          <div class="line inner _{{ $parent.$index }}"
+                          <div class="line inner _{{ $parent.$index }} {{ $index }}"
 
                             ng-class="{ playing: sequencer.getBeat($parent.$index, $index).isOn( ) }">
 
                             <div class="line outer">
 
-                              <div class="line inner _{{ $parent.$index }}"
+                              <div class="line inner _{{ $parent.$index }} {{ $index }}"
 
                               ng-class="{ playing: sequencer.getBeat($parent.$index, $index).isOn( ) }">
 
                                 <div class="line outer">
 
-                                  <div class="line inner _{{ $parent.$index }}"
+                                  <div class="line inner _{{ $parent.$index }} {{ $index }}"
 
                                   ng-class="{ playing: sequencer.getBeat($parent.$index, $index).isOn( ) }">
 
                                     <div class="line outer">
 
-                                      <div class="line inner _{{ $parent.$index }}"
+                                      <div class="line inner _{{ $parent.$index }} {{ $index }}"
 
                                       ng-class="{ playing: sequencer.getBeat($parent.$index, $index).isOn( ) }">
 
                                         <div class="line outer">
 
-                                          <div class="line inner _{{ $parent.$index }}"
+                                          <div class="line inner _{{ $parent.$index }} {{ $index }}"
 
                                           ng-class="{ playing: sequencer.getBeat($parent.$index, $index).isOn( ) }">
 
                                             <div class="line outer">
 
-                                              <div class="line inner _{{ $parent.$index }}"
+                                              <div class="line inner _{{ $parent.$index }} {{ $index }}"
 
                                               ng-class="{ playing: sequencer.getBeat($parent.$index, $index).isOn( ) }">
 
                                                 <div class="line outer">
 
-                                                  <div class="line inner _{{ $parent.$index }}"
+                                                  <div class="line inner _{{ $parent.$index }} {{ $index }}"
 
                                                   ng-class="{ playing: sequencer.getBeat($parent.$index, $index).isOn( ) }">
 
-                                                    <div class="center _{{ $parent.$index }}"
+                                                    <div class="center _{{ $parent.$index }} {{ $index }}"
 
                                                       ng-class="{ playing: sequencer.getBeat($parent.$index, $index).isOn( ) }">
 
@@ -195,6 +195,7 @@
 
     <!-- SCRIPTS -->
     <!-- these will get minimized for deployment; we'll need to change these to the minified scripts -->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <script src="bower_components/angular/angular.min.js"></script>
     <script src="bower_components/underscore/underscore-min.js"></script>
     <script src="app/classes/Beat.js"></script>
