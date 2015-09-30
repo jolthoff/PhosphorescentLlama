@@ -103,7 +103,7 @@ app.controller( 'GameController' , [ '$scope', 'playerSequencer', 'httpFactory',
 
     );
 
-    for( var i = 0; i < levelSettings.beatsToToggle; i++ ) {
+    for( var i = 0; i < levelSettings.beatsToToggle.length; i++ ) {
 
       var sequenceIndex = levelSettings.beatsToToggle[ i ][ 0 ];
 
@@ -111,11 +111,13 @@ app.controller( 'GameController' , [ '$scope', 'playerSequencer', 'httpFactory',
 
       levelSequencer.toggleBeat( sequenceIndex, beatIndex );
 
+      console.log('beat was toggled!');
+
     }
 
     var savedSequencer = levelSequencer.save( );
 
-    httpFactory.postSequencer( $scope.level, savedSequencer, $scope.getSequencer );
+    httpFactory.putSequencer( $scope.level, savedSequencer, $scope.getSequencer );
 
   };
 

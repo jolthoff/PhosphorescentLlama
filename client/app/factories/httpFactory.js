@@ -31,6 +31,22 @@ app.factory( 'httpFactory', [ '$http', function ( $http ) {
 
   };
 
+  requests.putSequencer = function ( level, stringifiedSequencer, callback ) {
+
+    return $http.put( '/levels/', { level: level, data: stringifiedSequencer } )
+
+      .then( function( response) {
+
+        if( callback ) {
+
+          callback( response );
+
+        }
+
+      });
+
+  };
+
   return requests;
 
 }]);
