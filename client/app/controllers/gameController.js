@@ -134,6 +134,22 @@ app.controller( 'GameController' , [ '$scope', 'playerSequencer', 'httpFactory',
 
   };
 
+  $scope.saveToDatabase = function( ) {
+
+    var savedSequencer = $scope.playerSequencer.save( );
+
+    playerSequencer.store( $scope.inputLevel, savedSequencer, function( response ) {
+
+      if ( response ) {
+
+        $scope.inputLevel = '';
+
+      }
+
+    });
+
+  };
+
   $scope.createSequencer = function( ) {
 
     var soundIDs = [ "hihat", "clap", "kick" ];
