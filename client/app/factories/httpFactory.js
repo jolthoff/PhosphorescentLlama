@@ -77,6 +77,12 @@ app.factory( 'httpFactory', [ '$http', function ( $http ) {
 
   };
 
+  requests.logout = function ( ) {
+
+    return $http.post( '/logout', callback )
+
+  };
+
   return requests;
 
 }]);

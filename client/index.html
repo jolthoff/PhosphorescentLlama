@@ -16,18 +16,22 @@
 
     </div> -->
 
+    <div ui-view="nav"></div>
     <div ui-view="content"></div>
 
     <!-- SCRIPTS -->
     <!-- these will get minimized for deployment; we'll need to change these to the minified scripts -->
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <script src="bower_components/angular/angular.min.js"></script>
+    <script src="bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
     <script src="bower_components/underscore/underscore-min.js"></script>
     <script src="app/classes/Beat.js"></script>
     <script src="app/classes/Sequence.js"></script>
     <script src="app/classes/Bus.js"></script>
     <script src="app/classes/Sequencer.js"></script>
     <script src="app/app.js"></script>
+    <script src="app/controllers/navController.js"></script>
+    <script src="app/controllers/activeController.js"></script>
     <script src="app/controllers/gameController.js"></script>
     <script src="app/controllers/playerSequencerController.js"></script>
     <script src="app/controllers/targetSequencerController.js"></script>

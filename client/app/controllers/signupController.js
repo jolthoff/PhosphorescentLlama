@@ -5,7 +5,7 @@ app.controller('signupController', [ '$scope', 'httpFactory', '$rootScope' funct
     httpFactory.signupUser( $scope.user, function ( response ) {
 
       response.body.level = 1;
-      
+
       $rootScope.user = response.body;
 
     });
