@@ -111,8 +111,6 @@ app.controller( 'GameController' , [ '$scope', 'playerSequencer', 'httpFactory',
 
       levelSequencer.toggleBeat( sequenceIndex, beatIndex );
 
-      console.log('beat was toggled!');
-
     }
 
     var savedSequencer = levelSequencer.save( );
