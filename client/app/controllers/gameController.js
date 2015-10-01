@@ -8,8 +8,7 @@ app.controller( 'GameController' , [ '$scope', 'playerSequencer', 'httpFactory',
   //
   /////////////////
 
-  //until we get user data, initialize level to 1
-  $scope.level = 1;
+  $scope.level = $rootScope.user.level || 1;
 
   /////////////////
   //

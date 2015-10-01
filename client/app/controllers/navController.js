@@ -4,10 +4,18 @@ app.controller('NavController', [ '$scope', 'httpFactory', '$rootScope', functio
 
     httpFactory.loginUser( $scope.user, function ( response ) {
 
-      $rootScope.user = response.body;
+      $rootScope.user.username = response.header.username;
+
+      $rootScope.user.level = response.header.level;
 
     });
 
+  };
+
+  $scope.reloadGameController = function ( ) {
+
+    
+    
   };
 
   $scope.signup = function ( ) {

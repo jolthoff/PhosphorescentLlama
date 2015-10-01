@@ -6,7 +6,6 @@ app.config( function ( $stateProvider, $httpProvider, $urlRouterProvider ) {
 
   $stateProvider
     .state('/', {
-      //refactor to have this here only once
       views: {
         nav: {
           templateUrl: '../views/navView.html',
@@ -20,7 +19,6 @@ app.config( function ( $stateProvider, $httpProvider, $urlRouterProvider ) {
       url: '/'
     })
     .state('/active', {
-      //refactor to have this here only once
       views: {
         nav: {
           tempalteUrl: '../views/activeView.html',
