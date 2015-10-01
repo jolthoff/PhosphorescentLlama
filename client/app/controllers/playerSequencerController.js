@@ -1,4 +1,4 @@
-app.controller( 'PlayerSequencerController', [ '$scope', 'playerSequencer', function ( $scope, playerSequencer ) {
+app.controller( 'PlayerSequencerController', [ '$scope', 'playerSequencer', '$timeout', function ( $scope, playerSequencer, $timeout ) {
 
   //change tickNumber to word so that CSS class works properly
   var numToWord = {
@@ -17,17 +17,17 @@ app.controller( 'PlayerSequencerController', [ '$scope', 'playerSequencer', func
   //sends playerSequencer back to gameController
   $scope.$on( 'createPlayerSequencer', function( event, data ) {
 
-    var tickNumber = data.getTickNumber( );
+    $scope.tickNumber = data.getTickNumber( );
 
     var tempo = data.getTempo( );
 
     var soundIDs = data.getSoundIDs( );
 
-    $scope.sequencer = playerSequencer.build( tempo, tickNumber, soundIDs );
+    $scope.sequencer = playerSequencer.build( tempo, $scope.tickNumber, soundIDs );
 
     $scope.sequences = $scope.sequencer._sequences;
 
-    $scope.sequencer.beatClass = numToWord[ tickNumber ];
+    $scope.sequencer.beatClass = numToWord[ $scope.tickNumber ];
 
     $scope.$emit( 'madePlayerSequencer', $scope.sequencer );
 
@@ -35,7 +35,7 @@ app.controller( 'PlayerSequencerController', [ '$scope', 'playerSequencer', func
 
   $scope.$on( 'playerStopPlaying', function ( ) {
 
-    $scope.sequencer.stop( );
+    $scope.stop( );
 
   });
 
@@ -49,19 +49,47 @@ app.controller( 'PlayerSequencerController', [ '$scope', 'playerSequencer', func
 
   });
 
+  $scope.currentColumn = 0;
+
   $scope.playToggle = function ( ) {
 
     if ( $scope.sequencer._playing ) {
 
-      $scope.sequencer.stop( );
+      $scope.stop( );
 
     } else {
 
-      $scope.sequencer.play( );
+      $scope.sequencer.play( $scope.animateLoop );
 
       $scope.$emit( 'playerSequencerPlaying' );
 
     }
+
+  };
+
+  $scope.animateLoop = function ( time ) {
+
+    $timeout( function( ) {
+      
+      var selector = '.' + $scope.currentColumn;
+
+      $('.0').removeClass('current');
+      $('.1').removeClass('current');
+      $('.2').removeClass('current');
+      $('.3').removeClass('current');
+      $(selector).addClass('current');
+
+      $scope.currentColumn = ( $scope.currentColumn + 1 ) % $scope.tickNumber;
+      
+    }, time )
+
+
+  };
+
+  $scope.stop = function( ) {
+
+    $scope.sequencer.stop( );
+    $scope.currentColumn = 0;
 
   };
 

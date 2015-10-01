@@ -184,7 +184,7 @@ app.controller( 'GameController' , [ '$scope', 'playerSequencer', 'httpFactory',
 
         $scope.inputLevel = '';
 
-      }
+      } 
 
     });
 
