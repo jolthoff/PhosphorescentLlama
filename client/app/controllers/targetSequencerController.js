@@ -10,8 +10,6 @@ app.controller( 'TargetSequencerController', [ '$scope', function (  $scope ) {
 
   });
 
-
-
   $scope.$on( 'targetStopPlaying', function ( ) {
 
     $scope.sequencer.stop( );

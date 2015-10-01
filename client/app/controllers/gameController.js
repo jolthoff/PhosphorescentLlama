@@ -67,19 +67,17 @@ app.controller( 'GameController' , [ '$scope', 'playerSequencer', 'httpFactory',
 
   };
 
-  // $scope.playSoundExamples = function ( ) { };
-
   $scope.playerWon = function ( ) {
 
     alert( 'IT\'S A MATCH!' );
 
     $scope.level++;
 
-    $scope.startLevel( );
-
-    $rootScope.user.level++;
+    $rootScope.user.level = $scope.level;
 
     httpFactory.updateLevel( $rootScope.user );
+
+    $scope.startLevel( );
 
   };
 
