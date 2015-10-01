@@ -116,6 +116,16 @@ div {
 
 }
 
+.center.current {
+
+  height: 90%;
+  width: 90%;
+  margin: 5% auto;
+  overflow: hidden;
+  transition: height .1s, width .1s, margin .1s, opacity .1s;
+  
+}
+
 .outer {
 
   background-color: black;
@@ -145,14 +155,14 @@ div {
 
 ._0, ._1, ._2 {
 
-  opacity: .7;
+  opacity: .8;
   transition: height .1s, width .1s, margin .1s, opacity .1s;
 
 }
 
 ._0:hover, ._1:hover, ._2:hover {
 
-  opacity: .8;
+  opacity: .9;
   transition: height .1s, width .1s, margin .1s, opacity .1s;
 
 }
