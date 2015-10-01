@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/PhosphorescentLlama/PhosphorescentLlama#readme",
   "dependencies": {
+    "angular-ui-router": "^0.2.15",
     "body-parser": "^1.14.0",
     "chai": "^3.3.0",
     "express": "^4.13.3",

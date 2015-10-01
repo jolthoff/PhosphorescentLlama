@@ -1,31 +1,49 @@
 app.factory( 'httpFactory', [ '$http', function ( $http ) {
 
   //Sends request to server and retrieves sequencer for given level
-  var requests = {
+  var requests = {};
 
-    getSequencer: function ( level, callback ) {
+  requests.getSequencer = function ( level, callback ) {
 
-      return $http.get( '/levels/' + level.toString( ) )
+    return $http.get( '/levels/' + level.toString( ) )
 
-        .then( function( response ) {
+      .then( function( response ) {
+
+        callback( response );
+
+      });
+
+  };
+
+  requests.postSequencer = function ( level, stringifiedSequencer, callback ) {
+
+    return $http.post( '/levels/', { level: level, data: stringifiedSequencer } )
+
+      .then( function( response ) {
+
+        if( callback ) {
+
+          callback( response );
+          
+        }
+
+      });
+
+  };
+
+  requests.putSequencer = function ( level, stringifiedSequencer, callback ) {
+
+    return $http.put( '/levels/', { level: level, data: stringifiedSequencer } )
+
+      .then( function( response) {
+
+        if( callback ) {
 
           callback( response );
 
-        });
+        }
 
-    },
-
-    postSequencer: function ( level, savedSequencer, callback ) {
-
-      return $http.post( '/levels/', { level: level, data: savedSequencer } )
-
-        .then( function( response ) {
-
-          callback( response );
-
-        });
-
-    }
+      });
 
   };
 

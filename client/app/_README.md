@@ -290,6 +290,31 @@ callback: passed in the from gameController
 
 Makes a call to the server with the level and calls callback on the result.
 
+#### postSequencer:
+
+##### Input: 
+
+level: the level to post the sequencer to.
+
+stringifiedSequencer: a stringified sequencer to post.
+
+callback: a function that will be called on the response.
+
+levelFactory.js
+---------------
+
+### Dependencies:
+
+None.
+
+### Output/Behavior:
+
+Returns a levels object which holds all relevant information necessary for constructing levels.
+
+### Methods:
+
+None.
+
 init.js
 -------
 
