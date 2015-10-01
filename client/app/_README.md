@@ -12,8 +12,6 @@ $scope, playerSequencer, httpFactory, initialize
 
 #### Output/behavior:
 
-<!-- gameController contains logic for game setup, game logic/control flow, and game end. -->
-
 #### Event Handlers:
 
 ##### madeTargetSequencer:

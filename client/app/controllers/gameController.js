@@ -1,4 +1,4 @@
-app.controller( 'GameController' , [ '$scope', 'playerSequencer', 'httpFactory', 'initialize', 'levelFactory',  function ( $scope, playerSequencer, httpFactory, initialize, levelFactory ) {
+app.controller( 'GameController' , [ '$scope', 'playerSequencer', 'httpFactory', 'initialize', 'levelFactory', '$rootScope',  function ( $scope, playerSequencer, httpFactory, initialize, levelFactory, $rootScope ) {
 
   /////////////////
   //
@@ -8,7 +8,15 @@ app.controller( 'GameController' , [ '$scope', 'playerSequencer', 'httpFactory',
   //
   /////////////////
 
-  $scope.level = $rootScope.user.level || 1;
+  if( $rootScope.user ) {
+
+    $scope.level = $rootScope.user.level;
+    
+  } else {
+    
+    $scope.level = 1;
+  }
+
 
   /////////////////
   //
@@ -191,7 +199,7 @@ app.controller( 'GameController' , [ '$scope', 'playerSequencer', 'httpFactory',
 
         $scope.inputLevel = '';
 
-      } 
+      }
 
     });
 
