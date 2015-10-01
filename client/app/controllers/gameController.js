@@ -77,6 +77,10 @@ app.controller( 'GameController' , [ '$scope', 'playerSequencer', 'httpFactory',
 
     $scope.startLevel( );
 
+    $rootScope.user.level++;
+
+    httpFactory.updateLevel( $rootScope.user );
+
   };
 
   $scope.failedMatch = function ( ) {
