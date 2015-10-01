@@ -5,7 +5,7 @@ var controller = {};
   // get data from database by making POST request
 controller.getLevel = function( request, response, next ) {
 
-  var level = +request.url.split('/')[1];
+  var level = request.params.id;
 
   Sequencer.findOne({'level': level}, 'data', function(error, sequencer) {
 
@@ -64,7 +64,7 @@ controller.saveLevel = function( request, response, next ) {
 
 controller.deleteLevel = function( request, response, next ) {
 
-  var level = +request.url.split('/')[1];
+  var level = request.params.id;
 
   Sequencer.remove({'level':level}, function( error ) {
 
