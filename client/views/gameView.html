@@ -1,0 +1,259 @@
+<div class="gameSpace" ng-controller="GameController">
+
+
+
+    <!-- Sequence Controller holds all of the player controls for editing player sequence -->
+    <div class="playerSequencer" ng-controller="PlayerSequencerController">
+
+      <!-- <button ng-click="playToggle()">PLAY/PAUSE MY BEATS</button> -->
+
+      <!-- <button ng-click="sequencer.stop()">STOP PLAYING MY BEATS</button> -->
+
+      <div class="sequence {{ sequencer.beatClass }}" ng-repeat="sequence in sequences | orderBy: $index"
+      >
+
+        <div class="beat {{sequencer.beatClass}}"
+
+        ng-repeat="beat in sequence._beats"
+
+        ng-click="sequencer.toggleBeat($parent.$index, $index)">
+
+          <!-- inner class defaults to gray color and changes color based on row -->
+          <div class="line inner _{{ $parent.$index }} {{ $index }}"
+
+          ng-class="{ playing: sequencer.getBeat($parent.$index, $index).isOn( ) }">
+
+            <div class="line outer">
+
+              <div class="line inner _{{ $parent.$index }} {{ $index }}"
+
+              ng-class="{ playing: sequencer.getBeat($parent.$index, $index).isOn( ) }">
+
+              <div class="line outer">
+
+                <div class="line inner _{{ $parent.$index }} {{ $index }}"
+
+                ng-class="{ playing: sequencer.getBeat($parent.$index, $index).isOn( ) }">
+              
+                  <div class="line outer">
+
+                    <div class="line inner _{{ $parent.$index }} {{ $index }}"
+
+                      ng-class="{ playing: sequencer.getBeat($parent.$index, $index).isOn( ) }">
+
+                      <div class="line outer">
+
+                        <div class="line inner _{{ $parent.$index }} {{ $index }}"
+
+                          ng-class="{ playing: sequencer.getBeat($parent.$index, $index).isOn( ) }">
+
+                          <div class="line outer">
+
+                            <div class="line inner _{{ $parent.$index }} {{ $index }}"
+
+                            ng-class="{ playing: sequencer.getBeat($parent.$index, $index).isOn( ) }">
+
+                              <div class="line outer">
+
+                                <div class="line inner _{{ $parent.$index }} {{ $index }}"
+
+                                ng-class="{ playing: sequencer.getBeat($parent.$index, $index).isOn( ) }">
+
+                                  <div class="line outer">
+
+                                    <div class="line inner _{{ $parent.$index }} {{ $index }}"
+
+                                    ng-class="{ playing: sequencer.getBeat($parent.$index, $index).isOn( ) }">
+
+                                      <div class="line outer">
+
+                                        <div class="line inner _{{ $parent.$index }} {{ $index }}"
+
+                                        ng-class="{ playing: sequencer.getBeat($parent.$index, $index).isOn( ) }">
+
+                                          <div class="line outer">
+
+                                            <div class="line inner _{{ $parent.$index }} {{ $index }}"
+
+                                            ng-class="{ playing: sequencer.getBeat($parent.$index, $index).isOn( ) }">
+
+                                              <div class="line outer">
+
+                                                <div class="line inner _{{ $parent.$index }} {{ $index }}"
+
+                                                ng-class="{ playing: sequencer.getBeat($parent.$index, $index).isOn( ) }">
+
+
+                                                  <div class="line outer">
+
+                                                    <div class="line inner _{{ $parent.$index }} {{ $index }}"
+
+                                                    ng-class="{ playing: sequencer.getBeat($parent.$index, $index).isOn( ) }">
+
+                                                      <div class="line outer">
+
+                                                        <div class="line inner _{{ $parent.$index }} {{ $index }}"
+
+                                                        ng-class="{ playing: sequencer.getBeat($parent.$index, $index).isOn( ) }">
+
+                                                          <div class="line outer">
+
+                                                            <div class="line inner _{{ $parent.$index }} {{ $index }}"
+
+                                                            ng-class="{ playing: sequencer.getBeat($parent.$index, $index).isOn( ) }">
+
+                                                              <div class="line outer">
+
+                                                                <div class="line inner _{{ $parent.$index }} {{ $index }}"
+
+                                                                ng-class="{ playing: sequencer.getBeat($parent.$index, $index).isOn( ) }">
+
+                                                                  <div class="line outer">
+
+                                                                    <div class="line inner _{{ $parent.$index }} {{ $index }}"
+
+                                                                    ng-class="{ playing: sequencer.getBeat($parent.$index, $index).isOn( ) }">
+
+                                                                      <div class="line outer">
+
+                                                                        <div class="line inner _{{ $parent.$index }} {{ $index }}"
+
+                                                                        ng-class="{ playing: sequencer.getBeat($parent.$index, $index).isOn( ) }">
+
+                                                                          <div class="line outer">
+
+                                                                            <div class="line inner _{{ $parent.$index }} {{ $index }}"
+
+                                                                            ng-class="{ playing: sequencer.getBeat($parent.$index, $index).isOn( ) }">
+
+                                                                              <div class="line outer">
+
+                                                                                <div class="line inner _{{ $parent.$index }} {{ $index }}"
+
+                                                                                ng-class="{ playing: sequencer.getBeat($parent.$index, $index).isOn( ) }">
+
+                                                                                  <div class="line outer">
+
+                                                                                    <div class="line inner _{{ $parent.$index }} {{ $index }}"
+
+                                                                                    ng-class="{ playing: sequencer.getBeat($parent.$index, $index).isOn( ) }">
+
+                                                                                      <div class="line outer">
+
+                                                                                        <div class="line inner _{{ $parent.$index }} {{ $index }}"
+
+                                                                                        ng-class="{ playing: sequencer.getBeat($parent.$index, $index).isOn( ) }">
+                                                                                        
+                                                                                          <div class="center _{{ $parent.$index }} {{ $index }}"
+
+                                                                                            ng-class="{ playing: sequencer.getBeat($parent.$index, $index).isOn( ) }">
+
+                                                                                          </div>
+
+                                                                                        </div>
+                                                                                        
+                                                                                      </div>
+                                                                                    </div>
+                                                                                  </div>
+                                                                                </div>
+                                                                              </div>
+                                                                            </div>
+                                                                          </div>
+                                                                        </div>
+                                                                      </div>
+                                                                    </div>
+                                                                  </div>
+                                                                </div>
+                                                              </div>
+                                                            </div>
+                                                          </div>
+                                                        </div>
+                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                                              
+
+                                                </div>
+
+                                              </div>
+
+                                            </div>
+
+                                          </div>
+
+                                        </div>
+
+                                      </div>
+
+                                    </div>
+
+                                  </div>
+
+                                </div>
+
+                              </div>
+
+                            </div>
+
+                          </div>
+                        
+                        </div>
+
+                      </div>
+
+                    </div>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  <button class="play-pause" ng-click="playToggle( )">Play/Pause</button>
+
+  </div>
+
+    
+    
+    <button class="submit" ng-click="submit()">Submit</button>
+
+    <form class="save">
+
+      <div class="form">
+        <input type="text" placeholder="input a level" name="level" ng-model="inputLevel"></input>
+      </div>
+
+      <button class="submit" ng-click="saveToDatabase( )">Save to Database</button>
+
+    </form>
+
+    <form class="create">
+
+    <div class="form">
+      <input type="text" placeholder="tempo" name="tempo" ng-model="inputTempo"></input>
+
+      <input type="text" placeholder="number of beats" name="beats" ng-model="inputBeats"></input>
+
+      <input type="text" placeholder="sounds" name="sounds" ng-model="inputSounds"></input>
+    </div>
+
+    <button class="submit" ng-click="createSequencer( )">Create a Sequencer</button>
+
+  </form>
+
+    <div class="targetSequencer" ng-controller="TargetSequencerController">
+
+      <button ng-click="playToggle()">PLAY/PAUSE TARGET</button>
+<!--  -->
+    </div>
+  </div>

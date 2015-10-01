@@ -35,9 +35,39 @@ app.factory( 'httpFactory', [ '$http', function ( $http ) {
 
     return $http.put( '/levels/', { level: level, data: stringifiedSequencer } )
 
-      .then( function( response) {
+      .then( function ( response ) {
 
         if( callback ) {
+
+          callback( response );
+
+        }
+
+      });
+
+  };
+
+  requests.loginUser = function ( user ) {
+
+    return $http.post( '/login', { username: user.username, password: user.password } )
+      .then( function (response ) {
+
+        if ( callback ) {
+
+          callback( response );
+
+        }
+
+      });
+
+  };
+
+  requests.signupUser = function ( user ) {
+
+    return $http.post( '/signup', { username: user.username, password: user.password } )
+      .then( function (response ) {
+
+        if ( callback ) {
 
           callback( response );
 
