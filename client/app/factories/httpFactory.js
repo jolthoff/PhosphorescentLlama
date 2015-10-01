@@ -35,7 +35,7 @@ app.factory( 'httpFactory', [ '$http', function ( $http ) {
 
     return $http.put( '/levels/', { level: level, data: stringifiedSequencer } )
 
-      .then( function( response) {
+      .then( function ( response ) {
 
         if( callback ) {
 
@@ -44,6 +44,69 @@ app.factory( 'httpFactory', [ '$http', function ( $http ) {
         }
 
       });
+
+  };
+
+  requests.loginUser = function ( user, callback ) {
+
+    return $http.post( '/login', { username: user.username, password: user.password } )
+      .then( function (response ) {
+
+        if ( callback ) {
+
+          callback( response );
+
+        }
+
+      });
+
+  };
+
+  requests.signupUser = function ( user, callback ) {
+
+    return $http.post( '/signup', { username: user.username, password: user.password } )
+
+      .then( function ( response ) {
+
+        if ( callback ) {
+
+          callback( response );
+
+        }
+
+      });
+
+  };
+
+  requests.updateLevel = function ( user, callback ) {
+
+    return $http.put( '/users', { username: user.username, level: user.level } )
+
+      .then( function ( response ) {
+
+        if ( callback ) {
+
+          callback( response );
+
+        }
+
+      });
+
+  };
+
+  requests.logout = function ( callback ) {
+
+    return $http.post( '/logout' )
+
+      .then( function ( ) {
+
+        if ( callback ) {
+
+          callback( response );
+
+        }
+
+    });
 
   };
 

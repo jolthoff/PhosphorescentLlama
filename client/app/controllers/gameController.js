@@ -8,8 +8,7 @@ app.controller( 'GameController' , [ '$scope', 'playerSequencer', 'httpFactory',
   //
   /////////////////
 
-  //until we get user data, initialize level to 1
-  $scope.level = 1;
+  $scope.level = $rootScope.user.level || 1;
 
   /////////////////
   //
@@ -18,6 +17,12 @@ app.controller( 'GameController' , [ '$scope', 'playerSequencer', 'httpFactory',
   //
   //
   /////////////////
+
+  $scope.playerSequencerPlayToggle = function ( ) {
+
+    $scope.$broadcast( 'playToggle' );
+
+  };
   
   //makes call to server and passes sequencer data to the target sequencer controller
   $scope.getSequencer = function ( ) {
@@ -61,13 +66,15 @@ app.controller( 'GameController' , [ '$scope', 'playerSequencer', 'httpFactory',
 
   };
 
-  // $scope.playSoundExamples = function ( ) { };
-
   $scope.playerWon = function ( ) {
 
     alert( 'IT\'S A MATCH!' );
 
     $scope.level++;
+
+    $rootScope.user.level = $scope.level;
+
+    httpFactory.updateLevel( $rootScope.user );
 
     $scope.startLevel( );
 
@@ -135,7 +142,7 @@ app.controller( 'GameController' , [ '$scope', 'playerSequencer', 'httpFactory',
     $scope.targetSequencer = targetSequencer;
 
     //I feel like this should live in a difference place
-    $scope.targetSequencer.play( );
+    $scope.$broadcast( 'playTwice' );
 
     $scope.$broadcast( 'createPlayerSequencer', $scope.targetSequencer );
 

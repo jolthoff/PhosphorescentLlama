@@ -49,6 +49,12 @@ app.controller( 'PlayerSequencerController', [ '$scope', 'playerSequencer', '$ti
 
   });
 
+  $scope.$on( 'playToggle', function ( ) {
+
+    $scope.playToggle( );
+
+  });
+
   $scope.currentColumn = 0;
 
   $scope.playToggle = function ( ) {
@@ -73,16 +79,25 @@ app.controller( 'PlayerSequencerController', [ '$scope', 'playerSequencer', '$ti
       
       var selector = '.' + $scope.currentColumn;
 
-      $('.0').removeClass('current');
-      $('.1').removeClass('current');
-      $('.2').removeClass('current');
-      $('.3').removeClass('current');
-      $(selector).addClass('current');
+      for( var i = 0; i < $scope.tickNumber; i++ ) {
+
+        var unselector = '.' + i;
+
+        if( unselector !== selector ) {
+
+          $(unselector).removeClass('current');
+          
+        } else {
+
+          $(selector).addClass('current');
+          
+        }
+
+      }
 
       $scope.currentColumn = ( $scope.currentColumn + 1 ) % $scope.tickNumber;
       
-    }, time )
-
+    }, time );
 
   };
 
