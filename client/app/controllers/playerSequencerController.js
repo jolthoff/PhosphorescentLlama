@@ -113,6 +113,8 @@ app.controller( 'PlayerSequencerController', [ '$scope', 'playerSequencer', '$ti
 
     $scope.sequencer.toggleBeat( sequenceIndex, beatIndex );
 
+    var beat = $scope.sequencer.getBeat( sequenceIndex, beatIndex ).play( 0 );
+
   };
 
 }]);

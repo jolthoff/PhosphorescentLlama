@@ -13,8 +13,9 @@ app.controller( 'GameController' , [ '$scope', 'playerSequencer', 'httpFactory',
     $scope.level = $rootScope.user.level;
     
   } else {
-    
+
     $scope.level = 1;
+    
   }
 
 
@@ -80,9 +81,14 @@ app.controller( 'GameController' , [ '$scope', 'playerSequencer', 'httpFactory',
 
     $scope.level++;
 
-    $rootScope.user.level = $scope.level;
+    if( $rootScope.user ) {
 
-    httpFactory.updateLevel( $rootScope.user );
+      $rootScope.user.level = $scope.level;
+
+      httpFactory.updateLevel( $rootScope.user );
+      
+    }
+
 
     $scope.startLevel( );
 

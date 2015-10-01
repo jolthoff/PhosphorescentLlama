@@ -24,7 +24,7 @@
 
         ng-repeat="beat in sequence._beats"
 
-        ng-click="sequencer.toggleBeat($parent.$index, $index)">
+        ng-click="toggleBeat($parent.$index, $index)">
 
           <!-- inner class defaults to gray color and changes color based on row -->
           <div class="line inner _{{ $parent.$index }} {{ $index }}"

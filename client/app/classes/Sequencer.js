@@ -314,8 +314,6 @@ Sequencer.prototype.getBeat = function( sequenceIndex, beatIndex ) {
 
 Sequencer.prototype.toggleBeat = function( sequenceIndex, beatIndex ) {
 
-  console.log('beat at ', sequenceIndex, beatIndex, ' was toggled');
-
   this.getBeat( sequenceIndex, beatIndex ).toggle( );
 
 };
