@@ -18,6 +18,12 @@ app.controller( 'GameController' , [ '$scope', 'playerSequencer', 'httpFactory',
   //
   //
   /////////////////
+
+  $scope.playerSequencerPlayToggle = function ( ) {
+
+    $scope.$broadcast( 'playToggle' );
+
+  };
   
   //makes call to server and passes sequencer data to the target sequencer controller
   $scope.getSequencer = function ( ) {

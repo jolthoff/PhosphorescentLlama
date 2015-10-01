@@ -1,9 +1,15 @@
 <div id='login'>
   <h1>login</h1>
-  <form name="loginForm" ng-submit='login()'>
+  <form name="loginForm" ng-submit='login( )'>
+
     <input required type='text'ng-model='user.username'>
+
     <input required type="password" ng-model='user.password'>
+
     <button ng-click='login()'>Login</button>
+
     <button ng-click='signup()'>Signup</button>
+
   </form>
+
 </div>

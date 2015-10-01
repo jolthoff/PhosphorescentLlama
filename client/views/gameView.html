@@ -1,6 +1,14 @@
+<div id='controls'>
+
+  <button class="play-pause" ng-click="playerSequencerPlayToggle( )">Play/Pause</button>
+
+  <button class="submit" ng-click="submit( )">Submit</button>
+
+  <button ng-controller="TargetSequencerController" ng-click="playToggle( )">PLAY/PAUSE TARGET</button>
+
+</div>
+
 <div class="gameSpace">
-
-
 
     <!-- Sequence Controller holds all of the player controls for editing player sequence -->
     <div class="playerSequencer" ng-controller="PlayerSequencerController">
@@ -153,23 +161,41 @@
                                                                                         </div>
                                                                                         
                                                                                       </div>
+
                                                                                     </div>
+
                                                                                   </div>
+
                                                                                 </div>
+
                                                                               </div>
+
                                                                             </div>
+
                                                                           </div>
+
                                                                         </div>
+
                                                                       </div>
+
                                                                     </div>
+
                                                                   </div>
+
                                                                 </div>
+
                                                               </div>
+
                                                             </div>
+
                                                           </div>
+
                                                         </div>
+
                                                       </div>
+
                                                     </div>
+
                                                   </div>
                                                                               
 
@@ -219,13 +245,7 @@
 
     </div>
 
-  <button class="play-pause" ng-click="playToggle( )">Play/Pause</button>
-
   </div>
-
-    
-    
-    <button class="submit" ng-click="submit()">Submit</button>
 
     <form class="save">
 
@@ -251,9 +271,4 @@
 
   </form>
 
-    <div class="targetSequencer" ng-controller="TargetSequencerController">
-
-      <button ng-click="playToggle()">PLAY/PAUSE TARGET</button>
-<!--  -->
-    </div>
   </div>

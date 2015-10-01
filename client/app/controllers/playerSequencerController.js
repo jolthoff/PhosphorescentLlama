@@ -49,6 +49,12 @@ app.controller( 'PlayerSequencerController', [ '$scope', 'playerSequencer', '$ti
 
   });
 
+  $scope.$on( 'playToggle', function ( ) {
+
+    $scope.playToggle( );
+
+  });
+
   $scope.currentColumn = 0;
 
   $scope.playToggle = function ( ) {
