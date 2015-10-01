@@ -143,7 +143,7 @@ app.controller( 'GameController' , [ '$scope', 'playerSequencer', 'httpFactory',
     $scope.targetSequencer = targetSequencer;
 
     //I feel like this should live in a difference place
-    $scope.targetSequencer.play( );
+    $scope.$broadcast( 'playTwice' );
 
     $scope.$broadcast( 'createPlayerSequencer', $scope.targetSequencer );
 
