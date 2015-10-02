@@ -1,55 +1,100 @@
 var express = require('express');
+
 var router = express.Router();
+
 var paths = require( '../../paths.js' );
-var Sequencer = require(paths.models + '/sequencerModel.js');
-var controller = require( paths.controllers + '/levelsController.js' );
 
-var isAuthenticated = function (request, response, next) {
-  // if user is authenticated in the session, call the next() to call the next request handler
-  // Passport adds this method to request object. A middleware is allowed to add properties to
-  // request and response objects
-  if (request.isAuthenticated())
-    return next();
-  // if the user is not authenticated then redirect him to the login page
-  response.sendFile( paths.index );
-};
+var Sequencer = require( paths.models + '/sequencerModel.js');
 
-module.exports = function(passport){
+var levelsController = require( paths.controllers + '/levelsController.js' );
 
-  /* GET root Page */
-  router.get('/', isAuthenticated, function(request, response){
-    response.redirect('/active'); // the user is authenticated. send to '/active'
+var usersController = require( paths.controllers + '/usersController.js' );
+
+module.exports = function( passport ){
+
+  // Authenticate requests to '/'
+
+  router.get( '/', function( request, response, next ) {
+
+    if ( request.isAuthenticated( ) ) {
+
+      response.redirect( '/active' );
+
+    } else {
+
+      response.sendFile( paths.index );
+
+    }
+
   });
 
+  // Attach user info to the header for active routes
+
+  router.use( '/active', usersController.findUserById );
+
+  // Authenticate requests to '/active'
+
+  router.get( '/active', function( request, response, next ) {
+
+    if( request.isAuthenticated( ) ) {
+
+      response.sendFile( paths.index );
+
+    } else {
+
+      response.redirect( '/' );
+
+    }
+
+  });
+
+  router.use( '/', express.static( paths.client ) );
+
+  router.use( '/samples', express.static( paths.samples ) );
+
   /* Handle Login POST */
-  router.post('/login', passport.authenticate('login', { // this might be a post to "/" depends on the UI.
+
+  router.post('/login', passport.authenticate('login', {
+
     successRedirect: '/active', // active user view: just the play view with user info.
-    failureRedirect: '/', // anonymous user view.
-    failureFlash : true
+
+    failureRedirect: '/' // anonymous user view.
+
   }));
 
-  /* GET Signup Page */
-  // This should be handled from the client side, as it is rendering a view for signup.
-
   /* Handle Signup POST */
-  router.post('/signup', passport.authenticate('signup', {
+
+  router.post( '/signup', passport.authenticate( 'signup', {
+
     successRedirect: '/active', // new user will be sent to active user view.
-    failureRedirect: '/signup',
-    failureFlash : true
+
+    failureRedirect: '/'
+
   }));
 
   /* Handle Logout */
-  router.get('/signout', function(request, response) {
-    request.logout();
-    response.redirect('/');
+  router.post('/logout', function( request, response ) {
+
+    request.logout( );
+
+    response.redirect( '/' );
+
   });
 
-  /* Handle Requests made to '/levels' */
-  router.get( '/levels/:id', controller.getLevel );
-  router.post( '/levels', controller.saveLevel );
-  router.delete( '/levels/:id', controller.deleteLevel );
-  router.put( '/levels', controller.updateLevel );
+  /* Handle requests to '/users' */
+
+  router.put( '/users', usersController.updateLevel );
+
+  /* Handle Requests to '/levels' */
+
+  router.get( '/levels/:id', levelsController.getLevel );
+
+  router.post( '/levels', levelsController.saveLevel );
+
+  router.delete( '/levels/:id', levelsController.deleteLevel );
+
+  router.put( '/levels', levelsController.updateLevel );
 
   return router;
-};
 
+};
