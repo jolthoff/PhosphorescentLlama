@@ -56,21 +56,25 @@ module.exports = function( passport ){
 
   router.post('/login', passport.authenticate('login', {
 
-    successRedirect: '/active', // active user view: just the play view with user info.
-
     failureRedirect: '/' // anonymous user view.
 
-  }));
+  }), function( request, response ) {
+
+    response.redirect( '/active' );
+
+  });
 
   /* Handle Signup POST */
 
   router.post( '/signup', passport.authenticate( 'signup', {
 
-    successRedirect: '/active', // new user will be sent to active user view.
-
     failureRedirect: '/'
 
-  }));
+  }), function( request, response ) {
+
+    response.redirect( '/active' );
+
+  });
 
   /* Handle Logout */
   router.post('/logout', function( request, response ) {
