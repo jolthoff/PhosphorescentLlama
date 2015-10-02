@@ -1,7 +1,28 @@
-app.controller( 'GameController' , [ '$scope', 'playerSequencer', 'httpFactory', 'initialize',  function ( $scope, playerSequencer, httpFactory, initialize ) {
+app.controller( 'GameController' , [ '$scope', 'playerSequencer', 'httpFactory', 'initialize', 'levelFactory',  function ( $scope, playerSequencer, httpFactory, initialize, levelFactory ) {
 
-  //until we get user data, initialize level to 1
-  $scope.level = 1;
+  /////////////////
+  //
+  //
+  // SETTINGS
+  //
+  //
+  /////////////////
+
+  $scope.level = $rootScope.user.level || 1;
+
+  /////////////////
+  //
+  //
+  // FUNCTIONS
+  //
+  //
+  /////////////////
+
+  $scope.playerSequencerPlayToggle = function ( ) {
+
+    $scope.$broadcast( 'playToggle' );
+
+  };
   
   //makes call to server and passes sequencer data to the target sequencer controller
   $scope.getSequencer = function ( ) {
@@ -20,7 +41,7 @@ app.controller( 'GameController' , [ '$scope', 'playerSequencer', 'httpFactory',
 
     //call initialization function to set audio context on the window
     //which must exist before the sequencers are made
-    initialize( $scope.getSequencer );
+    initialize( $scope.buildLevel );
 
   };
 
@@ -45,13 +66,15 @@ app.controller( 'GameController' , [ '$scope', 'playerSequencer', 'httpFactory',
 
   };
 
-  // $scope.playSoundExamples = function ( ) { };
-
   $scope.playerWon = function ( ) {
 
     alert( 'IT\'S A MATCH!' );
 
     $scope.level++;
+
+    $rootScope.user.level = $scope.level;
+
+    httpFactory.updateLevel( $rootScope.user );
 
     $scope.startLevel( );
 
@@ -73,6 +96,36 @@ app.controller( 'GameController' , [ '$scope', 'playerSequencer', 'httpFactory',
 
   };
 
+  $scope.buildLevel = function ( ) {
+
+    var levelSettings = levelFactory[ $scope.level ];
+
+    var levelSequencer = new Sequencer(
+
+      levelSettings.tempo,
+
+      levelSettings.tickNumber,
+
+      levelSettings.soundIDs
+
+    );
+
+    for( var i = 0; i < levelSettings.beatsToToggle.length; i++ ) {
+
+      var sequenceIndex = levelSettings.beatsToToggle[ i ][ 0 ];
+
+      var beatIndex = levelSettings.beatsToToggle[ i ][ 1 ];
+
+      levelSequencer.toggleBeat( sequenceIndex, beatIndex );
+
+    }
+
+    var savedSequencer = levelSequencer.save( );
+
+    httpFactory.putSequencer( $scope.level, savedSequencer, $scope.getSequencer );
+
+  };
+
 
   /////////////////
   //
@@ -89,7 +142,7 @@ app.controller( 'GameController' , [ '$scope', 'playerSequencer', 'httpFactory',
     $scope.targetSequencer = targetSequencer;
 
     //I feel like this should live in a difference place
-    $scope.targetSequencer.play( );
+    $scope.$broadcast( 'playTwice' );
 
     $scope.$broadcast( 'createPlayerSequencer', $scope.targetSequencer );
 
@@ -116,24 +169,18 @@ app.controller( 'GameController' , [ '$scope', 'playerSequencer', 'httpFactory',
 
   });
 
+  ////////////////////
+  //
+  //
+  // INITIALIZATION
+  //
+  //
+  ////////////////////
+
   $scope.startLevel( );
 
-    $scope.saveToDatabase = function( ) {
-
-    var savedSequencer = $scope.playerSequencer.save( );
-
-    playerSequencer.store( $scope.inputLevel, savedSequencer, function( response ) {
-
-      if ( response ) {
-
-        $scope.inputLevel = '';
-
-      }
-
-    });
-
-  };
-
+  
+  //BELOW HERE ARE ALL TEMPORARY FUNCTIONS THAT WON'T BE NEEDED ONCE WE ARE RETRIEVING SOUNDS PROPERLY
   $scope.saveToDatabase = function( ) {
 
     var savedSequencer = $scope.playerSequencer.save( );
@@ -144,7 +191,7 @@ app.controller( 'GameController' , [ '$scope', 'playerSequencer', 'httpFactory',
 
         $scope.inputLevel = '';
 
-      }
+      } 
 
     });
 
@@ -152,7 +199,7 @@ app.controller( 'GameController' , [ '$scope', 'playerSequencer', 'httpFactory',
 
   $scope.createSequencer = function( ) {
 
-    var soundIDs = [ "hihat", "clap", "kick" ];
+    var soundIDs = [ 'kick', 'clap', 'hihat' ];
 
     var userSequencer = playerSequencer.build( $scope.inputTempo, $scope.inputBeats, soundIDs );
 

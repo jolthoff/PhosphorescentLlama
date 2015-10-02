@@ -1,31 +1,112 @@
 app.factory( 'httpFactory', [ '$http', function ( $http ) {
 
   //Sends request to server and retrieves sequencer for given level
-  var requests = {
+  var requests = {};
 
-    getSequencer: function ( level, callback ) {
+  requests.getSequencer = function ( level, callback ) {
 
-      return $http.get( '/levels/' + level.toString( ) )
+    return $http.get( '/levels/' + level.toString( ) )
 
-        .then( function( response ) {
+      .then( function( response ) {
+
+        callback( response );
+
+      });
+
+  };
+
+  requests.postSequencer = function ( level, stringifiedSequencer, callback ) {
+
+    return $http.post( '/levels/', { level: level, data: stringifiedSequencer } )
+
+      .then( function( response ) {
+
+        if( callback ) {
+
+          callback( response );
+          
+        }
+
+      });
+
+  };
+
+  requests.putSequencer = function ( level, stringifiedSequencer, callback ) {
+
+    return $http.put( '/levels/', { level: level, data: stringifiedSequencer } )
+
+      .then( function ( response ) {
+
+        if( callback ) {
 
           callback( response );
 
-        });
+        }
 
-    },
+      });
 
-    postSequencer: function ( level, savedSequencer, callback ) {
+  };
 
-      return $http.post( '/levels/', { level: level, data: savedSequencer } )
+  requests.loginUser = function ( user, callback ) {
 
-        .then( function( response ) {
+    return $http.post( '/login', { username: user.username, password: user.password } )
+      .then( function (response ) {
+
+        if ( callback ) {
 
           callback( response );
 
-        });
+        }
 
-    }
+      });
+
+  };
+
+  requests.signupUser = function ( user, callback ) {
+
+    return $http.post( '/signup', { username: user.username, password: user.password } )
+
+      .then( function ( response ) {
+
+        if ( callback ) {
+
+          callback( response );
+
+        }
+
+      });
+
+  };
+
+  requests.updateLevel = function ( user, callback ) {
+
+    return $http.put( '/users', { username: user.username, level: user.level } )
+
+      .then( function ( response ) {
+
+        if ( callback ) {
+
+          callback( response );
+
+        }
+
+      });
+
+  };
+
+  requests.logout = function ( callback ) {
+
+    return $http.post( '/logout' )
+
+      .then( function ( ) {
+
+        if ( callback ) {
+
+          callback( response );
+
+        }
+
+    });
 
   };
 
