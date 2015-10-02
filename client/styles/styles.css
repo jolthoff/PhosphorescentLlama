@@ -1,33 +1,217 @@
-.beat {
-  float: left;
-  width: 100px;
-  height: 100px;
-  text-align: center;
-  border: black 1px solid;
+body {
+
+  background-color: black;
+
+}
+
+div {
+
+  -webkit-user-select: none;
+
+}
+
+/*.nav-bar {
+
+  width: 105%;
+  position: fixed;
+  margin-top: -10px;
+  margin-left: -10px;
+  height: 60px;
+  background-color: #111111;
+
+}*/
+
+.gameSpace {
+
+  margin-top: 40px;
+  margin-left: 50px;
+  width: 90vw;
+  height: 90vw;
+
 }
 
 .sequence {
+
+  margin: auto;
   display: block;
   width: 100%;
-  height: 100px;
+
 }
 
-.gameSpace, .targetSequencer {
-  width: 500px;
+.sequence.four {
+
+  height: 15vw;
+
 }
 
-.four {
-  width: 22%;
+.sequencer.eight {
+
+  height: 11vw;
+
 }
 
-.eight {
-  width: 10%;
+.sequencer.sixteen {
+
+  height: 11vw;
+
 }
 
-.sixteen {
-  width: 5.5%;
+.beat {
+
+  display: inline-block;
+  margin: auto;
+  text-align: center;
+  background-color: black;
+
+}
+
+.beat.four {
+
+  width: 15vw;
+  height: 15vw;
+
+}
+
+.beat.eight {
+
+  height: 11vw;
+  width: 11vw;
+
+}
+
+.beat.sixteen {
+
+  height: 11vw;
+  width: 5.5vw;
+
+}
+
+.line {
+
+  height: 98%;
+  width: 98%;
+  margin: 1% auto;
+  overflow: hidden;
+  transition: height .1s, width .1s, margin .1s, opacity .1s;
+
+}
+
+.line.current:hover {
+
+  height: 95%;
+  width: 95%;
+  margin: 2.5% auto;
+  overflow: hidden;
+  transition: height .1s, width .1s, margin .1s, opacity .1s;
+
+}
+
+.line.current {
+
+  height: 90%;
+  width: 90%;
+  margin: 5% auto;
+  overflow: hidden;
+  transition: height .1s, width .1s, margin .1s, opacity .1s;
+
+}
+
+.center.current {
+
+  height: 90%;
+  width: 90%;
+  margin: 5% auto;
+  overflow: hidden;
+  transition: height .1s, width .1s, margin .1s, opacity .1s;
+  
+}
+
+.outer {
+
+  background-color: black;
+
+}
+
+.inner {
+
+  background-color: gray;
+
+}
+
+.middle {
+
+  height: 90%;
+  width: 90%;
+  margin: 5% auto;
+  background-color: black;
+
+}
+
+.center {
+
+  background-color: gray;
+
+}
+
+._0, ._1, ._2 {
+
+  opacity: .8;
+  transition: height .1s, width .1s, margin .1s, opacity .1s;
+
+}
+
+._0:hover, ._1:hover, ._2:hover {
+
+  opacity: .9;
+  transition: height .1s, width .1s, margin .1s, opacity .1s;
+
+}
+
+._0:hover {
+
+  background-color: rgb(255, 0, 0);
+
+}
+
+._1:hover {
+
+  background-color: rgb(0, 255, 0);
+
+}
+
+._2:hover {
+
+  background-color: rgb(0, 0, 255);
+
+}
+
+._0.playing {
+
+  background-color: rgb(255, 0, 0);
+
+}
+
+._1.playing {
+
+  background-color: rgb(0, 255, 0);
+
+}
+
+._2.playing {
+
+  background-color: rgb(0, 0, 255);
+
 }
 
 .playing {
-  background-color: yellow;
+
+  opacity: .9;
+  transition: height .1s, width .1s, margin .1s, opacity .1s;
+
+}
+
+._0.playing:hover, ._1.playing:hover, ._2.playing:hover {
+  
+  opacity: 1;
+
 }

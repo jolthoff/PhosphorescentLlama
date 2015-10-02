@@ -54,7 +54,6 @@ Sequencer.prototype.getSoundIDs = function( ) {
 
 };
 
-
 Sequencer.prototype.play = function( onTickSchedule ) {
 
   // begin playing sequences from the
@@ -145,9 +144,7 @@ Sequencer.prototype.save = function( ) {
 
 };
 
-Sequencer.prototype.retrieve = function( JSONString ) {
-
-  var data = JSON.parse(JSONString);
+Sequencer.prototype.retrieve = function( data ) {
 
   var sequencer = new Sequencer(data.tempo, data.tickNumber, data.soundIDs );
 
@@ -249,13 +246,62 @@ Sequencer.prototype.match = function( sequencer ) {
 
 };
 
+Sequencer.prototype.getMatrix = function ( ) {
 
+  var matrix = [];
+
+  for( var i = 0; i < this._sequences.length; i++ ) {
+
+    var sequence = [];
+
+    var ithSequence = this.getSequence( i );
+
+    for (var j = 0; j < this.getTickNumber( ); j++ ) {
+
+      var on = this.getBeat( i, j ).isOn( ) ? 1 : 0;
+
+      sequence.push( on );
+
+    }
+
+    matrix.push( sequence );
+
+  }
+
+  return matrix;
+
+};
+
+Sequencer.prototype.getWrongBeats = function ( sequencer ) {
+
+  var thisMatrix = this.getMatrix( );
+
+  var sequencerMatrix = sequencer.getMatrix( );
+
+  var wrongBeats = [];
+
+  for( var i = 0; i < sequencerMatrix.length; i++ ) {
+
+    for( var j = 0; j < sequencer.getTickNumber( ); j++ ) {
+
+      if( thisMatrix[ i ][ j ] && !sequencerMatrix[ i ][ j ] ) {
+
+        wrongBeats.push( [ i, j ] );
+
+      }
+
+    }
+
+  }
+
+  return wrongBeats;
+
+};
 
 Sequencer.prototype.getSequence = function( sequenceIndex ) {
 
   // returns a sequence instance
   return this._sequences[ sequenceIndex ];
-
 
 };
 

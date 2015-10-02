@@ -1,37 +1,72 @@
 var express = require('express');
-// var mongoose = require('mongoose');
-// var morgan = require('morgan');
-// var bodyParser = require('body-parser');
-var app = express();
+
 var paths = require('../paths.js');
-// mongoose.connect('mongodb://localhost/parrot');
 
-// app.use(morgan('dev'));
-// app.use(bodyParser.urlencoded({extended: true}));
-// app.use(bodyParser.json());
-console.log(__dirname);
+var cookieParser = require('cookie-parser');
 
-app.get('/', function(req, res) {
+var bodyParser = require('body-parser');
 
-  res.sendFile(paths.index);
+var passport = require('passport');
+
+var expressSession = require('express-session');
+
+var initPassport = require('./passport/init');
+
+var router = require( paths.routers + '/routes.js' );
+
+var mongoose = require('mongoose');
+
+mongoose.connect('mongodb://localhost/parrot');
+
+
+var app = express();
+
+
+app.use( bodyParser.urlencoded({extended: true}) );
+
+app.use( bodyParser.json() );
+
+app.use( cookieParser() );
+
+app.use(
+
+  expressSession( {
+
+    secret: 'beef sucks, don`t eat it.',
+
+    resave: false,
+
+    saveUninitialized: false
+
+  })
+
+);
+
+app.use( passport.initialize() );
+
+app.use( passport.session() );
+
+initPassport( passport );
+
+
+var routes = require('./routers/routes.js')(passport);
+
+app.use('/', routes);
+
+/// catch 404 and forward to error handler
+
+app.use( function( request, response, next ) {
+
+  var error = new Error('Not Found');
+
+  error.status = 404;
+
+  next( error );
 
 });
 
-app.use(express.static(paths.client));
-app.use('/samples', express.static(__dirname + '/samples'));
+app.listen( 44100 );
 
-var sequencerRouter = express.Router();
-
-app.use(function (req, res, next) {
-  console.log('Time:', Date.now());
-  next();
-});
-
-app.use('/', sequencerRouter);
-require('./routers/sequencerRouter.js')(sequencerRouter);
-
-app.listen(44100);
-
-console.log('Parrot app listening on port: 44100');
+console.log( 'Parrot app listening on port: 44100' );
 
 module.exports = app;
