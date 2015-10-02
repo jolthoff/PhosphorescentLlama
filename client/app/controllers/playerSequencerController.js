@@ -104,6 +104,7 @@ app.controller( 'PlayerSequencerController', [ '$scope', 'playerSequencer', '$ti
   $scope.stop = function( ) {
 
     $scope.sequencer.stop( );
+
     $scope.currentColumn = 0;
 
   };

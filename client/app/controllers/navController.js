@@ -4,9 +4,13 @@ app.controller('NavController', [ '$scope', 'httpFactory', '$rootScope', functio
 
     httpFactory.loginUser( $scope.user, function ( response ) {
 
-      $rootScope.user.username = response.header.username;
+      $rootScope.user = {};
 
-      $rootScope.user.level = response.header.level;
+      $rootScope.user.username = response.headers('username');
+
+      $rootScope.user.level = response.headers('level');
+
+      console.log($rootScope.user);
 
     });
 
@@ -22,9 +26,11 @@ app.controller('NavController', [ '$scope', 'httpFactory', '$rootScope', functio
 
     httpFactory.signupUser( $scope.user, function ( response ) {
 
-      response.body.level = 1;
+      $rootScope.user = {};
 
-      $rootScope.user = response.body;
+      $rootScope.user.level = 1;
+
+      $rootScope.user.username = response.headers('username');
 
     });
 
