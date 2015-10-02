@@ -1,4 +1,4 @@
-app.controller('NavController', [ '$scope', 'httpFactory', '$rootScope', function ( $scope, httpFactory, $rootScope ) {
+app.controller('NavController', [ '$scope', 'httpFactory', '$rootScope', '$location' , function ( $scope, httpFactory, $rootScope, $location ) {
   
   $scope.login = function ( ) {
 
@@ -6,11 +6,15 @@ app.controller('NavController', [ '$scope', 'httpFactory', '$rootScope', functio
 
       $rootScope.user = {};
 
-      $rootScope.user.username = response.headers('username');
+      if( response.status === 200 ) {
 
-      $rootScope.user.level = response.headers('level');
+        $rootScope.user.username = response.headers('username');
 
-      console.log($rootScope.user);
+        $rootScope.user.level = response.headers('level');
+
+        $location.path( response.data );
+
+      }
 
     });
 
@@ -18,8 +22,6 @@ app.controller('NavController', [ '$scope', 'httpFactory', '$rootScope', functio
 
   $scope.reloadGameController = function ( ) {
 
-    
-    
   };
 
   $scope.signup = function ( ) {
@@ -31,6 +33,12 @@ app.controller('NavController', [ '$scope', 'httpFactory', '$rootScope', functio
       $rootScope.user.level = 1;
 
       $rootScope.user.username = response.headers('username');
+
+      if( response.status === 200 ) {
+
+        $location.path( response.data );
+
+      }
 
     });
 

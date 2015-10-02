@@ -18,7 +18,7 @@ module.exports = function( passport ){
 
     if ( request.isAuthenticated( ) ) {
 
-      response.redirect( '/active' );
+      response.status( 200 ).send( '/active' );
 
     } else {
 
@@ -30,23 +30,23 @@ module.exports = function( passport ){
 
   // Attach user info to the header for active routes
 
-  router.use( '/active', usersController.findUserById );
+  router.use( '/', usersController.findUserById );
 
   // Authenticate requests to '/active'
 
-  router.get( '/active', function( request, response, next ) {
+  // router.get( '/active', function( request, response, next ) {
 
-    if( request.isAuthenticated( ) ) {
+  //   if( request.isAuthenticated( ) ) {
 
-      response.sendFile( paths.index );
+  //     response.sendFile( paths.index );
 
-    } else {
+  //   } else {
 
-      response.redirect( '/' );
+  //     response.redirect( '/' );
 
-    }
+  //   }
 
-  });
+  // });
 
   router.use( '/', express.static( paths.client ) );
 
@@ -58,9 +58,9 @@ module.exports = function( passport ){
 
     failureRedirect: '/' // anonymous user view.
 
-  }), function( request, response ) {
+  }), usersController.findUserById, function ( request, response ) {
 
-    response.redirect( '/active' );
+    response.status( 200 ).send('/active');
 
   });
 
@@ -70,9 +70,9 @@ module.exports = function( passport ){
 
     failureRedirect: '/'
 
-  }), function( request, response ) {
+  }), usersController.findUserById, function ( request, response ) {
 
-    response.redirect( '/active' );
+    response.status( 200 ).send('/active');
 
   });
 
@@ -81,7 +81,7 @@ module.exports = function( passport ){
 
     request.logout( );
 
-    response.redirect( '/' );
+    response.status( 200 ).send( '/' );
 
   });
 

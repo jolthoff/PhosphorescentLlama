@@ -26,6 +26,14 @@ app.controller( 'TargetSequencerController', [ '$scope', '$timeout' , function (
 
   });
 
+  $scope.$on( 'destroySequencers', function ( ) {
+
+    $scope.sequencer.stop( );
+
+    delete $scope.sequencer;
+
+  });
+
   $scope.playToggle = function ( ) {
 
     if ( $scope.sequencer._playing ) {

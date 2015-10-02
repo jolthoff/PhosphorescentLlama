@@ -21,7 +21,7 @@ app.config( function ( $stateProvider, $httpProvider, $urlRouterProvider ) {
     .state('/active', {
       views: {
         nav: {
-          tempalteUrl: '../views/activeView.html',
+          templateUrl: '../views/activeView.html',
           controller: 'ActiveController'
         },
         content: {
