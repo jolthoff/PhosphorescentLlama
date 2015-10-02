@@ -18,7 +18,7 @@ module.exports = function( passport ){
 
     if ( request.isAuthenticated( ) ) {
 
-      response.redirect( '/active' );
+      response.status( 200 ).send( '/active' );
 
     } else {
 
@@ -30,23 +30,23 @@ module.exports = function( passport ){
 
   // Attach user info to the header for active routes
 
-  router.use( '/active', usersController.findUserById );
+  router.use( '/', usersController.findUserById );
 
   // Authenticate requests to '/active'
 
-  router.get( '/active', function( request, response, next ) {
+  // router.get( '/active', function( request, response, next ) {
 
-    if( request.isAuthenticated( ) ) {
+  //   if( request.isAuthenticated( ) ) {
 
-      response.sendFile( paths.index );
+  //     response.sendFile( paths.index );
 
-    } else {
+  //   } else {
 
-      response.redirect( '/' );
+  //     response.redirect( '/' );
 
-    }
+  //   }
 
-  });
+  // });
 
   router.use( '/', express.static( paths.client ) );
 
@@ -56,28 +56,32 @@ module.exports = function( passport ){
 
   router.post('/login', passport.authenticate('login', {
 
-    successRedirect: '/active', // active user view: just the play view with user info.
-
     failureRedirect: '/' // anonymous user view.
 
-  }));
+  }), usersController.findUserById, function ( request, response ) {
+
+    response.status( 200 ).send('/active');
+
+  });
 
   /* Handle Signup POST */
 
   router.post( '/signup', passport.authenticate( 'signup', {
 
-    successRedirect: '/active', // new user will be sent to active user view.
-
     failureRedirect: '/'
 
-  }));
+  }), usersController.findUserById, function ( request, response ) {
+
+    response.status( 200 ).send('/active');
+
+  });
 
   /* Handle Logout */
   router.post('/logout', function( request, response ) {
 
     request.logout( );
 
-    response.redirect( '/' );
+    response.status( 200 ).send( '/' );
 
   });
 

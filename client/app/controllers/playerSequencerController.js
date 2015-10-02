@@ -55,6 +55,14 @@ app.controller( 'PlayerSequencerController', [ '$scope', 'playerSequencer', '$ti
 
   });
 
+  $scope.$on( 'destroySequencers', function ( ) {
+
+    $scope.sequencer.stop( );
+
+    delete $scope.sequencer;
+
+  });
+
   $scope.currentColumn = 0;
 
   $scope.playToggle = function ( ) {
@@ -104,6 +112,7 @@ app.controller( 'PlayerSequencerController', [ '$scope', 'playerSequencer', '$ti
   $scope.stop = function( ) {
 
     $scope.sequencer.stop( );
+
     $scope.currentColumn = 0;
 
   };

@@ -7,17 +7,15 @@ app.controller( 'GameController' , [ '$scope', 'playerSequencer', 'httpFactory',
   //
   //
   /////////////////
-
-  if( $rootScope.user ) {
+  if ( $rootScope.user ) {
 
     $scope.level = $rootScope.user.level;
-    
+
   } else {
 
     $scope.level = 1;
-    
-  }
 
+  }
 
   /////////////////
   //
@@ -32,7 +30,7 @@ app.controller( 'GameController' , [ '$scope', 'playerSequencer', 'httpFactory',
     $scope.$broadcast( 'playToggle' );
 
   };
-  
+
   //makes call to server and passes sequencer data to the target sequencer controller
   $scope.getSequencer = function ( ) {
 
@@ -50,7 +48,8 @@ app.controller( 'GameController' , [ '$scope', 'playerSequencer', 'httpFactory',
 
     //call initialization function to set audio context on the window
     //which must exist before the sequencers are made
-    initialize( $scope.buildLevel );
+
+    $scope.buildLevel( );
 
   };
 
@@ -85,8 +84,10 @@ app.controller( 'GameController' , [ '$scope', 'playerSequencer', 'httpFactory',
 
       $rootScope.user.level = $scope.level;
 
+      console.log($rootScope.user);
+
       httpFactory.updateLevel( $rootScope.user );
-      
+
     }
 
 
@@ -114,7 +115,7 @@ app.controller( 'GameController' , [ '$scope', 'playerSequencer', 'httpFactory',
 
     var levelSettings = levelFactory[ $scope.level ];
 
-    var levelSequencer = new Sequencer(
+    var levelSequencer = new Sequencer (
 
       levelSettings.tempo,
 
@@ -191,9 +192,11 @@ app.controller( 'GameController' , [ '$scope', 'playerSequencer', 'httpFactory',
   //
   ////////////////////
 
-  $scope.startLevel( );
+  // $scope.startLevel( );
 
-  
+  initialize( $scope.startLevel );
+
+
   //BELOW HERE ARE ALL TEMPORARY FUNCTIONS THAT WON'T BE NEEDED ONCE WE ARE RETRIEVING SOUNDS PROPERLY
   $scope.saveToDatabase = function( ) {
 
