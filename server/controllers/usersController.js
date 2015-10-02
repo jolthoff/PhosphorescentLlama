@@ -1,0 +1,100 @@
+var User = require('../models/userModel.js');
+
+var controller = {};
+
+controller.updateLevel = function( request, response ) {
+
+  User.findOneAndUpdate(
+
+    {
+
+      "username": request.body.username
+
+    },
+
+    {
+
+      $set: {
+
+        "level": request.body.level
+
+      }
+
+    },
+
+    {
+
+      new:true
+
+    },
+
+    function( error, user ) {
+
+      if ( error ) {
+
+        throw error;
+
+      } else {
+
+        response.status( 200 ).send( user );
+
+      }
+
+    }
+
+  );
+
+};
+
+// A custom middleware for Passport
+controller.findUserById = function(request, response, next) {
+
+  var id;
+
+  if (request.session.passport) {
+
+    id = request.session.passport.user;
+
+  }
+
+  User.findOne(
+
+    {
+
+      "_id": id
+
+    },
+
+    "username level",
+
+    function( error, user ) {
+
+      if (error) {
+
+        throw error;
+
+      } else if (!user) {
+
+        next();
+
+      } else {
+
+        response.set({
+
+          username: user.username,
+
+          level: user.level
+
+        });
+
+        next();
+
+      }
+
+    }
+
+  );
+
+};
+
+module.exports = controller;
