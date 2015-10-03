@@ -46,18 +46,35 @@ controller.saveLevel = function( request, response, next ) {
 
   sequencer.data = request.body.data;
 
-  sequencer.save(function( error ){
+  Sequencer.findOne({level:sequencer.level}, function(err, found) {
 
-    if ( error ) {
+    if (err) {
 
-      response.status( 500 ).send( error );
+      throw error;
 
-    } else {
+    } else if (found) {
+
+      console.log("level already exists.");
 
       response.status( 201 ).send();
 
-    }
+    } else if (!found) {
 
+      sequencer.save(function( error ){
+
+        if ( error ) {
+
+          response.status( 500 ).send( error );
+
+        } else {
+
+          response.status( 201 ).send();
+
+        }
+
+      });
+
+    }
   });
 
 };
