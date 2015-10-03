@@ -137,7 +137,7 @@ app.controller( 'GameController' , [ '$scope', 'playerSequencer', 'httpFactory',
 
     var savedSequencer = levelSequencer.save( );
 
-    httpFactory.putSequencer( $scope.level, savedSequencer, $scope.getSequencer );
+    httpFactory.postSequencer( $scope.level, savedSequencer, $scope.getSequencer );
 
   };
 
