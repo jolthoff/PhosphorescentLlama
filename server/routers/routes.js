@@ -10,15 +10,16 @@ var levelsController = require( paths.controllers + '/levelsController.js' );
 
 var usersController = require( paths.controllers + '/usersController.js' );
 
-module.exports = function( passport ){
+module.exports = function( passport ) {
 
   // Authenticate requests to '/'
+  router.use( '/', usersController.findUserById );
 
   router.get( '/', function( request, response, next ) {
 
     if ( request.isAuthenticated( ) ) {
 
-      response.status( 200 ).send( '/active' );
+      response.sendFile( paths.index );
 
     } else {
 
@@ -30,7 +31,6 @@ module.exports = function( passport ){
 
   // Attach user info to the header for active routes
 
-  router.use( '/', usersController.findUserById );
 
   // Authenticate requests to '/active'
 
@@ -60,7 +60,7 @@ module.exports = function( passport ){
 
   }), usersController.findUserById, function ( request, response ) {
 
-    response.status( 200 ).send('/active');
+    response.status( 200 ).send( '/active' );
 
   });
 
@@ -72,7 +72,7 @@ module.exports = function( passport ){
 
   }), usersController.findUserById, function ( request, response ) {
 
-    response.status( 200 ).send('/active');
+    response.status( 200 ).send( '/active' );
 
   });
 
@@ -88,6 +88,21 @@ module.exports = function( passport ){
   /* Handle requests to '/users' */
 
   router.put( '/users', usersController.updateLevel );
+
+  router.get( '/users', usersController.findUserById, function ( request, response ) {
+
+    if( response.get( 'username' ) ) {
+
+      response.status( 200 ).send( '/active' );
+      
+    } else {
+
+      response.status( 200 ).send( '/' );
+
+    }
+
+
+  });
 
   /* Handle Requests to '/levels' */
 

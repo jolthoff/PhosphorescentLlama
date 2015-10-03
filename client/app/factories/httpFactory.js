@@ -9,7 +9,11 @@ app.factory( 'httpFactory', [ '$http', function ( $http ) {
 
       .then( function( response ) {
 
-        callback( response );
+        if( callback ) {
+
+          callback( response );
+          
+        }
 
       });
 
@@ -89,7 +93,21 @@ app.factory( 'httpFactory', [ '$http', function ( $http ) {
 
           callback( response );
 
-          console.log('update level request was made');
+        }
+
+      });
+
+  };
+
+  requests.getUser = function ( callback ) {
+
+    return $http.get( '/users' )
+
+      .then( function ( response ) {
+
+        if( callback ) {
+
+          callback( response );
 
         }
 

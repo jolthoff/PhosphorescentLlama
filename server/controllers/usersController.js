@@ -47,11 +47,17 @@ controller.updateLevel = function( request, response ) {
 };
 
 // A custom middleware for Passport
-controller.findUserById = function(request, response, next) {
+controller.findUserById = function( request, response, next ) {
 
   var id;
 
   if (request.session.passport) {
+
+    if( request.session.passport.user ) {
+
+      console.log( 'USER IS: ', request.session.passport.user );
+
+    }
 
     id = request.session.passport.user;
 
