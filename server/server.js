@@ -16,7 +16,21 @@ var router = require( paths.routers + '/routes.js' );
 
 var mongoose = require('mongoose');
 
-mongoose.connect('mongodb://localhost/parrot');
+var port = process.env.PORT || 44100;
+
+var connectURI;
+
+if( process.env.PORT ) {
+
+  connectURI = 'mongodb://heroku_65zhsf5d:4akorlp2tcl6mfatm608iio30n@ds029224.mongolab.com:29224/heroku_65zhsf5d';
+
+} else {
+
+  connectURI = 'mongodb://localhost/ngtzit';
+
+}
+
+mongoose.connect( connectURI );
 
 
 var app = express();
@@ -65,7 +79,7 @@ app.use( function( request, response, next ) {
 
 });
 
-app.listen( 44100 );
+app.listen( port );
 
 console.log( 'Parrot app listening on port: 44100' );
 
