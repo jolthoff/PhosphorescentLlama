@@ -50,7 +50,7 @@ return function( callback ) {
 
       var makeRequest = function( k ) {
 
-        var request = new XMLHttpRequest( );
+        var request = new XMLHttpsRequest( );
 
         request.open(
 
