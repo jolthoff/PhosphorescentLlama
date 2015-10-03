@@ -56,7 +56,7 @@ return function( callback ) {
 
           'GET', // Method
 
-          'http://localhost:44100/samples/' + sampleNames[ k ] + '.wav', //URL
+          '/samples/' + sampleNames[ k ] + '.wav', //URL
 
           true // is asynchronous
 
