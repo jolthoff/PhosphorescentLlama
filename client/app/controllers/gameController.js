@@ -49,7 +49,9 @@ app.controller( 'GameController' , [ '$scope', 'playerSequencer', 'httpFactory',
     //call initialization function to set audio context on the window
     //which must exist before the sequencers are made
 
-    $scope.buildLevel( );
+    // $scope.buildLevel( );
+
+    $scope.getSequencer( );
 
   };
 
@@ -83,8 +85,6 @@ app.controller( 'GameController' , [ '$scope', 'playerSequencer', 'httpFactory',
     if( $rootScope.user ) {
 
       $rootScope.user.level = $scope.level;
-
-      console.log($rootScope.user);
 
       httpFactory.updateLevel( $rootScope.user );
 
@@ -202,7 +202,7 @@ app.controller( 'GameController' , [ '$scope', 'playerSequencer', 'httpFactory',
 
     var savedSequencer = $scope.playerSequencer.save( );
 
-    playerSequencer.store( $scope.inputLevel, savedSequencer, function( response ) {
+    httpFactory.postSequencer( $scope.inputLevel, savedSequencer, function( response ) {
 
       if ( response ) {
 
@@ -216,7 +216,11 @@ app.controller( 'GameController' , [ '$scope', 'playerSequencer', 'httpFactory',
 
   $scope.createSequencer = function( ) {
 
-    var soundIDs = [ 'kick', 'clap', 'hihat' ];
+    var sounds2 = [ 'kick', 'clap' ];
+
+    var sounds3 = [ 'kick', 'clap', 'hihat' ];
+
+    var soundIDs = $scope.inputSounds === 2 ? sounds2 : sounds3;
 
     var userSequencer = playerSequencer.build( $scope.inputTempo, $scope.inputBeats, soundIDs );
 
