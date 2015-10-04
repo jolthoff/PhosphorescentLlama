@@ -60,6 +60,8 @@ app.use( passport.initialize() );
 
 app.use( passport.session() );
 
+// { maxAge: new Date(Date.now() + 3600000) })
+
 initPassport( passport );
 
 

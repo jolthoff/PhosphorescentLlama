@@ -94,7 +94,7 @@ module.exports = function( passport ) {
     if( response.get( 'username' ) ) {
 
       response.status( 200 ).send( '/active' );
-      
+
     } else {
 
       response.status( 200 ).send( '/' );
