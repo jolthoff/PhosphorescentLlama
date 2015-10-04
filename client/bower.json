@@ -20,7 +20,8 @@
   ],
   "dependencies": {
     "angular": "~1.4.6",
-    "underscore": "~1.8.3",
-    "angular-ui-router": "~0.2.15"
+    "angular-ui-router": "~0.2.15",
+    "material-design-lite": "~1.0.5",
+    "underscore": "~1.8.3"
   }
 }

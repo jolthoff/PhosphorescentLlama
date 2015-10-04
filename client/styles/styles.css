@@ -129,7 +129,7 @@ div {
   margin: 5% auto;
   overflow: hidden;
   transition: height .1s, width .1s, margin .1s, opacity .1s;
-  
+
 }
 
 .outer {
@@ -217,7 +217,7 @@ div {
 }
 
 ._0.playing:hover, ._1.playing:hover, ._2.playing:hover {
-  
+
   opacity: 1;
 
 }

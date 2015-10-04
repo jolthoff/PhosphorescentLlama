@@ -14,19 +14,21 @@ module.exports = function( passport ){
 
   // Authenticate requests to '/'
 
-  router.get( '/', function( request, response, next ) {
+  // router.get( '/', function( request, response, next ) {
 
-    if ( request.isAuthenticated( ) ) {
+  //   if ( request.isAuthenticated( ) ) {
 
-      response.status( 200 ).send( '/active' );
+  //     // response.status( 200 ).send( '/active' );
 
-    } else {
+  //     response.sendFile( paths.index );
 
-      response.sendFile( paths.index );
+  //   } else {
 
-    }
+  //     response.sendFile( paths.index );
 
-  });
+  //   }
+
+  // });
 
   // Attach user info to the header for active routes
 

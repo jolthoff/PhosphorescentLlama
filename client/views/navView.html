@@ -1,17 +1,29 @@
 <div id='login'>
 
   <h1>login</h1>
-  
+
   <form name="loginForm">
 
-    <input required type='text'ng-model='user.username'>
+    <div class="mdl-textfield mdl-js-textfield">
+      <input required class="mdl-textfield__input" type='text' ng-model='user.username' id="username"/>
+      <label class="mdl-textfield__label" for="username">Username...</label>
+    </div>
 
-    <input required type="password" ng-model='user.password'>
+    <div class="mdl-textfield mdl-js-textfield">
+      <input required class="mdl-textfield__input" type='password' ng-model='user.password' id="password"/>
+      <label class="mdl-textfield__label" for="password">Password...</label>
+    </div>
 
-    <button ng-click='login( )'>Login</button>
+    <button class="mdl-button mdl-js-button mdl-button--primary" ng-click='login( )'>Login</button>
 
-    <button ng-click='signup( )'>Signup</button>
+    <button class="mdl-button mdl-js-button mdl-button--primary" ng-click='signup( )'>Signup</button>
 
   </form>
 
 </div>
+
+
+
+<!-- <input required type='text'ng-model='user.username'>
+<input required type="password" ng-model='user.password'>
+ -->

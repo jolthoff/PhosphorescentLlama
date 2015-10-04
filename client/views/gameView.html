@@ -1,10 +1,10 @@
 <div id='controls'>
 
-  <button class="play-pause" ng-click="playerSequencerPlayToggle( )">Play/Pause</button>
+  <button class="play-pause mdl-button mdl-js-button mdl-button--primary" ng-click="playerSequencerPlayToggle( )">▶︎ / ❚❚</button>
 
-  <button class="submit" ng-click="submit( )">Submit</button>
+  <button class="submit mdl-button mdl-js-button mdl-button--primary" ng-click="submit( )">Submit</button>
 
-  <button ng-controller="TargetSequencerController" ng-click="playToggle( )">PLAY/PAUSE TARGET</button>
+  <button class="mdl-button mdl-js-button mdl-button--primary" ng-controller="TargetSequencerController" ng-click="playToggle( )">▶︎ / ❚❚ TARGET</button>
 
 </div>
 
@@ -42,7 +42,7 @@
                 <div class="line inner _{{ $parent.$index }} {{ $index }}"
 
                 ng-class="{ playing: sequencer.getBeat($parent.$index, $index).isOn( ) }">
-              
+
                   <div class="line outer">
 
                     <div class="line inner _{{ $parent.$index }} {{ $index }}"
@@ -151,7 +151,7 @@
                                                                                         <div class="line inner _{{ $parent.$index }} {{ $index }}"
 
                                                                                         ng-class="{ playing: sequencer.getBeat($parent.$index, $index).isOn( ) }">
-                                                                                        
+
                                                                                           <div class="center _{{ $parent.$index }} {{ $index }}"
 
                                                                                             ng-class="{ playing: sequencer.getBeat($parent.$index, $index).isOn( ) }">
@@ -159,7 +159,7 @@
                                                                                           </div>
 
                                                                                         </div>
-                                                                                        
+
                                                                                       </div>
 
                                                                                     </div>
@@ -197,7 +197,7 @@
                                                     </div>
 
                                                   </div>
-                                                                              
+
 
                                                 </div>
 
@@ -222,7 +222,7 @@
                             </div>
 
                           </div>
-                        
+
                         </div>
 
                       </div>
