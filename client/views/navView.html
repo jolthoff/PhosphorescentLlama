@@ -1,16 +1,26 @@
+<div id='controls'>
+
+  <button class="play-pause mdl-button mdl-js-button mdl-button--primary" ng-click="playerSequencerPlayToggle( )">▶︎ / ❚❚</button>
+
+  <button class="submit mdl-button mdl-js-button mdl-button--primary" ng-click="submitMatch( )">Submit</button>
+
+  <button class="mdl-button mdl-js-button mdl-button--primary" ng-click="targetSequencerPlayToggle( )">▶︎ / ❚❚ TARGET</button>
+  
+</div>
+
 <div id='login'>
 
-  <h1>login</h1>
+  <h1>ngzit</h1>
 
   <form name="loginForm">
 
     <div class="mdl-textfield mdl-js-textfield">
-      <input required class="mdl-textfield__input" type='text' ng-model='user.username' id="username"/>
-      <label class="mdl-textfield__label" for="username">Username...</label>
+      <input required class="mdl-textfield__input" type='text' ng-model='user.username' id="username" placeholder="Username..."/>
+      <label class="mdl-textfield__label" for="username"></label>
     </div>
 
     <div class="mdl-textfield mdl-js-textfield">
-      <input required class="mdl-textfield__input" type='password' ng-model='user.password' id="password"/>
+      <input required class="mdl-textfield__input" type='password' ng-model='user.password' id="password" placeholder="Password.."/>
       <label class="mdl-textfield__label" for="password">Password...</label>
     </div>
 
@@ -21,8 +31,6 @@
   </form>
 
 </div>
-
-
 
 <!-- <input required type='text'ng-model='user.username'>
 <input required type="password" ng-model='user.password'>
