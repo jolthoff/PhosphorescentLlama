@@ -1,13 +1,3 @@
-<!-- <div id='controls'>
-
-  <button class="play-pause mdl-button mdl-js-button mdl-button--primary" ng-click="playerSequencerPlayToggle( )">▶︎ / ❚❚</button>
-
-  <button class="submit mdl-button mdl-js-button mdl-button--primary" ng-click="submit( )">Submit</button>
-
-  <button class="mdl-button mdl-js-button mdl-button--primary" ng-controller="TargetSequencerController" ng-click="playToggle( )">▶︎ / ❚❚ TARGET</button>
-
-</div> -->
-
 <div class="gameSpace">
     <div class="targetSequencer" ng-controller="TargetSequencerController"></div>
     <!-- Sequence Controller holds all of the player controls for editing player sequence -->
@@ -152,11 +142,11 @@
 
                                                                                         ng-class="{ playing: sequencer.getBeat($parent.$index, $index).isOn( ) }">
 
-                                                                                          <div class="center _{{ $parent.$index }} {{ $index }}"
+                                                                                          <!-- <div class="center _{{ $parent.$index }} {{ $index }}"
 
-                                                                                            ng-class="{ playing: sequencer.getBeat($parent.$index, $index).isOn( ) }">
+                                                                                          ng-class="{ playing: sequencer.getBeat($parent.$index, $index).isOn( ) }">
 
-                                                                                          </div>
+                                                                                          </div> -->
 
                                                                                         </div>
 
