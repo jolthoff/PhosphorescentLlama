@@ -20,10 +20,6 @@ app.controller('NavController', [ '$scope', 'httpFactory', '$rootScope', '$locat
 
   };
 
-  $scope.reloadGameController = function ( ) {
-
-  };
-
   $scope.signup = function ( ) {
 
     httpFactory.signupUser( $scope.user, function ( response ) {
@@ -41,6 +37,24 @@ app.controller('NavController', [ '$scope', 'httpFactory', '$rootScope', '$locat
       }
 
     });
+
+  };
+
+  $scope.playerSequencerPlayToggle = function ( ) {
+
+    $rootScope.$broadcast( 'playToggle' );
+
+  };
+
+  $scope.targetSequencerPlayToggle = function ( ) {
+
+    $rootScope.$broadcast( 'targetPlayToggle' );
+
+  };
+
+  $scope.submitMatch = function ( ) {
+
+    $rootScope.$broadcast( 'submitMatch' )
 
   };
 

@@ -184,6 +184,12 @@ app.controller( 'GameController' , [ '$scope', 'playerSequencer', 'httpFactory',
 
   });
 
+  $scope.$on( 'submitMatch', function ( ) {
+
+    $scope.submit( );
+
+  });
+
   ////////////////////
   //
   //

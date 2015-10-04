@@ -1,4 +1,4 @@
-<div id='controls'>
+<!-- <div id='controls'>
 
   <button class="play-pause mdl-button mdl-js-button mdl-button--primary" ng-click="playerSequencerPlayToggle( )">▶︎ / ❚❚</button>
 
@@ -6,10 +6,10 @@
 
   <button class="mdl-button mdl-js-button mdl-button--primary" ng-controller="TargetSequencerController" ng-click="playToggle( )">▶︎ / ❚❚ TARGET</button>
 
-</div>
+</div> -->
 
 <div class="gameSpace">
-
+    <div class="targetSequencer" ng-controller="TargetSequencerController"></div>
     <!-- Sequence Controller holds all of the player controls for editing player sequence -->
     <div class="playerSequencer" ng-controller="PlayerSequencerController">
 

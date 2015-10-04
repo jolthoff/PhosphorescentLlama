@@ -34,6 +34,12 @@ app.controller( 'TargetSequencerController', [ '$scope', '$timeout' , function (
 
   });
 
+  $scope.$on( 'targetPlayToggle' , function ( ) {
+
+    $scope.playToggle( );
+
+  });
+
   $scope.playToggle = function ( ) {
 
     if ( $scope.sequencer._playing ) {
