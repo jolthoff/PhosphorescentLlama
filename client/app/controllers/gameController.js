@@ -1,4 +1,4 @@
-app.controller( 'GameController' , [ '$scope', 'playerSequencer', 'httpFactory', 'initialize', 'levelFactory', '$rootScope',  function ( $scope, playerSequencer, httpFactory, initialize, levelFactory, $rootScope ) {
+app.controller( 'GameController' , [ '$scope', 'playerSequencer', 'httpFactory', 'initialize', 'levelFactory', '$rootScope', '$timeout', function ( $scope, playerSequencer, httpFactory, initialize, levelFactory, $rootScope, $timeout ) {
 
   /////////////////
   //
@@ -16,26 +16,6 @@ app.controller( 'GameController' , [ '$scope', 'playerSequencer', 'httpFactory',
     $scope.level = 1;
 
   }
-
-  // $scope.createBeatBox = function ( lineCount ) {
-
-  //   var nestedBoxes = '<div class="line inner _{{ $parent.$index }} {{ $index }}"
-
-  //                     ng-class="{ playing: sequencer.getBeat($parent.$index, $index).isOn( ) }">
-
-  //                     <div class="line outer">';
-
-  //   for ( var i = 0; i < lineCount; i++ ) {
-
-
-
-  //   }
-
-  // };
-
-  // $scope.beatBox = 
-
-  // <div ng-bind-html="thisCanBeusedInsideNgBindHtml"></div>
 
   /////////////////
   //
@@ -91,6 +71,14 @@ app.controller( 'GameController' , [ '$scope', 'playerSequencer', 'httpFactory',
       $scope.failedMatch( );
 
     }
+
+  };
+
+  $scope.declareWrong = function ( ) {
+
+    $scope.wrong = true;
+
+    $timeout( function() { $scope.wrong = false; }, 300 );
 
   };
 

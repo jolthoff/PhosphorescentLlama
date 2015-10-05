@@ -1,3 +1,74 @@
+
+.container-fluid {
+  padding: 0;
+}
+
+.glyphicon {
+
+  font-size: 50px;
+
+  padding-left: 0px;
+
+  padding-right: 0px;
+
+  color: #A6E22E;
+
+}
+
+.glyphicon:hover {
+  color: red;
+}
+
+
+.navbar-brand {
+
+  font-size: 50px;
+
+  margin-top: 10px;
+
+  color: #F92672;
+
+}
+
+.navbar-brand:visited {
+  color: #F92672;
+}
+
+.navbar-brand:hover {
+  color: #fff;
+}
+
+.user-info-form {
+
+  margin-top: 17px;
+
+}
+
+#display-username {
+  color: #fff;
+}
+
+#display-logout {
+
+  margin-top: 22px;
+
+}
+
+.navbar-toggle {
+  border: 1 solid #fff;
+}
+
+.icon-bar {
+  border: 1 solid #fff;
+}
+
+#active {
+
+  color: white;
+
+}
+
+
 body {
 
   background-color: black;
@@ -9,17 +80,6 @@ div {
   -webkit-user-select: none;
 
 }
-
-/*.nav-bar {
-
-  width: 105%;
-  position: fixed;
-  margin-top: -10px;
-  margin-left: -10px;
-  height: 60px;
-  background-color: #111111;
-
-}*/
 
 .wrong, .match {
 
@@ -86,10 +146,9 @@ div {
 
 .gameSpace {
 
-  margin-top: 40px;
-  margin-left: 50px;
-  width: 90vw;
-  height: 90vw;
+  margin: 0 auto;
+/*  width: 90vw;
+  height: 90vw;*/
 
 }
 
