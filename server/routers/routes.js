@@ -110,6 +110,8 @@ module.exports = function( passport ) {
 
   router.get( '/levels/:id', levelsController.getLevel );
 
+  router.get( '/levels' , levelsController.getLevels );
+
   router.post( '/levels', levelsController.saveLevel );
 
   router.delete( '/levels/:id', levelsController.deleteLevel );
