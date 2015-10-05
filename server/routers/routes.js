@@ -12,6 +12,8 @@ var usersController = require( paths.controllers + '/usersController.js' );
 
 module.exports = function( passport ) {
 
+  router.use( levelsController.getLastLevel );
+
   // Authenticate requests to '/'
   router.use( '/', usersController.findUserById );
 
