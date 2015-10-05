@@ -12,7 +12,7 @@ app.config( function ( $stateProvider, $urlRouterProvider ) {
 
         nav: {
 
-          templateUrl: '../views/navView.html',
+          templateUrl: 'client/views/navView.html',
 
           controller: 'NavController'
 
@@ -20,7 +20,7 @@ app.config( function ( $stateProvider, $urlRouterProvider ) {
 
         content: {
 
-          templateUrl: '../views/gameView.html',
+          templateUrl: 'client/views/gameView.html',
 
           controller: 'GameController'
 
@@ -38,7 +38,7 @@ app.config( function ( $stateProvider, $urlRouterProvider ) {
 
         nav: {
 
-          templateUrl: '../views/activeView.html',
+          templateUrl: 'client/views/activeView.html',
 
           controller: 'ActiveController'
 
@@ -46,7 +46,7 @@ app.config( function ( $stateProvider, $urlRouterProvider ) {
 
         content: {
 
-          templateUrl: '../views/gameView.html',
+          templateUrl: 'client/views/gameView.html',
 
           controller: 'GameController'
 
