@@ -228,6 +228,28 @@ AudioContext.prototype.createBass = function( midiNote ) {
 
   };
 
+    bass.disconnect = function( destination ) {
+
+    if( destination ) {
+
+      if( destination.hasOwnProperty( 'input' ) ) {
+
+        bass.master.output.disconnect( destination.input );
+
+      } else {
+
+        bass.master.output.disconnect( destination );
+
+      }
+
+    } else {
+
+      bass.master.output.disconnect( );
+
+    }
+
+  };
+
   bass.start = function( when ) {
 
     bass.envelopes.forEach( function( envelope ) {

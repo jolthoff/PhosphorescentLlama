@@ -23,6 +23,12 @@ app.controller( 'PlayerSequencerController', [ '$scope', 'playerSequencer', '$ti
 
     var soundIDs = data.getSoundIDs( );
 
+    if( $scope.sequencer ) {
+
+      $scope.sequencer.delete( );
+
+    }
+
     $scope.sequencer = playerSequencer.build( tempo, $scope.tickNumber, soundIDs );
 
     $scope.sequences = $scope.sequencer._sequences;

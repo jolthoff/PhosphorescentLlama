@@ -379,3 +379,15 @@ Sequencer.prototype.scheduleTicks = function( onTickSchedule ) {
   }
 
 };
+
+Sequencer.prototype.delete = function( ) {
+
+  this._sequences.forEach( function( sequence ) {
+
+    sequence.delete( );
+
+  });
+
+  this._master.disconnect( context.destination );
+
+};

@@ -28,86 +28,27 @@ return function( callback ) {
 
     window.context = new AudioContext( );
 
-    var sampleNames = [
+    window.context._generators = {};
 
-      'kick',
+    window.context._generators.kick = context.createKick( );
 
-      'clap',
+    window.context._generators.lowTom = context.createKick( 43 );
 
-      'hihat'
+    window.context._generators.highTom = context.createKick( 53 );
 
-    ];
+    window.context._generators.clap = context.createClap( );
 
-    window.context._sampleBuffers = {};
+    window.context._generators.closedHat = context.createClosedHat( );
 
-    for( var i = 0; i < sampleNames.length; i++ ) {
+    window.context._generators.openHat = context.createOpenHat( );
 
-      // we need to define this function
+    window.context._generators.lowBass = context.createBass( 36 );
 
-      // because otherwise i will be a closure
+    window.context._generators.midBass = context.createBass( 38 );
 
-      // variable for each of our requests.
+    window.context._generators.highBass = context.createBass( 40 );
 
-      var makeRequest = function( k ) {
-
-        var request = new XMLHttpRequest( );
-
-        request.open(
-
-          'GET', // Method
-
-          '/samples/' + sampleNames[ k ] + '.wav', //URL
-
-          true // is asynchronous
-
-        );
-
-        request.responseType = 'arraybuffer';
-
-        request.onload = function( ) {
-
-          window.context.decodeAudioData(
-
-            request.response,
-
-            function( audioBuffer ) { // success callback
-
-              window.context._sampleBuffers[ sampleNames[ k ] ] = audioBuffer;
-
-              if( Object.keys( window.context._sampleBuffers ).length === sampleNames.length ) {
-
-                // callback will only be executed once
-
-                // all of the sample buffers have been loaded.
-
-                callback( );
-
-              }
-
-            },
-
-            function( error ) { // failure callback
-
-              if( error ) {
-
-                throw error;
-
-              }
-
-            }
-
-          );
-
-
-        };
-
-        request.send( );
-
-      };
-
-      makeRequest( i );
-
-    }
+    callback( );
 
   };
 
