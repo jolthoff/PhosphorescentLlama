@@ -2,6 +2,8 @@ app.controller( 'ViewController', [ '$scope', '$timeout', '$rootScope', function
 
 	$scope.wrong = false;
 
+	$scope.won = false;
+
 	$scope.match = false;
 
 	$scope.declareWrong = function ( ) {
@@ -37,6 +39,14 @@ app.controller( 'ViewController', [ '$scope', '$timeout', '$rootScope', function
 	$scope.$on( 'notAMatch', function ( ) {
 
 		$scope.declareWrong( );
+
+	});
+
+	$scope.$on( 'playerWon' , function ( ) {
+
+		$scope.won = true;
+
+		console.log('i am here');
 
 	});
 

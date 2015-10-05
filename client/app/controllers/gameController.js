@@ -38,7 +38,7 @@ app.controller( 'GameController' , [ '$scope', 'playerSequencer', 'httpFactory',
 
       $scope.$broadcast( 'createTargetSequencer', data );
 
-      $scope.lastLevel = data.headers( 'lastLevel' );
+      $scope.lastLevel = +data.headers( 'lastLevel' );
 
     });
 
@@ -78,7 +78,12 @@ app.controller( 'GameController' , [ '$scope', 'playerSequencer', 'httpFactory',
 
   $scope.playerWonLevel = function ( ) {
 
-    $scope.$emit( 'correctMatch' );
+    if( $scope.level !== $scope.lastLevel ) {
+
+      $scope.$emit( 'correctMatch' );
+      
+    }
+
 
     if( $scope.level === $scope.lastLevel ) {
 
@@ -113,7 +118,7 @@ app.controller( 'GameController' , [ '$scope', 'playerSequencer', 'httpFactory',
 
     }
 
-    alert( 'CONGRATS YOU WON' );
+    $scope.$emit( 'playerWon' );
 
   };
 
@@ -227,7 +232,7 @@ app.controller( 'GameController' , [ '$scope', 'playerSequencer', 'httpFactory',
 
     var savedSequencer = $scope.playerSequencer.save( );
 
-    httpFactory.postSequencer( $scope.inputLevel, savedSequencer, function( response ) {
+    httpFactory.putSequencer( $scope.inputLevel, savedSequencer, function( response ) {
 
       if ( response ) {
 
