@@ -126,17 +126,17 @@ app.controller( 'GameController' , [ '$scope', 'playerSequencer', 'httpFactory',
 
     $scope.$emit( 'notAMatch' );
 
-    $scope.removeWrongBeats( );
+    // $scope.removeWrongBeats( );
 
   };
 
-  $scope.removeWrongBeats = function ( ) {
+  // $scope.removeWrongBeats = function ( ) {
 
-    var wrongBeats = $scope.playerSequencer.getWrongBeats( $scope.targetSequencer );
+  //   var wrongBeats = $scope.playerSequencer.getWrongBeats( $scope.targetSequencer );
 
-    $scope.$broadcast( 'toggleWrongBeatsOff', wrongBeats );
+  //   $scope.$broadcast( 'toggleWrongBeatsOff', wrongBeats );
 
-  };
+  // };
 
 
 
@@ -232,7 +232,7 @@ app.controller( 'GameController' , [ '$scope', 'playerSequencer', 'httpFactory',
 
     var savedSequencer = $scope.playerSequencer.save( );
 
-    httpFactory.putSequencer( $scope.inputLevel, savedSequencer, function( response ) {
+    httpFactory.postSequencer( $scope.inputLevel, savedSequencer, function( response ) {
 
       if ( response ) {
 
@@ -246,13 +246,7 @@ app.controller( 'GameController' , [ '$scope', 'playerSequencer', 'httpFactory',
 
   $scope.createSequencer = function( ) {
 
-    var sounds2 = [ 'kick', 'clap' ];
-
-    var sounds3 = [ 'kick', 'clap', 'openHat' ];
-
-    var sounds9 = [ 'kick', 'clap', 'openHat', 'closedHat', 'lowTom', 'highTom', 'lowBass', 'midBass', 'highBass' ];
-
-    var soundIDs = $scope.inputSounds === 2 ? sounds2 : sounds3;
+    var soundIDs = $scope.inputSounds.split( ',' );
 
     var userSequencer = playerSequencer.build( $scope.inputTempo, $scope.inputBeats, soundIDs );
 

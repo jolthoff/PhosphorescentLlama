@@ -12,6 +12,8 @@ module.exports = {
 
   controllers: __dirname + '/server/controllers',
 
-  classes: __dirname + '/client/classes'
+  classes: __dirname + '/client/classes',
+
+  root: __dirname
 
 };

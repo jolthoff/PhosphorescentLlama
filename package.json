@@ -21,16 +21,25 @@
   },
   "homepage": "https://github.com/PhosphorescentLlama/PhosphorescentLlama#readme",
   "dependencies": {
+    "angular": "^1.4.7",
+    "angular-animate": "^1.4.7",
+    "angular-ui-router": "^0.2.15",
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.14.0",
+    "bootstrap": "^3.3.5",
     "chai": "^3.3.0",
     "connect-flash": "^0.1.1",
     "cookie-parser": "^1.4.0",
     "express": "^4.13.3",
     "express-session": "^1.11.3",
+    "jquery": "^2.1.4",
     "mocha": "^2.3.3",
     "mongoose": "^4.1.9",
     "passport": "^0.3.0",
-    "passport-local": "^1.0.0"
-  }
+    "passport-local": "^1.0.0",
+    "underscore": "^1.8.3"
+  },
+  "cacheDirectories": [
+    "client/bower_components"
+  ]
 }

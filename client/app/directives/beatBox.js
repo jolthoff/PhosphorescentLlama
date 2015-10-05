@@ -2,7 +2,7 @@ app.directive('beatBox', function ( ) {
 
 	return {
 
-		templateUrl: '../../views/beat-box.html',
+		templateUrl: 'client/views/beat-box.html',
 
 		replace: true,
 
