@@ -32,21 +32,13 @@ return function( callback ) {
 
     window.context._generators.kick = context.createKick( );
 
-    window.context._generators.lowTom = context.createKick( 43 );
-
-    window.context._generators.highTom = context.createKick( 53 );
+    window.context._generators.lowTom = context.createKick( 48 );
 
     window.context._generators.clap = context.createClap( );
 
     window.context._generators.closedHat = context.createClosedHat( );
 
     window.context._generators.openHat = context.createOpenHat( );
-
-    window.context._generators.lowBass = context.createBass( 36 );
-
-    window.context._generators.midBass = context.createBass( 38 );
-
-    window.context._generators.highBass = context.createBass( 40 );
 
     callback( );
 
