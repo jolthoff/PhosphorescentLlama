@@ -1,24 +1,6 @@
-var app = angular.module( 'app', [ 'ui.router' ] );
+var app = angular.module( 'app', [ 'ui.router', 'ngAnimate'] );
 
 app.config( function ( $stateProvider, $urlRouterProvider ) {
-
-  // $urlRouterProvider.when( '/active', function ( $location ) {
-
-  //   $location.path( '/active' );
-
-  // // });
-
-  // $urlRouterProvider.rule( function ( $injector, $location ) {
-
-  //   var path = $location.path();
-
-  //   console.log(path);
-  
-  //   if (path === '/active' ) {
-      
-  //   }
-
-  // });
 
   $urlRouterProvider.otherwise('/');
 

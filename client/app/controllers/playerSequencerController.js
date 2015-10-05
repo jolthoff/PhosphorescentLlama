@@ -83,6 +83,8 @@ app.controller( 'PlayerSequencerController', [ '$scope', 'playerSequencer', '$ti
 
   $scope.animateLoop = function ( time ) {
 
+    var element = angular.element;
+
     $timeout( function( ) {
       
       var selector = '.' + $scope.currentColumn;
@@ -93,11 +95,11 @@ app.controller( 'PlayerSequencerController', [ '$scope', 'playerSequencer', '$ti
 
         if( unselector !== selector ) {
 
-          $(unselector).removeClass('current');
+          element(unselector).removeClass('current');
           
         } else {
 
-          $(selector).addClass('current');
+          element(selector).addClass('current');
           
         }
 

@@ -5,15 +5,14 @@
     <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.css">
     <link rel="stylesheet" href="styles/styles.css">
   </head>
+  <body ng-app="app" ng-controller="ViewController">
+
+    <div class="wrong" ng-class="{ flash: wrong }" ng-show="wrong"><span class="wrong-message">Try again!</span></div>
+    <div class="match" ng-class="{ flash: match }" ng-show="match"><span class="match-message">Good job!</span></div>
+
   <body ng-app="app">
 
-    <!-- <div class="nav-bar" ng-controller="GameController">
 
-      <div class="submit" ng-click="submit( )"></div>
-      <div class="play-pause" ng-controller="PlayerSequencerController" ng-click="playToggle( )"></div>
-      <div class="play-pause" ng-controller="TargetSequencerController" ng-click="playToggle( )"></div>
-
-    </div> -->
     <div ui-view="nav"></div>
     <div ui-view="content"></div>
 
@@ -23,12 +22,15 @@
     <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="bower_components/angular/angular.min.js"></script>
     <script src="bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
+    <script src="bower_components/angular-animate/angular-animate.min.js"></script>
     <script src="bower_components/underscore/underscore-min.js"></script>
     <script src="app/classes/Beat.js"></script>
     <script src="app/classes/Sequence.js"></script>
     <script src="app/classes/Bus.js"></script>
     <script src="app/classes/Sequencer.js"></script>
     <script src="app/app.js"></script>
+    <script src="app/directives/beatBox.js"></script>
+    <script src="app/controllers/viewController.js"></script>
     <script src="app/controllers/navController.js"></script>
     <script src="app/controllers/activeController.js"></script>
     <script src="app/controllers/gameController.js"></script>

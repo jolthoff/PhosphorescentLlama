@@ -17,8 +17,6 @@ app.controller( 'GameController' , [ '$scope', 'playerSequencer', 'httpFactory',
 
   }
 
-  $scope.wrong = false;
-
   /////////////////
   //
   //
@@ -86,15 +84,13 @@ app.controller( 'GameController' , [ '$scope', 'playerSequencer', 'httpFactory',
 
   $scope.playerWon = function ( ) {
 
-    alert( 'IT\'S A MATCH!' );
+    $scope.$emit( 'correctMatch' );
 
     $scope.level++;
 
     if( $rootScope.user ) {
 
       $rootScope.user.level = $scope.level;
-
-      console.log($rootScope.user);
 
       httpFactory.updateLevel( $rootScope.user );
 
@@ -107,11 +103,9 @@ app.controller( 'GameController' , [ '$scope', 'playerSequencer', 'httpFactory',
 
   $scope.failedMatch = function ( ) {
 
+    $scope.$emit( 'notAMatch' );
+
     $scope.removeWrongBeats( );
-
-    $scope.declareWrong();
-
-    // alert( 'Not quite there yet! Keep trying. Your wrong beats have been removed.' );
 
   };
 
