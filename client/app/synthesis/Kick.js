@@ -237,6 +237,28 @@ AudioContext.prototype.createKick = function( midiNote ) {
 
   };
 
+  kick.disconnect = function( destination ) {
+
+    if( destination ) {
+
+      if( destination.hasOwnProperty( 'input' ) ) {
+
+        kick.master.output.disconnect( destination.input );
+
+      } else {
+
+        kick.master.output.disconnect( destination );
+
+      }
+
+    } else {
+
+      kick.master.output.disconnect( );
+
+    }
+
+  };
+
   kick.start = function( when ) {
 
     kick.envelopes.forEach( function( envelope ) {

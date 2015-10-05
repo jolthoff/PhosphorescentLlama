@@ -248,6 +248,28 @@ AudioContext.prototype.createOpenHat = function( ) {
 
   };
 
+    openHat.disconnect = function( destination ) {
+
+    if( destination ) {
+
+      if( destination.hasOwnProperty( 'input' ) ) {
+
+        openHat.master.output.disconnect( destination.input );
+
+      } else {
+
+        openHat.master.output.disconnect( destination );
+
+      }
+
+    } else {
+
+      openHat.master.output.disconnect( );
+
+    }
+
+  };
+
   openHat.start = function( when ) {
 
     openHat.envelopes.forEach( function( envelope ) {

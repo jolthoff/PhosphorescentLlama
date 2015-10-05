@@ -34,7 +34,7 @@ AudioContext.prototype.createClosedHat = function( ) {
 
   closedHat.master.gain = context.createGain( );
 
-  closedHat.master.gain.gain.value = 2;
+  closedHat.master.gain.gain.value = 4;
 
   closedHat.master.input = closedHat.master.gain;
 
@@ -193,6 +193,28 @@ AudioContext.prototype.createClosedHat = function( ) {
     } else {
 
       closedHat.master.output.connect( destination );
+
+    }
+
+  };
+
+    closedHat.disconnect = function( destination ) {
+
+    if( destination ) {
+
+      if( destination.hasOwnProperty( 'input' ) ) {
+
+        closedHat.master.output.disconnect( destination.input );
+
+      } else {
+
+        closedHat.master.output.disconnect( destination );
+
+      }
+
+    } else {
+
+      closedHat.master.output.disconnect( );
 
     }
 
