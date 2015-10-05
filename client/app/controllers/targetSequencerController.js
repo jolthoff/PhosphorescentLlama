@@ -4,6 +4,12 @@ app.controller( 'TargetSequencerController', [ '$scope', '$timeout' , function (
   //sends targetSequencer back to gameController
   $scope.$on( 'createTargetSequencer', function( event, response ) {
 
+    if( $scope.sequencer ) {
+
+      $scope.sequencer.delete( );
+
+    }
+
     $scope.sequencer = Sequencer.prototype.retrieve( response.data );
 
     $scope.$emit( 'madeTargetSequencer', $scope.sequencer );

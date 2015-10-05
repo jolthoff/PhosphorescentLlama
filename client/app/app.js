@@ -2,52 +2,60 @@ var app = angular.module( 'app', [ 'ui.router' ] );
 
 app.config( function ( $stateProvider, $urlRouterProvider ) {
 
-  // $urlRouterProvider.when( '/active', function ( $location ) {
-
-  //   $location.path( '/active' );
-
-  // // });
-
-  // $urlRouterProvider.rule( function ( $injector, $location ) {
-
-  //   var path = $location.path();
-
-  //   console.log(path);
-  
-  //   if (path === '/active' ) {
-      
-  //   }
-
-  // });
-
-  $urlRouterProvider.otherwise('/');
+  $urlRouterProvider.otherwise( '/' );
 
   $stateProvider
-    .state('/', {
+
+    .state( '/', {
+
       views: {
+
         nav: {
+
           templateUrl: '../views/navView.html',
+
           controller: 'NavController'
+
         },
+
         content: {
+
           templateUrl: '../views/gameView.html',
+
           controller: 'GameController'
+
         }
+
       },
+
       url: '/'
+
     })
-    .state('/active', {
+
+    .state( '/active', {
+
       views: {
+
         nav: {
+
           templateUrl: '../views/activeView.html',
+
           controller: 'ActiveController'
+
         },
+
         content: {
+
           templateUrl: '../views/gameView.html',
+
           controller: 'GameController'
+
         }
+
       },
+
       url: '/active'
+      
     });
 
 });

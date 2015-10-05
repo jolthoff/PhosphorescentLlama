@@ -40,25 +40,25 @@ controller.getLevel = function( request, response, next ) {
 // save data to database by making GET request
 controller.saveLevel = function( request, response, next ) {
 
-  var sequencer = new Sequencer();
+  var sequencer = new Sequencer( );
 
   sequencer.level = request.body.level;
 
   sequencer.data = request.body.data;
 
-  Sequencer.findOne({level:sequencer.level}, function(err, found) {
+  Sequencer.findOne( { level: sequencer.level }, function( err, found ) {
 
-    if (err) {
+    if ( err ) {
 
       throw error;
 
-    } else if (found) {
+    } else if ( found ) {
 
       console.log("level already exists.");
 
-      response.status( 201 ).send();
+      response.status( 201 ).send( );
 
-    } else if (!found) {
+    } else if ( !found ) {
 
       sequencer.save(function( error ){
 
@@ -83,7 +83,7 @@ controller.deleteLevel = function( request, response, next ) {
 
   var level = request.params.id;
 
-  Sequencer.remove({'level':level}, function( error ) {
+  Sequencer.remove( {'level': level }, function( error ) {
 
     if ( error ) {
 
@@ -91,7 +91,7 @@ controller.deleteLevel = function( request, response, next ) {
 
     } else {
 
-      response.status( 200 ).send();
+      response.status( 200 ).send( );
 
     }
 
@@ -105,7 +105,7 @@ controller.updateLevel = function( request, response, next ) {
 
   var data = request.body.data;
 
-  Sequencer.findOneAndUpdate({ 'level': level }, { $set: { 'data': data } }, function( error ) {
+  Sequencer.findOneAndUpdate( { 'level': level }, { $set: { 'data': data } }, function( error ) {
 
     if ( error ) {
 
@@ -122,3 +122,28 @@ controller.updateLevel = function( request, response, next ) {
 };
 
 module.exports = controller;
+
+controller.getLastLevel = function ( request, response, next ) {
+
+  Sequencer.count( {} , function( error, count ) {
+
+    if( error ) {
+
+      //add better error handling here
+      next( );
+
+    } else {
+
+      response.set( {
+
+        lastLevel: count
+
+      });
+
+      next( );
+
+    }
+
+  });
+
+};

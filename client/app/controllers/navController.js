@@ -8,9 +8,9 @@ app.controller('NavController', [ '$scope', 'httpFactory', '$rootScope', '$locat
 
       if( response.status === 200 ) {
 
-        $rootScope.user.username = response.headers('username');
+        $rootScope.user.username = response.headers( 'username' );
 
-        $rootScope.user.level = response.headers('level');
+        $rootScope.user.level = response.headers( 'level' );
 
         $location.path( response.data );
 
@@ -32,7 +32,7 @@ app.controller('NavController', [ '$scope', 'httpFactory', '$rootScope', '$locat
 
       $rootScope.user.level = 1;
 
-      $rootScope.user.username = response.headers('username');
+      $rootScope.user.username = response.headers( 'username' );
 
       if( response.status === 200 ) {
 
