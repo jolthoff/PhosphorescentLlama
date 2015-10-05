@@ -28,6 +28,12 @@ var Bus = function( destination ) {
 
 };
 
+Bus.prototype.disconnect = function( ) {
+
+  this._gainStage.disconnect( );
+
+}
+
 Bus.prototype.getInput = function( ) {
   
   return this._gainStage;
