@@ -2,6 +2,8 @@ AudioContext.prototype.createEnvelope =
 
   function( attack, decay, sustain, release ) {
 
+  var context = this;
+
   // attack = 
 
   //  { time: ...,
@@ -20,7 +22,7 @@ AudioContext.prototype.createEnvelope =
 
   //    target: ...
 
-  //  } || releaseTime, where target defaults to 0.
+  //  } || releaseTime, where target defaults to Math.pow( 10, -100 )
 
   var envelope = {};
 
@@ -30,24 +32,6 @@ AudioContext.prototype.createEnvelope =
 
   envelope.setAttack = function( attack ) {
 
-    var invalidAttack = "Unexpected attack value. ";
-
-    invalidAttack += "Attack should be an object with a property ";
-
-    invalidAttack += "'time', which should reference a number, and a ";
-
-    invalidAttack += "property 'target', which should also reference a number. ";
-
-    invalidAttack += "Alternatively, attack could be a number, not an object. ";
-
-    invalidAttack += "If attack is a number, that number specifies attack time and ";
-
-    invalidAttack += "the attack target defaults to 1. As it makes no sense to specify ";
-
-    invalidAttack += "negative attack times, either attack or attack.time must be a positive ";
-
-    invalidAttack += "number."
-
     if( typeof attack !== 'number' ) {
 
       if( typeof attack === 'object' ) {
@@ -56,71 +40,149 @@ AudioContext.prototype.createEnvelope =
 
           typeof attack.time !== 'number' ||
 
-          typeof attack.target !== 'number' ||
-
           attack.time < 0
 
         ) {
 
-          throw invalidAttack;
+          throw "Attack should have a property 'time' that references a positive number.";
+
+        } else if(
+
+          attack.initial !== undefined &&
+
+          typeof attack.initial !== 'number'
+
+        ) {
+
+          throw "If initial is defined, inital must reference a number.";
+
+        } else if(
+
+          attack.target !== undefined &&
+
+          typeof attack.target !== 'number'
+
+        ) {
+
+          throw "If target is defined, target must reference a number.";
+
+        } else if(
+
+          attack.target !== undefined &&
+
+          envelope.sustain !== undefined &&
+
+          attack.target < envelope.sustain
+
+        ) {
+
+          throw "The attack's target must be greater than the envelope's sustain.";
+
+        } else if(
+
+          attack.target === undefined &&
+
+          envelope.sustain !== undefined &&
+
+          envelope.sustain > 1
+
+        ) {
+
+          throw "The attack's target defaulted to 1, but sustain is greater than 1.";
 
         }
 
       } else {
 
-        throw invalidAttack;
+        throw "The attack parameter must be either a number or an object.";
 
       }
 
     } else if( attack < 0 ) {
 
-      throw invalidAttack;
+      throw "Attack time cannot be a negative number.";
 
     }
 
     // At this point, attack has been validated.
 
-    envelope.attack = attack;
+    if( typeof attack === 'number' ) {
 
-  };
+      envelope.attack = {
 
-  envelope.setDecay = function( decay ) {
+        time: attack,
 
-    var invalidDecay = "Unexpected decay value. ";
+        initial: 0,
 
-    invalidDecay += "Decay should be a number. ";
+        target:  1
 
-    invalidDecay += "When decay is a number, it specifies decay time. "
+      };
 
-    invalidDecay += "As it makes no sense to specify a negative decay time, "
+    } else {
 
-    invalidDecay += "envelopes cannot be constructed with negative decay times."
+      envelope.attack = attack;
 
-    if( typeof decay !== 'number' ) {
+      if( envelope.attack.initial === undefined ) {
 
-      throw invalidDecay;
+        envelope.initial = 0;
 
-    } else if( decay < 0 ) {
+      }
 
-      throw invalidDecay;
+      if( envelope.attack.target === undefined ) {
+
+        envelope.target = 1;
+
+      }
 
     }
 
-    // At this point, decay has been validated.
+    // Attack curve is a linear ramp.
 
-    envelope.decay = decay;
+    if( envelope.attack.time > 1 / context.sampleRate ) {
+
+      envelope.attack.curve = new Float32Array( context.sampleRate * envelope.attack.time );
+
+      for( var i = 0; i < envelope.attack.curve.length; i++ ) {
+
+        envelope.attack.curve[ i ] =
+
+          envelope.attack.initial + i *
+
+            ( envelope.attack.target - envelope.attack.initial ) /
+
+              ( envelope.attack.time * context.sampleRate );
+
+      }
+
+    } else {
+
+      envelope.attack.curve = false;
+
+    }
 
   };
 
   envelope.setSustain = function( sustain ) {
 
-    var invalidSustain = "Unexpected sustain value. ";
-
-    invalidSustain += "Sustain should be a number."
-
     if( typeof sustain !== 'number' ) {
 
-      throw invalidSustain;
+      throw "Sustain should be a number.";
+
+    } else if( sustain > envelope.attack.target ) {
+
+      throw "Sustain should be less than the envelope's attack's target.";
+
+    } else if(
+
+      envelope.release !== undefined &&
+
+      envelope.release.target !== undefined &&
+
+      sustain < envelope.release.target
+
+    ) {
+
+      throw "Sustain should be greater than the envelope's release target.";
 
     }
 
@@ -130,25 +192,58 @@ AudioContext.prototype.createEnvelope =
 
   };
 
+  envelope.setDecay = function( decay ) {
+
+    if( typeof decay !== 'number' ) {
+
+      throw "Decay should be a number.";
+
+    } else if( decay < 0 ) {
+
+      throw "Decay should be a positive number.";
+
+    }
+
+    // At this point, decay is validated
+
+    envelope.decay = {
+
+      time: decay
+
+    };
+
+    // Decay curve is an exponential ramp
+
+    if( envelope.decay.time  > 1 / context.sampleRate ) {
+
+      envelope.decay.curve = new Float32Array( envelope.decay.time * context.sampleRate );
+
+      for( var i = 0; i < envelope.decay.curve.length; i++ ) {
+
+        envelope.decay.curve[ i ] =
+
+          ( envelope.attack.target - envelope.sustain + 1 ) *
+
+            Math.exp( i * Math.log( 1 /
+
+                ( envelope.attack.target - envelope.sustain + 1 ) ) /
+
+                  ( envelope.decay.time * context.sampleRate ) ) +
+
+          envelope.sustain - 1;
+
+      }
+
+    } else {
+
+      envelope.decay.curve = false;
+
+    }
+
+  };
+
+
   envelope.setRelease = function( release ) {
-
-    var invalidRelease = "Unexpected release value. ";
-
-    invalidRelease += "Release should be an object with a property ";
-
-    invalidRelease += "'time', which should reference a number, and a ";
-
-    invalidRelease += "property 'target', which should also reference a number. ";
-
-    invalidRelease += "Alternatively, release could be a number, not an object. ";
-
-    invalidRelease += "If release is a number, that number specifies release time and ";
-
-    invalidRelease += "the release target defaults to 0. As it makes no sense to specify ";
-
-    invalidRelease += "negative release times, either release or release.time must be a positive ";
-
-    invalidRelease += "number."
 
     if( typeof release !== 'number' ) {
 
@@ -158,73 +253,123 @@ AudioContext.prototype.createEnvelope =
 
           typeof release.time !== 'number' ||
 
-          typeof release.target !== 'number' ||
-
           release.time < 0
 
         ) {
 
-          throw invalidRelease;
+          throw "Release should have a property 'time' that references a positive number.";
+
+        } else if(
+
+          release.target !== undefined &&
+
+          envelope.sustain < release.target
+
+        ) {
+
+          throw "The release's target should be less than the envelope's sustain.";
+
+        } else if(
+
+          release.target === undefined &&
+
+          envelope.sustain < 0
+
+        ) {
+
+          throw "The release target defaulted to 0, but the envelope's sustain is less than 0.";
 
         }
 
       } else {
 
-        throw invalidRelease;
+        throw "Release must be either a number or an object.";
 
       }
 
-    } else if( attack < 0 ) {
+    } else if( release < 0 ) {
 
-      throw invalidRelease;
+      throw "Release must be a positive number";
 
     }
 
     // At this point, release has been validated.
 
-    envelope.release = release;
+    if( typeof release === 'number' ) {
 
-  }
+      envelope.release = {
 
-  envelope.setAttack( attack );
+        time: release,
 
-  envelope.setdDecay( decay );
+        target: 0
 
-  envelope.setSustain( sustain );
-
-  envelope.setRelease( release );
-
-  var computeTau = function( time, initialValue, targetValue ) {
-
-    if( initialValue !== targetValue ) {
-
-      return -1 * time /
-
-              Math.log( -1 * 0.01 * targetValue /
-
-                ( initialValue - targetValue ) );
+      };
 
     } else {
 
-      // In the case that the initialValue
+      envelope.release = release;
 
-      // is the same as the targetValue,
+      if( envelope.release.target === undefined ) {
 
-      // the time constant should be arbitrarily
+        envelope.release.target = 0;
 
-      // large.
+      }
 
-      return Number.MAX_VALUE;
+    }
+
+    // Release curve is an exponential ramp.
+
+    if( envelope.release.time > 1 / context.sampleRate ) {
+
+      envelope.release.curve = new Float32Array( envelope.release.time * context.sampleRate );
+
+      for( var i =0; i < envelope.release.curve.length; i++ ) {
+
+        envelope.release.curve[ i ] =
+
+          ( envelope.sustain - envelope.release.target + 1 ) *
+
+            Math.exp( i * Math.log( 1 /
+
+              ( envelope.sustain - envelope.release.target + 1 ) ) /
+
+                ( envelope.release.time * context.sampleRate ) ) +
+
+          envelope.release.target - 1;
+
+      }
+
+    } else {
+
+      envelope.release.curve = false;
 
     }
 
   };
 
-  envelope.connect = function( audioParam ) {
+  try {
 
-    if( audioParam instanceof AudioParam ) {
+    envelope.setAttack( attack );
 
-      envelope.param = audioParam;
+    envelope.setSustain( sustain );
+    
+    envelope.setDecay( decay );
+
+    envelope.setRelease( release );
+
+  } catch( error ) {
+
+    console.error( error );
+
+    return;
+
+  }
+
+  envelope.connect = function( destination ) {
+
+    if( destination instanceof AudioParam ) {
+
+      envelope.param = destination;
 
     } else {
 
@@ -234,7 +379,7 @@ AudioContext.prototype.createEnvelope =
 
       error += "connected to instances of AudioParam.";
 
-      throw error;
+      console.error( error );
 
     }
 
@@ -242,65 +387,85 @@ AudioContext.prototype.createEnvelope =
 
   envelope.on = function( when, sustainTime ) {
 
+    // Make sure that the envelope is connected
+
+    if( !envelope.param ) {
+
+      console.error( "Envelope is not connected to any audio param. Use envelope.connect." );
+
+      return;
+
+    }
+
     // If when is not defined, then the envelope
 
     // triggers immediately.
 
     when = when || context.currentTime;
 
-    if( typeof envelope.attack === 'number' ) {
+    // If when is less than the current time,
 
-      envelope.attack = {
+    // then the envelope triggers immediately.
 
-        time: envelope.attack,
+    if( when < context.currentTime ) {
 
-        target: 1
-
-      };
+      when = context.currentTime;
 
     }
 
-    // schedule attack phase.
+    // Schedule attack phase.
 
-    envelope.param.setTargetAtTime(
+    if( envelope.attack.curve ) {
 
-      envelope.attack.target,
+      envelope.param.setValueCurveAtTime(
 
-      when,
+        envelope.attack.curve,
 
-      computeTau(
+        when,
 
-        envelope.attack.time,
+        envelope.attack.time
 
-        envelope.param.value,
+      );
 
-        envelope.attack.target
+    } else {
 
-      )
-
-    );
-
-    // Schedule decay phase.
-
-    envelope.param.setTargetAtTime(
-
-      envelope.decay,
-
-      when + envelope.attack.time,
-
-      computeTau(
-
-        envelope.decay,
+      envelope.param.setValueAtTime(
 
         envelope.attack.target,
 
-        envelope.sustain
+        when
 
-      )
+      );
 
-    );
+    }
 
-    if( sustainTime ) {
+    // Schedule decay phase.
+
+    if( envelope.decay.curve ) {
+
+      envelope.param.setValueCurveAtTime(
+
+        envelope.decay.curve,
+
+        when + envelope.attack.time,
+
+        envelope.decay.time
+
+      );
+
+    } else {
+
+      envelope.param.setValueAtTime(
+
+        envelope.sustain,
+
+        when + envelope.attack.time
+
+      );
+
+    }
+
+    if( sustainTime !== undefined ) {
 
       // In case that sustainTime is
 
@@ -328,36 +493,50 @@ AudioContext.prototype.createEnvelope =
 
   envelope.off = function( when ) {
 
+    // Make sure that the envelope is connected.
+
+    if( !envelope.param ) {
+
+      console.error( "Envelope is not connected to any audio param. Use envelope.connect" );
+
+      return;
+
+    }
+
     // If when is not defined, then the envelope
 
     // releases immediately.
 
     when = when || 0;
 
-    if( typeof envelope.release === 'number' ) {
+    // Schedule release phase.
 
-      envelope.release = {
+    if( envelope.release.curve ) {
 
-        time: envelope.release,
+      envelope.param.setValueCurveAtTime(
 
-        target: 0
+        envelope.release.curve,
 
-      };
+        when,
+
+        envelope.release.time
+
+      );
+
+    } else {
+
+      envelope.param.setValueAtTime(
+
+        envelope.release.target,
+
+        when
+
+      );
 
     }
 
-      // Schedule release phase.
-
-    envelope.param.setTargetAtTime(
-
-      envelope.release.time,
-
-      when,
-
-      envelope.release.target
-
-    );
-
   };
+
+  return envelope;
 
 };

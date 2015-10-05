@@ -1,155 +1,252 @@
-AudioContext.prototype.createKick = function( ) {
+AudioContext.prototype.createKick = function( midiNote ) {
 
-  var kickDuration = 0.1;
+  /*
 
-  // define parameters for gain envelope.
+    GRAPH:
 
-  var gainAttackTime = kickDuration * ( 1 / 20 );
+    kick.sub --> kick.sub.firstGain --> kick.sub.secondGain --> kick.master.gain --> destination
+        ^                ^                      ^
+        |                |                      |
+        .frequency       .gain                  .gain
+        ^                ^                      ^
+        |                |                      |
+        |                |                      * <-- kick.sub.secondGain.envelope
+        |                |
+        |                * <-- kick.sub.firstGain.whiteNoise.gain *
+        |                                                         ^
+        |                                                         |
+        |                                                         * <-- kick.sub.firstGain.whiteNoise
+        |
+        * <-- kick.sub.frequency.envelope
+  */
 
-  var gainDecayTime = kickDuration * ( 2 / 20 );
+  // midiNote defaults to C2
 
-  var gainSustainTime = kickDuration * ( 1 / 20 );
+  midiNote = midiNote || 36;
 
-  var gainReleaseTime = kickDuration * ( 16 / 20 );
+  var kick = {};
 
-  var gainAttackTarget = 0.5;
+  var context = this;
 
-  var gainDecayTarget = 0.4;
+  kick.master = {};
 
-  var gainSustainTarget = gainDecayTarget;
+  kick.envelopes = [];
 
-  var gainReleaseTarget = 0;
+  var ms = Math.pow( 10, -3 );
 
-  var gainEnvelope = [
+  kick.sustain =  125 * ms;
 
-    [ gainAttackTime, gainAttackTarget ],
+  kick.master.gain = context.createGain( );
 
-    [ gainDecayTime, gainDecayTarget ],
+  kick.master.gain.gain.value = 0.5;
 
-    [ gainSustainTime, gainSustainTarget ],
+  kick.master.input = kick.master.gain;
 
-    [ gainReleaseTime, gainReleaseTarget ]
+  kick.master.output = kick.master.gain;
 
-  ];
+  // Create and configure kick.sub
 
-  // define parameters for cutoff envelope.
+  kick.sub = context.createOscillator( );
 
-  var cutoffAttackTime = kickDuration * ( 1 / 20 );
+  kick.sub.type = 'sine';
 
-  var cutoffDecayTime = kickDuration * ( 2 / 20 );
+  kick.sub.frequency.value = 440 * Math.pow( 2, ( midiNote - 12 - 69 ) / 12 );
 
-  var cutoffSustainTime = kickDuration * ( 10 / 20 );
+  kick.sub.start( context.currentTime );
 
-  var cutoffReleaseTime = kickDuration * ( 7 / 20 );
+  // Create kick.sub.frequency.envelope
 
-  var cutoffAttackTarget = 400;
+  kick.sub.frequency.envelope = {};
 
-  var cutoffDecayTarget = 400;
+  kick.sub.frequency.envelope.attack = {
 
-  var cutoffSustainTarget = cutoffDecayTarget;
+    time: 1 * ms,
 
-  var cutoffReleaseTarget = 0;
+    target: 440 * Math.pow( 2, ( midiNote + 24 - 69 ) / 12 ),
 
-  var cutoffEnvelope = [
+    initial: 440 * Math.pow( 2, ( midiNote + 22 - 69 ) / 12 )
 
-    [ cutoffAttackTime, cutoffAttackTarget ],
+  };
 
-    [ cutoffDecayTime, cutoffDecayTarget ],
+  kick.sub.frequency.envelope.decay =  200 * ms;
 
-    [ cutoffSustainTime, cutoffSustainTarget ],
+  kick.sub.frequency.envelope.sustain = 440 * Math.pow( 2, ( midiNote - 69 ) / 12 );
 
-    [ cutoffReleaseTime, cutoffReleaseTarget ]
+  kick.sub.frequency.envelope.release = {
 
-  ];
+    time: 250 * ms,
 
-  // create kick with no generators
+    target: 440 * Math.pow( 2, ( midiNote - 12 - 69 ) / 12 )
 
-  var kick = this.createSynthesizer({
+  };
 
-    "gainEnvelope": gainEnvelope,
+  kick.sub.frequency.envelope = context.createEnvelope(
 
-    "gain": 0,
+    kick.sub.frequency.envelope.attack,
 
-    "cutoffEnvelope": cutoffEnvelope,
+    kick.sub.frequency.envelope.decay,
 
-    "cutoff": 100
+    kick.sub.frequency.envelope.sustain,
 
-  });
+    kick.sub.frequency.envelope.release
 
-  // define parameters for the bass generator gain envelope.
+  );
 
-  var bassGainAttackTime = 0;
+  kick.envelopes.push( kick.sub.frequency.envelope );
 
-  var bassGainDecayTime = 0;
+  /*
 
-  var bassGainSustainTime = kickDuration;
+  kick.sub
+      ^
+      |
+      .frequency
+      ^
+      |
+      * <-- kick.sub.frequency.envelope
 
-  var bassGainReleaseTime = 0;
+  */
 
-  var bassGainAttackTarget = 0;
+  kick.sub.frequency.envelope.connect( kick.sub.frequency );
 
-  var bassGainDecayTarget = 0;
+  // Create and configure kick.sub.firstGain
 
-  var bassGainSustainTarget = 0;
+  kick.sub.firstGain = context.createGain( );
 
-  var bassGainReleaseTarget = 0;
+  kick.sub.firstGain.gain.value = 1;
 
-  var bassGainEnvelope = [
+  /*
 
-    [ bassGainAttackTime, bassGainAttackTarget ],
+  kick.sub --> kick.sub.firstGain
 
-    [ bassGainDecayTime, bassGainDecayTarget ],
+  */
 
-    [ bassGainSustainTime, bassGainSustainTarget ],
+  kick.sub.connect( kick.sub.firstGain );
 
-    [ bassGainReleaseTime, bassGainReleaseTarget ]
+  // Create and configure kick.sub.firstGain.whiteNoise
 
-  ];
+  kick.sub.firstGain.whiteNoise = context.createWhiteNoise( );
 
-  // define parameters for the bass generator frequencyEnvelope.
+  // Create and configure kick.sub.firstGain.whiteNoise.gain
 
-  var bassFrequencyAttackTime = kickDuration * ( 1 / 20 );
+  kick.sub.firstGain.whiteNoise.gain = context.createGain( );
 
-  var bassFrequencyDecayTime = kickDuration * ( 2 / 20 );
+  kick.sub.firstGain.whiteNoise.gain.gain.value = 0.0005;
 
-  var bassFrequencySustainTime = kickDuration * ( 2 / 20 );
+  /*
 
-  var bassFrequencyReleaseTime = kickDuration * ( 15 / 20 );
+  kick.sub.firstGain.whiteNoise.gain *
+                                     ^
+                                     |
+                                     * <-- kick.sub.firstGain.whiteNoise
 
-  var bassFrequencyAttackTarget = 40;
+  */
 
-  var bassFrequencyDecayTarget = 30;
+  kick.sub.firstGain.whiteNoise.connect( kick.sub.firstGain.whiteNoise.gain );
 
-  var bassFrequencySustainTarget = 30;
+  kick.sub.firstGain.whiteNoise.start( context.currentTime );
 
-  var bassFrequencyReleaseTarget = 0;
+  /*
 
-  var bassFrequencyEnvelope = [
+  kick.sub.firstGain
+          ^
+          |
+          .gain
+          ^
+          |
+          * <-- kick.sub.firstGain.whiteNoise.gain
 
-    [ bassFrequencyAttackTime, bassFrequencyAttackTarget ],
+  */
 
-    [ bassFrequencyDecayTime, bassFrequencyDecayTarget ],
+  kick.sub.firstGain.whiteNoise.gain.connect( kick.sub.firstGain );
 
-    [ bassFrequencySustainTime, bassFrequencySustainTarget ],
+  // Create and configure kick.sub.secondGain
 
-    [ bassFrequencyReleaseTime, bassFrequencyReleaseTarget ]
+  kick.sub.secondGain = context.createGain( );
 
-  ];
+  kick.sub.secondGain.gain.value = 0;
 
-  // add the bass generator to the kick synthesizer
+  /*
 
-  kick.addGenerator({
+  kick.sub.firstGain --> kick.sub.secondGain
 
-    "gainEnvelope": bassGainEnvelope,
+  */
 
-    "gain": 1,
+  kick.sub.firstGain.connect( kick.sub.secondGain );
 
-    "frequencyEnvelope": bassFrequencyEnvelope,
+  /*
 
-    "frequency": 60
+  kick.sub.secondGain --> kick.sub.master.gain
 
-  });
+  */
+
+  kick.sub.secondGain.connect( kick.master.input );
+
+  // Create and configure kick.sub.secondGain.envelope
+
+  kick.sub.secondGain.envelope = {};
+
+  kick.sub.secondGain.envelope.attack = 1 * ms;
+
+  kick.sub.secondGain.envelope.decay = 200 * ms;
+
+  kick.sub.secondGain.envelope.sustain = 0.25;
+
+  kick.sub.secondGain.envelope.release = 250 * ms;
+
+  kick.sub.secondGain.envelope = context.createEnvelope(
+
+    kick.sub.secondGain.envelope.attack,
+
+    kick.sub.secondGain.envelope.decay,
+
+    kick.sub.secondGain.envelope.sustain,
+
+    kick.sub.secondGain.envelope.release
+
+  );
+
+  kick.envelopes.push( kick.sub.secondGain.envelope );
+
+  /*
+
+  kick.sub.secondGain
+          ^
+          |
+          .gain
+          ^
+          |
+          * <-- kick.sub.secondGain.envelope
+
+  */
+
+  kick.sub.secondGain.envelope.connect( kick.sub.secondGain.gain );
+
+  // Implement connect and start interface.
+
+  kick.connect = function( destination ) {
+
+    if( destination.hasOwnProperty( 'input' ) ) {
+
+      kick.master.output.connect( destination.input );
+
+    } else {
+
+      kick.master.output.connect( destination );
+
+    }
+
+  };
+
+  kick.start = function( when ) {
+
+    kick.envelopes.forEach( function( envelope ) {
+
+      envelope.on( when, kick.sustain );
+
+    });
+
+  };
 
   return kick;
-
+  
 };

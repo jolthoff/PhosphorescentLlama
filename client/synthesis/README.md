@@ -1,56 +1,172 @@
 Synthesis
 =========
 
-AudioContext.createEnvelope
----------------------------
+AudioContext.prototype.createEnvelope
+-------------------------------------
 
-### Input:
+This constructor extends the browser's AudioContext class
+in order to instatiate attack-decay-sustain-release envelopes
+with connect, on, and off methods. The connect method
+can be expected to work just as the connect method
+of AudioNode. On and off method are similar to the AudioContext's
+start and stop methods with two notable exceptions: ( 1 ) On and
+off can be invoked many times for the same envelope instance, and
+( 2 ) On triggers the attack and decay phases and leaves the envelope
+in the sustain phase until off is triggered.
 
-Four arguments are passed in during instatiation. Each argument is an
-array tuple that contains the time in seconds and target value for it's corresponding
-envelope phase. The expected order is  
-[ attackTime, attackTarget ],  
-[ decayTime, decayTarget ],  
-[ sustainTime, sustainTarget ],  
-[ releaseTime, releaseTarget ].
+### Instantiation Parameters:
 
-### Output/behavior:
+#### Attack:
 
-Returns an envelope node with a trigger method
-All phase ramps are linear. Only the sustain phase is constant.
+Attack must be either a number or an options object. If attack is a number,
+it will be interpreted as the attack time in seconds. In this case, the
+attack ramp will be a linear ramp from 0 to 1, which is suitable for most
+gain envelope applications. If attack is an options object, it must
+have a property 'time' and can optionally include 'target' and 'initial'
+properties. In this case, the attack ramp will be a linear ramp from 'initial'
+value to 'target' value in 'time' seconds. If 'target' is not specified, it
+defaults to 1. If 'initial' is not specified, it defaults to 0.
 
-### Methods:
+#### Decay:
+
+Decay must be a number. This number specifies the decay time in seconds.
+The decay ramp will be an exponential ramp from the attack phase's target
+to the sustain phase's value in the specified number of seconds.
+
+#### Sustain:
+
+Sustain must be a number. This number specifies the sustain phase's value and
+must be less than or equal to the attack phase's target value. After the attack
+and decay phases, the envelope will output the sustain value until the off method
+triggers the release phase.
+
+#### Release:
+
+Release must be either a number or an options object. If release is a number,
+it will be interpreted as the release time in seconds. In this case, the
+release ramp will be an exponential ramp from the sustain phase's value
+to 0 in the specified time, which is suitable for most gain envelope applications.
+If the release is an options object, it must has a property 'time' and can
+optionally include a 'target' property. In this cae, the release ramp will be
+an exponential ramp from the sustain phase's value to the 'target' value
+in 'time' seconds. If target is not specified, it will default to 0. Note
+that the release phase's target must be less than the sustain phase's value.
+
+#### Example Gain Envelope:
+
+    var context = new AudioContext( );
+
+    var envelope = context.createEnvelope(
+
+      1, // Attack Time
+
+      1, // Decay Time
+
+      0.5, // Sustain Value
+
+      1, // Release Time
+
+    );
+
+    /*
+
+    Now envelope is something like this:
+
+        /\
+       /  \
+      /    \________ ... ____
+     /                       \
+    /                         \
+
+    Except that the decay and release ramp are supposed to be exponential.
+
+    */
+
+#### Example Frequency Envelope:
+
+    var context = new AudioContext( );
+
+    var envelope = context.createEnvelope(
+
+      { // Attack Options
+
+        time: 1,
+
+        target: 880,
+
+        initial: 440
+
+      },
+
+      1, // Decay Time
+
+      660, // Sustain Value
+
+      { // Release Options
+
+        time: 1,
+
+        target: 440
+
+      }
+
+    );
+
+### Envelope Methods:
+
+For the explanations below, suppose the 'envelope'
+with a lowercase 'e' refers to the return value of
+a call to AudioContext.prototype.createEnvelope.
 
 #### envelope.connect:
 
-##### Input:
+##### Invocation Parameters:
 
-One parameter is passed in during invocation. It represents
-the audio node or audio param that the envelope's output
-will be routed to. If the argument is neither an audio node
-nor an audio param, this method will work only if the argument
-is an object with an input property that holds either an audio
-node or an audio param.
+###### Destination:
 
-##### Output/behavior:
+Destination is the audio param that the envelope will modulate.
 
-Behaves similarly to AudioNode.connect( ).
+##### Behavior:
 
-#### envelope.start:
+envelope.connect establishes which instance of Audio Param the envelope
+will modulate. Note that envelope.connect must be invoked before
+envelope.on or envelope.off.
 
-##### Input:
+#### envelope.on:
 
-One parameter is passed in during invocation. It
-represents the trigger start time in seconds relative to the
-context's time coordinates.
+##### Invocation Parameters:
 
-##### Output/behvaior:
+###### When:
 
-Creates a source instance with envelope buffer as buffer,
-connects that instance to the output, and schedules it to
-start at the time specified by the first argument. In the case
-that an envelope is in execution at the scheduling time, that envelope
-will be stopped and the new one will be triggered.
+Determines the time at which the attack phase of the envelope
+will begin.
+
+###### Sustain Time:
+
+If defined, sustain time determines the time between the end
+of the decay phase and the beginning of the release phase. If
+not defined, the sustain phase will persist until envelope.off
+is invoked.
+
+##### Behavior:
+
+envelope.on schedules the attack, decay, and sustain phases of
+the envelope. In the case that sustain time is also specified,
+envelope.on also schedules envelope.off after the attack time,
+decay time, and sustain time have elapsed.
+
+#### envelope.off:
+
+##### Invocation Parameters:
+
+###### When:
+
+Determines the time at which the release phase of the envelope
+will begin.
+
+##### Behavior:
+
+envelope.off schedules the release of the envelope.
 
 ### Example:
 
@@ -72,13 +188,39 @@ will be stopped and the new one will be triggered.
 
     var gainEnvelope = context.createEnvelope(
 
-      [ 0.01, 1 ], [ 0.02, 0.5 ], [ 0.01, 0.5 ], [ 0.06, 0 ]
+      1, // attack
+
+      2, // decay
+
+      0.5, // sustain
+
+      1 // release
 
     );
 
     var frequencyEnvelope = context.createEnvelope(
 
-      [ 0.01, 40 ], [0.02,  20], [0.01, 20 ], [0.06, 0]
+      {
+
+        time: 1,
+
+        target: 880,
+
+        initial: 440
+
+      },
+
+      2,
+
+      660,
+
+      {
+
+        time: 1,
+
+        target: 440
+
+      }
 
     );
 
@@ -88,33 +230,37 @@ will be stopped and the new one will be triggered.
 
     osc.start( context.currentTime );
 
-    gainEnvelope.start( context.currentTime );
+    gainEnvelope.on( context.currentTime, 1 );
 
-    frequencyEnvelope.start( context.currentTime );
+    frequencyEnvelope.on( context.currentTime, 1 );
 
-AudioContext.createWhiteNoise:
-------------------------------
+AudioContext.prototype.createWhiteNoise:
+----------------------------------------
 
-### Input:
+This constructor extends the browser's AudioContext class
+in order to instatiate a white noise source. The start
+and stop methods behave just as the start and stop methods
+of Audio Oscillators with the exception that the start and
+stop methods of the white noise instance can be triggered
+more than once. 
 
-This constructor takes no parameters.
+### White Noise Methods:
 
-### Output/behavior:
-
-Creates an instance of white noise. This is intended to interface as if
-it were an Audio Oscillator Node. That is, via connect, start, and stop methods.
-Note, however, that the start method of white noise can be triggered
-more that once. 
-
-### Methods:
+For the explanations below, suppose the 'whiteNoise'
+with a lowercase 'w' refers to the return value of
+a call to AudioContext.prototype.createWhiteNoise.
 
 #### whiteNoise.connect:
 
-##### Input:
+##### Instantiation Parameters:
 
-Takes in the target destination as the first parameter.
+###### Destination:
 
-##### Output/behavior:
+Destination must be an Audio Node, an Audio Param,
+or an instance of a class with an input property that
+is either an Audio Node or an Audio Param.
+
+###### Behavior:
 
 If the destination is an audio node or an audio parameter,
 the, whiteNoise.output is set to reference that audio node
@@ -125,20 +271,28 @@ that input property.
 
 #### whiteNoise.start:
 
-#### Input:
+##### Instantiation Parameters:
 
-Takes in the starting time relative to the current context's
-time coordinates as the first parameter.
+###### When:
 
-#### Output/behavior:
+Determines the time at which the whiteNoise will
+be scheduled to start.
+
+##### Behavior:
 
 Sets whiteNoise to output white noise for an indeterminate
-amount of time. This is achieved by looping a five
-second white noise buffer. Note that, unlike native audio nodes,
-start can be triggered many times on the same instance of
-whiteNoise.
+amount of time.
 
 #### whiteNoise.stop:
+
+##### Instantiation Parameters:
+
+###### When:
+
+Determines the time at which the whiteNoise will be
+scheduled to stop.
+
+##### Behavior:
 
 If start has been invoked before stop is invoked, the output
 of white noise will be stopped.
@@ -155,13 +309,10 @@ of white noise will be stopped.
 
     var gainEnvelope = context.createEnvelope(
 
-      [ 1, 1 ],
-
-      [ 1, 0 ],
-
-      [ 0, 0 ],
-
-      [ 0, 0 ]
+      1, // attack
+      1, // decay
+      0.5, // sustain
+      1 // release
 
     );
 
@@ -173,264 +324,250 @@ of white noise will be stopped.
 
     whiteNoise.start( context.currentTime );
 
-    gainEnvelope.trigger( context.currentTime );
+    gainEnvelope.on( context.currentTime, 1);
 
-    whiteNoise.stop( context.currentTime + 2 );
+AudioContext.prototype.createKick
+---------------------------------
 
-AudioContext.createGenerator:
------------------------------
+This constructor extends the browser's AudioContext class
+in order to instatiate a kick source. The start method
+behaves like the start method of Audio Source Nodes except
+that it can be invoked several times for the same kick instance.
 
-### Input:
+### Instantiation Parameters:
 
-This generator takes an options object as its input. Options has two properties, frequencyEnvelope and gainEnvelope. FrequencyEnvelope and gainEvnelope are arrays of four tuples, which specify the attack, decay, sustain, and release for the generator's oscillator's frequency envelope and the generator's gain's envelope, respectively.
+#### midiNote:
 
-### Output/behavior:
+midiNote can be any integer between 0 and 127. It specifies
+the MIDI standard value for the root note of the kick. If midiNote
+is not defined, then it defaults to 36.
 
-This returns a generator that can be connected to another audio node or audio parameter or to another object with an input property that is an audio node or audio paramter.
+### Kick Methods:
 
-### Methods:
+For the explanations below, suppose the 'kick'
+with a lowercase 'k' refers to the return value of
+a call to AudioContext.prototype.createKick.
 
-#### generator.connect:
+#### kick.connect:
 
-##### Input:
+##### Instantiation Parameters:
 
-Takes in the target destination.
+###### Destination:
 
-##### Output/behavior:
+Destination is either an Audio Node or an
+object with an input property that is an audio node.
 
-If the destination is an audio node or an audio parameter,
-the, generator.output is set to reference that audio node
-or that audio parameter. If, instead, the destination is
-an object with an input property that is an audio
-node or an audio param, generator.output is set to reference
-that input property.
+##### Behavior:
 
-#### generator.start:
+If the destination is an Audio Node, then the
+output of the kick is piped to that Audio Node.
+If the destination is an object with an 'input'
+property that is an Audio Node, then the output
+of the kick is piped to the Audio Node at that
+input property.
 
-#### Input:
+#### kick.start:
 
-Takes in the starting time relative to the current context's
-time coordinates as the first parameter.
+##### Instantiation Parameters:
 
-#### Output/behavior:
+###### When:
 
-Triggers both of the generator's envelopes at the specified time.
+When is the time at which the kick will
+be scheduled to start.
 
-### Example:
+###### Behavior:
 
-    var context = new AudioContext( );
+Schedules the kick to start at the time
+determined by 'When'.
 
-    var options = {
+AudioContext.prototype.createClap
+---------------------------------
 
-      frequencyEnvelope: [
+This constructor extends the browser's AudioContext class
+in order to instatiate a clap source. The start method
+behaves like the start method of Audio Source Nodes except
+that it can be invoked several times for the same clap instance.
 
-        [ 0.01, 880 ],
+### clap Methods:
 
-        [ 0.1, 60 ],
+For the explanations below, suppose the 'clap'
+with a lowercase 'c' refers to the return value of
+a call to AudioContext.prototype.createClap.
 
-        [ 0.3 , 60 ],
+#### clap.connect:
 
-        [ 0, 0 ]
+##### Instantiation Parameters:
 
-      ],
+###### Destination:
 
-      gainEnvelope: [
+Destination is either an Audio Node or an
+object with an input property that is an audio node.
 
-        [ 0.05, 1 ],
+##### Behavior:
 
-        [ 0.06, 0.2 ],
+If the destination is an Audio Node, then the
+output of the clap is piped to that Audio Node.
+If the destination is an object with an 'input'
+property that is an Audio Node, then the output
+of the clap is piped to the Audio Node at that
+input property.
 
-        [ 0.1 , 0.2 ],
+#### clap.start:
 
-        [ 0.2, 0 ]
+##### Instantiation Parameters:
 
-      ],
+###### When:
 
-      oscillatorType: 'sawtooth'
+When is the time at which the clap will
+be scheduled to start.
 
-    };
+###### Behavior:
 
-    var generator = context.createGenerator( options );
+Schedules the clap to start at the time
+determined by 'When'.
 
-    generator.connect( context.destination );
+AudioContext.prototype.createClosedHat
+--------------------------------------
 
-    generator.start( );
+This constructor extends the browser's AudioContext class
+in order to instatiate a closed hat source. The start method
+behaves like the start method of Audio Source Nodes except
+that it can be invoked several times for the same closed hat instance.
 
-AudioContext.createSynthesizer:
--------------------------------
+### closedHat Methods:
 
-### Input:
+For the explanations below, suppose the 'closedHat'
+with a lowercase 'c' refers to the return value of
+a call to AudioContext.prototype.createClosedHat.
 
-This synthesizer takes an options object as its input. Options has two properties, cutoffEnvelope and gainEnvelope. CutoffEnvelope and gainEnvelope are either already created envelopes or arrays of four tuples, which specify the attack, decay, sustain, and release for the synthesizer's biquadFilter's  envelope and the synthesizer's gain's envelope, respectively.
+#### closedHat.connect:
 
-### Output/behavior:
+##### Instantiation Parameters:
 
-This returns a synthesizer that can be connected to another audio node or audio parameter or to another object with an input property that is an audio node or audio parameter.
+###### Destination:
 
-### Methods:
+Destination is either an Audio Node or an
+object with an input property that is an audio node.
 
-#### synthesizer.connect:
+##### Behavior:
 
-##### Input:
+If the destination is an Audio Node, then the
+output of the closed hat is piped to that Audio Node.
+If the destination is an object with an 'input'
+property that is an Audio Node, then the output
+of the closed hat is piped to the Audio Node at that
+input property.
 
-Takes in the target destination.
+#### closedHat.start:
 
-##### Output/behavior:
+##### Instantiation Parameters:
 
-If the destination is an audio node or an audio parameter,
-the, synthesizer.output is set to reference that audio node
-or that audio parameter. If, instead, the destination is
-an object with an input property that is an audio
-node or an audio param, synthesizer.output is set to reference
-that input property.
+###### When:
 
-#### synthesizer.start:
+When is the time at which the closed hat will
+be scheduled to start.
 
-#### Input:
+###### Behavior:
 
-Takes in the starting time relative to the current context's
-time coordinates as the first parameter.
+Schedules the closed hat to start at the time
+determined by 'When'.
 
-#### Output/behavior:
+AudioContext.prototype.createOpenHat
+--------------------------------------
 
-Triggers both of the synthesizer's envelopes and starts all of the synthesizer's generators at the specified time.
+This constructor extends the browser's AudioContext class
+in order to instatiate a open hat source. The start method
+behaves like the start method of Audio Source Nodes except
+that it can be invoked several times for the same open hat instance.
 
-### Example:
+### Open Hat Methods:
 
-    var context = new AudioContext( );
+For the explanations below, suppose the 'openHat'
+with a lowercase 'o' refers to the return value of
+a call to AudioContext.prototype.createOpenHat.
 
-    var rootStart = 440;
+#### openHat.connect:
 
-    var rootEnd = rootStart * Math.pow( 2, 1/3 );
+##### Instantiation Parameters:
 
-    var thirdStart = rootEnd;
+###### Destination:
 
-    var thirdEnd = thirdStart * Math.pow( 2, 1/3 );
+Destination is either an Audio Node or an
+object with an input property that is an audio node.
 
-    var fifthStart = rootStart * Math.pow( 2, 7/12 );
+##### Behavior:
 
-    var fifthEnd = fifthStart * Math.pow( 2, 1/3 );
+If the destination is an Audio Node, then the
+output of the open hat is piped to that Audio Node.
+If the destination is an object with an 'input'
+property that is an Audio Node, then the output
+of the open hat is piped to the Audio Node at that
+input property.
 
-    var options = {
+#### openHat.start:
 
-      cutoffEnvelope: [
+##### Instantiation Parameters:
 
-        [ 4, 10000 ],
+###### When:
 
-        [ 4, 1000 ],
+When is the time at which the open hat will
+be scheduled to start.
 
-        [ 1, 1000 ],
+###### Behavior:
 
-        [ 9, 0 ]
+Schedules the open hat to start at the time
+determined by 'When'.
 
-      ],
+AudioContext.prototype.createBass
+---------------------------------
 
-      gainEnvelope: [
+This constructor extends the browser's AudioContext class
+in order to instatiate a bass source. The start method
+behaves like the start method of Audio Source Nodes except
+that it can be invoked several times for the same bass instance.
 
-        [ 8, 1 ],
+### Instantiation Parameters:
 
-        [ 0, 1 ],
+#### midiNote:
 
-        [ 5, 1 ],
+midiNote can be any integer between 0 and 127. It specifies
+the MIDI standard value for the root note of the bass. If midiNote
+is not defined, then it defaults to 36.
 
-        [ 5, 0 ]
+### Bass Methods:
 
-      ]
+For the explanations below, suppose the 'bass'
+with a lowercase 'b' refers to the return value of
+a call to AudioContext.prototype.createBass.
 
-    };
+#### bass.connect:
 
-    var synthesizer = context.createSynthesizer( options );
+##### Instantiation Parameters:
 
-    synthesizer.addGenerator( {
+###### Destination:
 
-        frequencyEnvelope: [
+Destination is either an Audio Node or an
+object with an input property that is an audio node.
 
-          [ 4, rootStart ],
+##### Behavior:
 
-          [ 4, rootEnd ],
+If the destination is an Audio Node, then the
+output of the bass is piped to that Audio Node.
+If the destination is an object with an 'input'
+property that is an Audio Node, then the output
+of the bass is piped to the Audio Node at that
+input property.
 
-          [ 1, rootEnd ],
+#### bass.start:
 
-          [ 9, 0 ]
+##### Instantiation Parameters:
 
-        ],
+###### When:
 
-        gainEnvelope: [
+When is the time at which the bass will
+be scheduled to start.
 
-          [ 0, 1 ],
+###### Behavior:
 
-          [ 0, 1 ],
-
-          [ 18, 1 ],
-
-          [ 0, 0 ]
-
-        ],
-
-        oscillatorType: 'square'
-
-    });
-
-    synthesizer.addGenerator( {
-
-        frequencyEnvelope: [
-
-          [ 4, thirdStart ],
-
-          [ 4, thirdEnd ],
-
-          [ 1, thirdEnd ],
-
-          [ 9, 0 ]
-
-        ],
-
-        gainEnvelope: [
-
-          [ 0, 1 ],
-
-          [ 0, 1 ],
-
-          [ 18, 1 ],
-
-          [ 0, 0 ]
-
-        ],
-
-        oscillatorType: 'square'
-
-    });
-
-    synthesizer.addGenerator( {
-
-        frequencyEnvelope: [
-
-          [ 4, fifthStart ],
-
-          [ 4, fifthEnd ],
-
-          [ 1, fifthEnd ],
-
-          [ 9, 0 ]
-
-        ],
-
-        gainEnvelope: [
-
-          [ 0, 1 ],
-
-          [ 0, 1 ],
-
-          [ 18, 1 ],
-
-          [ 0, 0 ]
-
-        ],
-
-        oscillatorType: 'square'
-
-    });
-
-    synthesizer.connect( context.destination );
-
-    synthesizer.start( );
+Schedules the bass to start at the time
+determined by 'When'.
