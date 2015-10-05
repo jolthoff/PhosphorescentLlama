@@ -243,7 +243,7 @@ app.controller( 'GameController' , [ '$scope', 'playerSequencer', 'httpFactory',
 
     var sounds2 = [ 'kick', 'clap' ];
 
-    var sounds3 = [ 'kick', 'clap', 'hihat' ];
+    var sounds3 = [ 'kick', 'clap', 'openHat' ];
 
     var sounds9 = [ 'kick', 'clap', 'openHat', 'closedHat', 'lowTom', 'highTom', 'lowBass', 'midBass', 'highBass' ];
 
