@@ -14,8 +14,25 @@ app.controller( 'ActiveController', ['$scope', 'httpFactory', '$rootScope', '$lo
         
       }
 
-
     });
+
+  };
+
+  $scope.playerSequencerPlayToggle = function ( ) {
+
+    $rootScope.$broadcast( 'playToggle' );
+
+  };
+
+  $scope.targetSequencerPlayToggle = function ( ) {
+
+    $rootScope.$broadcast( 'targetPlayToggle' );
+
+  };
+
+  $scope.submitMatch = function ( ) {
+
+    $rootScope.$broadcast( 'submitMatch' )
 
   };
 

@@ -1,10 +1,68 @@
-#active {
 
-  color: white;
+.container-fluid {
+  padding: 0;
+}
+
+.glyphicon {
+
+  font-size: 50px;
+
+  padding-left: 0px;
+
+  padding-right: 0px;
+
+  color: #A6E22E;
 
 }
 
-input {
+.glyphicon:hover {
+  color: red;
+}
+
+
+.navbar-brand {
+
+  font-size: 50px;
+
+  margin-top: 10px;
+
+  color: #F92672;
+
+}
+
+.navbar-brand:visited {
+  color: #F92672;
+}
+
+.navbar-brand:hover {
+  color: #fff;
+}
+
+.user-info-form {
+
+  margin-top: 17px;
+
+}
+
+#display-username {
+  color: #fff;
+}
+
+#display-logout {
+
+  margin-top: 22px;
+
+}
+
+.navbar-toggle {
+  border: 1 solid #fff;
+}
+
+.icon-bar {
+  border: 1 solid #fff;
+}
+
+#active {
 
   color: white;
 
@@ -22,23 +80,74 @@ div {
 
 }
 
-/*.nav-bar {
+.wrong, .match {
 
-  width: 105%;
-  position: fixed;
-  margin-top: -10px;
-  margin-left: -10px;
-  height: 60px;
-  background-color: #111111;
+  line-height: 100vh;
+  text-align: center;
+  height: 100vh;
+  width: 100vw;
+  opacity: 0;
+  transition: opacity .3s;
 
-}*/
+}
+
+.ng-hide-remove, .ng-hide-remove {
+
+  transition: opacity .3s;
+}
+
+.wrong.flash, .match.flash {
+
+  opacity: 1;
+  transition: opacity .3s;
+
+}
+
+.wrong.flash {
+
+  background-color: rgb(255, 49, 158);
+
+}
+
+.match.flash {
+
+  background-color: rgb(0, 251, 175);
+
+}
+
+.match-message, .wrong-message {
+
+  display: inline-block;
+  vertical-align: middle;
+  line-height: normal;  
+  margin: auto;
+  font-size: 10rem;
+
+}
+
+.wrong-message {
+
+  color: rgb(171, 250, 0);
+
+}
+
+.match-message {
+
+  color: rgb(255, 49, 158);
+
+}
+
+#active {
+
+  color: white;
+
+}
 
 .gameSpace {
 
-  margin-top: 40px;
-  margin-left: 50px;
-  width: 90vw;
-  height: 90vw;
+  margin: 0 auto;
+/*  width: 90vw;
+  height: 90vw;*/
 
 }
 
@@ -77,6 +186,13 @@ div {
 
 }
 
+.beat-box {
+
+  width: 100%;
+  height: 100%;
+
+}
+
 .beat.four {
 
   width: 15vw;
@@ -98,13 +214,21 @@ div {
 
 }
 
+.line, .line.current, .line.current:hover, 
+._0, ._0:hover, ._0.playing, 
+._1, ._1:hover, ._1.playing, 
+._2, ._2:hover, ._2.playing {
+
+  transition: height .1s, width .1s, margin .1s, opacity .1s;
+
+}
+
 .line {
 
   height: 98%;
   width: 98%;
   margin: 1% auto;
   overflow: hidden;
-  transition: height .1s, width .1s, margin .1s, opacity .1s;
 
 }
 
@@ -114,7 +238,6 @@ div {
   width: 95%;
   margin: 2.5% auto;
   overflow: hidden;
-  transition: height .1s, width .1s, margin .1s, opacity .1s;
 
 }
 
@@ -124,17 +247,7 @@ div {
   width: 90%;
   margin: 5% auto;
   overflow: hidden;
-  transition: height .1s, width .1s, margin .1s, opacity .1s;
 
-}
-
-.center.current {
-
-  height: 90%;
-  width: 90%;
-  margin: 5% auto;
-  overflow: hidden;
-  transition: height .1s, width .1s, margin .1s, opacity .1s;
 
 }
 
@@ -150,75 +263,39 @@ div {
 
 }
 
-.middle {
-
-  height: 90%;
-  width: 90%;
-  margin: 5% auto;
-  background-color: black;
-
-}
-
-.center {
-
-  background-color: gray;
-
-}
-
 ._0, ._1, ._2 {
 
   opacity: .8;
-  transition: height .1s, width .1s, margin .1s, opacity .1s;
 
 }
 
 ._0:hover, ._1:hover, ._2:hover {
 
   opacity: .9;
-  transition: height .1s, width .1s, margin .1s, opacity .1s;
 
 }
 
-._0:hover {
+._0:hover, ._0.playing {
 
-  background-color: rgb(255, 0, 0);
-
-}
-
-._1:hover {
-
-  background-color: rgb(0, 255, 0);
+  background-color: rgb(255, 49, 158);
 
 }
 
-._2:hover {
+._1:hover, ._1.playing {
 
-  background-color: rgb(0, 0, 255);
-
-}
-
-._0.playing {
-
-  background-color: rgb(255, 0, 0);
+  background-color: rgb(0, 251, 175);
 
 }
 
-._1.playing {
+._2:hover, ._2.playing {
 
-  background-color: rgb(0, 255, 0);
-
-}
-
-._2.playing {
-
-  background-color: rgb(0, 0, 255);
+  background-color: rgb(253, 230, 0)
 
 }
 
 .playing {
 
-  opacity: .9;
-  transition: height .1s, width .1s, margin .1s, opacity .1s;
+  opacity: .95;
 
 }
 

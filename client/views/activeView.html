@@ -1,9 +1,42 @@
-<div id="active">
+<nav class=class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">ngtzit</a>
+    </div>
 
-  <div class="username">{{ user.username || 'user is not defined' }}</div>
-
-  <div class="current-level">{{ user.level || 'user is not defined' }}</div>
-
-  <div class="logout" ng-click="logout( )">Logout</div>
-
-</div>
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li ng-click="playerSequencerPlayToggle( )">
+          <a href="#">
+            <span class="glyphicon glyphicon-headphones" aria-hidden="true"></span>
+          </a>
+        </li>
+        <li ng-click="targetSequencerPlayToggle( )">
+          <a href="#">
+            <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span>
+          </a>
+        </li>
+        <li ng-click="submitMatch( )">
+          <a href="#">
+            <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+          </a>
+        </li>
+      </ul>
+      <div class="user-info-group">
+      <ul class="nav navbar-nav">
+        <li><p class="navbar-brand navbar-right" id="display-username">Signed in as {{ user.username }}.</p></li>
+        <li><p class="navbar-brand navbar-right" id="display-level">Level {{ user.level }}</p></li>
+        <li><button class="btn btn-default navbar-text navbar-right" ng-click="logout( )" id="display-logout">Logout</button></li>
+      </ul>
+      </div>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>

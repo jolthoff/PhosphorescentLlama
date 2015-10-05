@@ -1,4 +1,4 @@
-app.controller( 'GameController' , [ '$scope', 'playerSequencer', 'httpFactory', 'initialize', 'levelFactory', '$rootScope',  function ( $scope, playerSequencer, httpFactory, initialize, levelFactory, $rootScope ) {
+app.controller( 'GameController' , [ '$scope', 'playerSequencer', 'httpFactory', 'initialize', 'levelFactory', '$rootScope', '$timeout', function ( $scope, playerSequencer, httpFactory, initialize, levelFactory, $rootScope, $timeout ) {
 
   /////////////////
   //
@@ -68,9 +68,17 @@ app.controller( 'GameController' , [ '$scope', 'playerSequencer', 'httpFactory',
 
   };
 
+  $scope.declareWrong = function ( ) {
+
+    $scope.wrong = true;
+
+    $timeout( function() { $scope.wrong = false; }, 300 );
+
+  };
+
   $scope.playerWonLevel = function ( ) {
 
-    alert( 'IT\'S A MATCH!' );
+    $scope.$emit( 'correctMatch' );
 
     if( $scope.level === $scope.lastLevel ) {
 
@@ -111,9 +119,9 @@ app.controller( 'GameController' , [ '$scope', 'playerSequencer', 'httpFactory',
 
   $scope.failedMatch = function ( ) {
 
-    $scope.removeWrongBeats( );
+    $scope.$emit( 'notAMatch' );
 
-    alert( 'Not quite there yet! Keep trying. Your wrong beats have been removed.' );
+    $scope.removeWrongBeats( );
 
   };
 
@@ -162,6 +170,12 @@ app.controller( 'GameController' , [ '$scope', 'playerSequencer', 'httpFactory',
   $scope.$on( 'playerSequencerPlaying', function ( ) {
 
     $scope.$broadcast( 'targetStopPlaying' );
+
+  });
+
+  $scope.$on( 'submitMatch', function ( ) {
+
+    $scope.submit( );
 
   });
 

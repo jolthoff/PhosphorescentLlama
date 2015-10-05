@@ -54,8 +54,6 @@ controller.saveLevel = function( request, response, next ) {
 
     } else if ( found ) {
 
-      console.log("level already exists.");
-
       response.status( 201 ).send( );
 
     } else if ( !found ) {
@@ -75,6 +73,7 @@ controller.saveLevel = function( request, response, next ) {
       });
 
     }
+    
   });
 
 };
