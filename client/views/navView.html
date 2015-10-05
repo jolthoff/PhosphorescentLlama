@@ -16,7 +16,8 @@
       <ul class="nav navbar-nav">
         <li ng-click="playerSequencerPlayToggle( )">
           <a href="#">
-            <span class="glyphicon glyphicon-play" aria-hidden="true"></span>
+            <span class="glyphicon glyphicon-play" aria-hidden="true" ng-show="playing" ng-click="playOrStop()"></span>
+            <span class="glyphicon glyphicon-stop" aria-hidden="true" ng-show="!playing" ng-click="playOrStop()"></span>
           </a>
         </li>
         <li ng-click="targetSequencerPlayToggle( )">
