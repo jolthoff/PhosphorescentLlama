@@ -120,8 +120,6 @@ controller.updateLevel = function( request, response, next ) {
 
 };
 
-module.exports = controller;
-
 controller.getLastLevel = function ( request, response, next ) {
 
   Sequencer.count( {} , function( error, count ) {
@@ -146,3 +144,24 @@ controller.getLastLevel = function ( request, response, next ) {
   });
 
 };
+
+controller.getLevels = function( request, response, next ) {
+
+  Sequencer.find( {}, function ( error, levels ) {
+
+    if( error ) {
+
+      response.status( 404 ).send( );
+
+    } else {
+
+      response.status( 200 ).send( levels );
+
+    }
+
+  });
+
+};
+
+
+module.exports = controller;
