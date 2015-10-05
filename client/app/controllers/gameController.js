@@ -232,7 +232,7 @@ app.controller( 'GameController' , [ '$scope', 'playerSequencer', 'httpFactory',
 
     var savedSequencer = $scope.playerSequencer.save( );
 
-    httpFactory.putSequencer( $scope.inputLevel, savedSequencer, function( response ) {
+    httpFactory.postSequencer( $scope.inputLevel, savedSequencer, function( response ) {
 
       if ( response ) {
 
