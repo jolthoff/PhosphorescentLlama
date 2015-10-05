@@ -32,5 +32,6 @@
     "mongoose": "^4.1.9",
     "passport": "^0.3.0",
     "passport-local": "^1.0.0"
-  }
+  },
+  "cacheDirectories": [ "client/bower_components" ]
 }
