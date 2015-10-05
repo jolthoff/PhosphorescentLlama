@@ -397,6 +397,8 @@ AudioContext.prototype.createEnvelope =
 
     }
 
+    // Cancel a
+
     // If when is not defined, then the envelope
 
     // triggers immediately.

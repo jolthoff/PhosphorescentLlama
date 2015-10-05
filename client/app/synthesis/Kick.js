@@ -34,7 +34,7 @@ AudioContext.prototype.createKick = function( midiNote ) {
 
   var ms = Math.pow( 10, -3 );
 
-  kick.sustain =  125 * ms;
+  kick.sustain =  25 * ms;
 
   kick.master.gain = context.createGain( );
 
@@ -68,13 +68,13 @@ AudioContext.prototype.createKick = function( midiNote ) {
 
   };
 
-  kick.sub.frequency.envelope.decay =  200 * ms;
+  kick.sub.frequency.envelope.decay =  74 * ms;
 
   kick.sub.frequency.envelope.sustain = 440 * Math.pow( 2, ( midiNote - 69 ) / 12 );
 
   kick.sub.frequency.envelope.release = {
 
-    time: 250 * ms,
+    time: 25 * ms,
 
     target: 440 * Math.pow( 2, ( midiNote - 12 - 69 ) / 12 )
 
@@ -187,11 +187,11 @@ AudioContext.prototype.createKick = function( midiNote ) {
 
   kick.sub.secondGain.envelope.attack = 1 * ms;
 
-  kick.sub.secondGain.envelope.decay = 200 * ms;
+  kick.sub.secondGain.envelope.decay = 74 * ms;
 
   kick.sub.secondGain.envelope.sustain = 0.25;
 
-  kick.sub.secondGain.envelope.release = 250 * ms;
+  kick.sub.secondGain.envelope.release = 25 * ms;
 
   kick.sub.secondGain.envelope = context.createEnvelope(
 
