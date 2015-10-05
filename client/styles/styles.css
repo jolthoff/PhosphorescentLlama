@@ -80,7 +80,7 @@ div {
 
 }
 
-.wrong, .match {
+.wrong, .match, .won {
 
   line-height: 100vh;
   text-align: center;
@@ -96,7 +96,7 @@ div {
   transition: opacity .3s;
 }
 
-.wrong.flash, .match.flash {
+.wrong.flash, .match.flash, .won.flash {
 
   opacity: 1;
   transition: opacity .3s;
@@ -109,13 +109,13 @@ div {
 
 }
 
-.match.flash {
+.match.flash, .won.flash {
 
   background-color: rgb(0, 251, 175);
 
 }
 
-.match-message, .wrong-message {
+.match-message, .wrong-message, .won-message {
 
   display: inline-block;
   vertical-align: middle;
@@ -131,7 +131,7 @@ div {
 
 }
 
-.match-message {
+.match-message, .won-message {
 
   color: rgb(255, 49, 158);
 
