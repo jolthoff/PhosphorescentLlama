@@ -126,17 +126,17 @@ app.controller( 'GameController' , [ '$scope', 'playerSequencer', 'httpFactory',
 
     $scope.$emit( 'notAMatch' );
 
-    $scope.removeWrongBeats( );
+    // $scope.removeWrongBeats( );
 
   };
 
-  $scope.removeWrongBeats = function ( ) {
+  // $scope.removeWrongBeats = function ( ) {
 
-    var wrongBeats = $scope.playerSequencer.getWrongBeats( $scope.targetSequencer );
+  //   var wrongBeats = $scope.playerSequencer.getWrongBeats( $scope.targetSequencer );
 
-    $scope.$broadcast( 'toggleWrongBeatsOff', wrongBeats );
+  //   $scope.$broadcast( 'toggleWrongBeatsOff', wrongBeats );
 
-  };
+  // };
 
 
 
