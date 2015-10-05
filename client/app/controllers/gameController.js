@@ -104,8 +104,6 @@ app.controller( 'GameController' , [ '$scope', 'playerSequencer', 'httpFactory',
 
       $rootScope.user.level = $scope.level;
 
-      console.log($rootScope.user);
-
       httpFactory.updateLevel( $rootScope.user );
 
     }
