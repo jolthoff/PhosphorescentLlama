@@ -198,6 +198,28 @@ AudioContext.prototype.createClosedHat = function( ) {
 
   };
 
+    closedHat.disconnect = function( destination ) {
+
+    if( destination ) {
+
+      if( destination.hasOwnProperty( 'input' ) ) {
+
+        closedHat.master.output.disconnect( destination.input );
+
+      } else {
+
+        closedHat.master.output.disconnect( destination );
+
+      }
+
+    } else {
+
+      closedHat.master.output.disconnect( );
+
+    }
+
+  };
+
   closedHat.start = function( when ) {
 
     closedHat.envelopes.forEach( function( envelope ) {

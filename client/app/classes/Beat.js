@@ -46,8 +46,6 @@ Beat.prototype.play = function( when ) {
 
   // will play immediately.
 
-  this._generator.connect( this._sequence._track );
-
   this._generator.start( when );
 
 };

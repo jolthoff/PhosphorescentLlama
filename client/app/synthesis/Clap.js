@@ -252,6 +252,28 @@ AudioContext.prototype.createClap = function( ) {
 
   };
 
+    clap.disconnect = function( destination ) {
+
+    if( destination ) {
+
+      if( destination.hasOwnProperty( 'input' ) ) {
+
+        clap.master.output.disconnect( destination.input );
+
+      } else {
+
+        clap.master.output.disconnect( destination );
+
+      }
+
+    } else {
+
+      clap.master.output.disconnect( );
+
+    }
+
+  };
+
   clap.start = function( when ) {
 
     clap.envelopes.forEach( function( envelope ) {
