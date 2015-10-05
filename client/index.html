@@ -2,10 +2,8 @@
 <html>
   <head>
     <title>ngtzit</title>
+    <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.css">
     <link rel="stylesheet" href="styles/styles.css">
-    <link rel="stylesheet" href="/bower_components/material-design-lite/material.css">
-    <script src="bower_components/material-design-lite/material.min.js"></script>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
   </head>
   <body ng-app="app">
 
@@ -16,13 +14,13 @@
       <div class="play-pause" ng-controller="TargetSequencerController" ng-click="playToggle( )"></div>
 
     </div> -->
-
     <div ui-view="nav"></div>
     <div ui-view="content"></div>
 
     <!-- SCRIPTS -->
     <!-- these will get minimized for deployment; we'll need to change these to the minified scripts -->
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="bower_components/angular/angular.min.js"></script>
     <script src="bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
     <script src="bower_components/underscore/underscore-min.js"></script>

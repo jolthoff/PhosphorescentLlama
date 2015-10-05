@@ -1,4 +1,4 @@
-app.controller( 'GameController' , [ '$scope', 'playerSequencer', 'httpFactory', 'initialize', 'levelFactory', '$rootScope',  function ( $scope, playerSequencer, httpFactory, initialize, levelFactory, $rootScope ) {
+app.controller( 'GameController' , [ '$scope', 'playerSequencer', 'httpFactory', 'initialize', 'levelFactory', '$rootScope', '$timeout', function ( $scope, playerSequencer, httpFactory, initialize, levelFactory, $rootScope, $timeout ) {
 
   /////////////////
   //
@@ -16,6 +16,8 @@ app.controller( 'GameController' , [ '$scope', 'playerSequencer', 'httpFactory',
     $scope.level = 1;
 
   }
+
+  $scope.wrong = false;
 
   /////////////////
   //
@@ -74,6 +76,14 @@ app.controller( 'GameController' , [ '$scope', 'playerSequencer', 'httpFactory',
 
   };
 
+  $scope.declareWrong = function ( ) {
+
+    $scope.wrong = true;
+
+    $timeout( function() { $scope.wrong = false; }, 300 );
+
+  };
+
   $scope.playerWon = function ( ) {
 
     alert( 'IT\'S A MATCH!' );
@@ -99,7 +109,9 @@ app.controller( 'GameController' , [ '$scope', 'playerSequencer', 'httpFactory',
 
     $scope.removeWrongBeats( );
 
-    alert( 'Not quite there yet! Keep trying. Your wrong beats have been removed.' );
+    $scope.declareWrong();
+
+    // alert( 'Not quite there yet! Keep trying. Your wrong beats have been removed.' );
 
   };
 
