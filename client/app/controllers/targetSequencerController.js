@@ -12,6 +12,8 @@ app.controller( 'TargetSequencerController', [ '$scope', '$timeout' , function (
 
     $scope.loopTick = 0;
 
+    $scope.numSequencers = $scope.sequencer._sequences.length;
+
   });
 
   $scope.$on( 'targetStopPlaying', function ( ) {
@@ -53,7 +55,7 @@ app.controller( 'TargetSequencerController', [ '$scope', '$timeout' , function (
       $scope.$emit( 'targetSequencerPlaying' );
 
     }
-    
+
   };
 
   $scope.playTwice = function ( time ) {
@@ -73,7 +75,7 @@ app.controller( 'TargetSequencerController', [ '$scope', '$timeout' , function (
         $scope.sequencer.stop( );
 
       }
-      
+
     }, time );
 
   };
