@@ -83,6 +83,6 @@ app.use( function( request, response, next ) {
 
 app.listen( port );
 
-console.log( 'Parrot app listening on port: 44100' );
+console.log( 'Ngtzit app listening on port: 44100' );
 
 module.exports = app;

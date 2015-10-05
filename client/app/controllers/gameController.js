@@ -17,6 +17,26 @@ app.controller( 'GameController' , [ '$scope', 'playerSequencer', 'httpFactory',
 
   }
 
+  // $scope.createBeatBox = function ( lineCount ) {
+
+  //   var nestedBoxes = '<div class="line inner _{{ $parent.$index }} {{ $index }}"
+
+  //                     ng-class="{ playing: sequencer.getBeat($parent.$index, $index).isOn( ) }">
+
+  //                     <div class="line outer">';
+
+  //   for ( var i = 0; i < lineCount; i++ ) {
+
+
+
+  //   }
+
+  // };
+
+  // $scope.beatBox = 
+
+  // <div ng-bind-html="thisCanBeusedInsideNgBindHtml"></div>
+
   /////////////////
   //
   //
@@ -76,7 +96,7 @@ app.controller( 'GameController' , [ '$scope', 'playerSequencer', 'httpFactory',
 
   $scope.playerWon = function ( ) {
 
-    alert( 'IT\'S A MATCH!' );
+    $scope.$emit( 'correctMatch' );
 
     $scope.level++;
 
@@ -97,9 +117,9 @@ app.controller( 'GameController' , [ '$scope', 'playerSequencer', 'httpFactory',
 
   $scope.failedMatch = function ( ) {
 
-    $scope.removeWrongBeats( );
+    $scope.$emit( 'notAMatch' );
 
-    alert( 'Not quite there yet! Keep trying. Your wrong beats have been removed.' );
+    $scope.removeWrongBeats( );
 
   };
 
