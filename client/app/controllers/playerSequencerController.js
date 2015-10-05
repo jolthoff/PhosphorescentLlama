@@ -23,6 +23,12 @@ app.controller( 'PlayerSequencerController', [ '$scope', 'playerSequencer', '$ti
 
     var soundIDs = data.getSoundIDs( );
 
+    if( $scope.sequencer ) {
+
+      $scope.sequencer.delete( );
+
+    }
+
     $scope.sequencer = playerSequencer.build( tempo, $scope.tickNumber, soundIDs );
 
     $scope.sequences = $scope.sequencer._sequences;
@@ -70,6 +76,14 @@ app.controller( 'PlayerSequencerController', [ '$scope', 'playerSequencer', '$ti
     if ( $scope.sequencer._playing ) {
 
       $scope.stop( );
+
+      for( var i = 0; i < $scope.tickNumber; i++ ) {
+
+        var unselector = '.' + i;
+
+        angular.element(unselector).removeClass('current');
+
+      }
 
     } else {
 
@@ -124,7 +138,8 @@ app.controller( 'PlayerSequencerController', [ '$scope', 'playerSequencer', '$ti
 
     $scope.sequencer.toggleBeat( sequenceIndex, beatIndex );
 
-    var beat = $scope.sequencer.getBeat( sequenceIndex, beatIndex ).play( 0 );
+    // Plays beat when clicked
+    // var beat = $scope.sequencer.getBeat( sequenceIndex, beatIndex ).play( 0 );
 
   };
 

@@ -2,34 +2,60 @@ var app = angular.module( 'app', [ 'ui.router', 'ngAnimate'] );
 
 app.config( function ( $stateProvider, $urlRouterProvider ) {
 
-  $urlRouterProvider.otherwise('/');
+  $urlRouterProvider.otherwise( '/' );
 
   $stateProvider
-    .state('/', {
+
+    .state( '/', {
+
       views: {
+
         nav: {
-          templateUrl: '../views/navView.html',
+
+          templateUrl: 'client/views/navView.html',
+
           controller: 'NavController'
+
         },
+
         content: {
-          templateUrl: '../views/gameView.html',
+
+          templateUrl: 'client/views/gameView.html',
+
           controller: 'GameController'
+
         }
+
       },
+
       url: '/'
+
     })
-    .state('/active', {
+
+    .state( '/active', {
+
       views: {
+
         nav: {
-          templateUrl: '../views/activeView.html',
+
+          templateUrl: 'client/views/activeView.html',
+
           controller: 'ActiveController'
+
         },
+
         content: {
-          templateUrl: '../views/gameView.html',
+
+          templateUrl: 'client/views/gameView.html',
+
           controller: 'GameController'
+
         }
+
       },
+
       url: '/active'
+      
     });
 
 });

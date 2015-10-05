@@ -32,7 +32,7 @@ AudioContext.prototype.createClap = function( ) {
 
   clap.master.gain = context.createGain( );
 
-  clap.master.gain.gain.value = 0.5;
+  clap.master.gain.gain.value = 0.25;
 
   clap.master.input = clap.master.gain;
 
@@ -247,6 +247,28 @@ AudioContext.prototype.createClap = function( ) {
     } else {
 
       clap.master.output.connect( destination );
+
+    }
+
+  };
+
+    clap.disconnect = function( destination ) {
+
+    if( destination ) {
+
+      if( destination.hasOwnProperty( 'input' ) ) {
+
+        clap.master.output.disconnect( destination.input );
+
+      } else {
+
+        clap.master.output.disconnect( destination );
+
+      }
+
+    } else {
+
+      clap.master.output.disconnect( );
 
     }
 

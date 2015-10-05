@@ -212,25 +212,33 @@ Sequencer.prototype.match = function( sequencer ) {
 
   }
 
-  for( var i = 0; i < this._sequences.length; i++ ) {
+  var match;
 
-    var ithSequenceOnThis = this.getSequence( i );
+  for( var offset = 0; offset < this.getTickNumber( ); offset++ ) {
 
-    var ithSoundIDOnThis = ithSequenceOnThis.getSoundID( );
+    match = true;
 
-    for( var j = 0; j < sequencer._sequences.length; j++ ) {
+    for( var i = 0; i < this._sequences.length; i++ ) {
 
-      var jthSequenceOnSequencer = sequencer.getSequence( j );
+      var ithSequenceOnThis = this.getSequence( i );
 
-      var jthSoundIDOnSequencer = jthSequenceOnSequencer.getSoundID( );
+      var ithSoundIDOnThis = ithSequenceOnThis.getSoundID( );
 
-      if( ithSoundIDOnThis === jthSoundIDOnSequencer ) {
+      for( var j = 0; j < sequencer._sequences.length; j++ ) {
 
-        for( var k = 0; k < this.getTickNumber( ); k++ ) {
+        var jthSequenceOnSequencer = sequencer.getSequence( j );
 
-          if( this.getBeat( i, k ).isOn( ) !== sequencer.getBeat( j, k ).isOn( ) ) {
+        var jthSoundIDOnSequencer = jthSequenceOnSequencer.getSoundID( );
 
-            return false;
+        if( ithSoundIDOnThis === jthSoundIDOnSequencer ) {
+
+          for( var k = 0; k < this.getTickNumber( ); k++ ) {
+
+            if( this.getBeat( i, k ).isOn( ) !== sequencer.getBeat( j, ( k + offset ) % this.getTickNumber( ) ).isOn( ) ) {
+
+              match = false;
+
+            }
 
           }
 
@@ -240,63 +248,69 @@ Sequencer.prototype.match = function( sequencer ) {
 
     }
 
-  }
+    if( match ) {
 
-  return true;
-
-};
-
-Sequencer.prototype.getMatrix = function ( ) {
-
-  var matrix = [];
-
-  for( var i = 0; i < this._sequences.length; i++ ) {
-
-    var sequence = [];
-
-    var ithSequence = this.getSequence( i );
-
-    for (var j = 0; j < this.getTickNumber( ); j++ ) {
-
-      var on = this.getBeat( i, j ).isOn( ) ? 1 : 0;
-
-      sequence.push( on );
-
-    }
-
-    matrix.push( sequence );
-
-  }
-
-  return matrix;
-
-};
-
-Sequencer.prototype.getWrongBeats = function ( sequencer ) {
-
-  var thisMatrix = this.getMatrix( );
-
-  var sequencerMatrix = sequencer.getMatrix( );
-
-  var wrongBeats = [];
-
-  for( var i = 0; i < sequencerMatrix.length; i++ ) {
-
-    for( var j = 0; j < sequencer.getTickNumber( ); j++ ) {
-
-      if( thisMatrix[ i ][ j ] && !sequencerMatrix[ i ][ j ] ) {
-
-        wrongBeats.push( [ i, j ] );
-
-      }
+      return match;
 
     }
 
   }
 
-  return wrongBeats;
+  return match;
 
 };
+
+// Sequencer.prototype.getMatrix = function ( ) {
+
+//   var matrix = [];
+
+//   for( var i = 0; i < this._sequences.length; i++ ) {
+
+//     var sequence = [];
+
+//     var ithSequence = this.getSequence( i );
+
+//     for (var j = 0; j < this.getTickNumber( ); j++ ) {
+
+//       var on = this.getBeat( i, j ).isOn( ) ? 1 : 0;
+
+//       sequence.push( on );
+
+//     }
+
+//     matrix.push( sequence );
+
+//   }
+
+//   return matrix;
+
+// };
+
+// Sequencer.prototype.getWrongBeats = function ( sequencer ) {
+
+//   var thisMatrix = this.getMatrix( );
+
+//   var sequencerMatrix = sequencer.getMatrix( );
+
+//   var wrongBeats = [];
+
+//   for( var i = 0; i < sequencerMatrix.length; i++ ) {
+
+//     for( var j = 0; j < sequencer.getTickNumber( ); j++ ) {
+
+//       if( thisMatrix[ i ][ j ] && !sequencerMatrix[ i ][ j ] ) {
+
+//         wrongBeats.push( [ i, j ] );
+
+//       }
+
+//     }
+
+//   }
+
+//   return wrongBeats;
+
+// };
 
 Sequencer.prototype.getSequence = function( sequenceIndex ) {
 
@@ -377,5 +391,17 @@ Sequencer.prototype.scheduleTicks = function( onTickSchedule ) {
     }
 
   }
+
+};
+
+Sequencer.prototype.delete = function( ) {
+
+  this._sequences.forEach( function( sequence ) {
+
+    sequence.delete( );
+
+  });
+
+  this._master.disconnect( context.destination );
 
 };

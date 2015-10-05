@@ -7,6 +7,7 @@ app.controller( 'GameController' , [ '$scope', 'playerSequencer', 'httpFactory',
   //
   //
   /////////////////
+
   if ( $rootScope.user ) {
 
     $scope.level = $rootScope.user.level;
@@ -25,37 +26,30 @@ app.controller( 'GameController' , [ '$scope', 'playerSequencer', 'httpFactory',
   //
   /////////////////
 
-  $scope.playerSequencerPlayToggle = function ( ) {
+  $scope.startLevel = function ( ) {
 
-    $scope.$broadcast( 'playToggle' );
+    $scope.getSequencer( );
 
   };
 
-  //makes call to server and passes sequencer data to the target sequencer controller
   $scope.getSequencer = function ( ) {
 
     httpFactory.getSequencer( $scope.level, function ( data ) {
 
       $scope.$broadcast( 'createTargetSequencer', data );
 
+      $scope.lastLevel = +data.headers( 'lastLevel' );
+
     });
 
   };
 
+  $scope.playerSequencerPlayToggle = function ( ) {
 
-  //should play target sequencer twice, then hand control over to player
-  $scope.startLevel = function ( ) {
-
-    //call initialization function to set audio context on the window
-    //which must exist before the sequencers are made
-
-    $scope.buildLevel( );
+    $scope.$broadcast( 'playToggle' );
 
   };
 
-  //when player submits their sequencer pattern, check if it matches target sequencer
-  //if so, trigger end of level events
-  //else, give feedback and wait for next submission
   $scope.submit = function ( ) {
 
     $scope.playerSequencer.stop( );
@@ -64,7 +58,7 @@ app.controller( 'GameController' , [ '$scope', 'playerSequencer', 'httpFactory',
 
     if ( $scope.playerSequencer.match( $scope.targetSequencer ) ) {
 
-      $scope.playerWon( );
+      $scope.playerWonLevel( );
 
     } else {
 
@@ -82,11 +76,39 @@ app.controller( 'GameController' , [ '$scope', 'playerSequencer', 'httpFactory',
 
   };
 
-  $scope.playerWon = function ( ) {
+  $scope.playerWonLevel = function ( ) {
 
-    $scope.$emit( 'correctMatch' );
+    if( $scope.level !== $scope.lastLevel ) {
 
-    $scope.level++;
+      $scope.$emit( 'correctMatch' );
+      
+    }
+
+
+    if( $scope.level === $scope.lastLevel ) {
+
+      $scope.playerWonGame( );
+
+    } else {
+
+      $scope.level++;
+
+      if( $rootScope.user ) {
+
+        $rootScope.user.level = $scope.level;
+
+        httpFactory.updateLevel( $rootScope.user );
+
+      }
+
+
+      $scope.startLevel( );
+      
+    }
+
+  };
+
+  $scope.playerWonGame = function( ) {
 
     if( $rootScope.user ) {
 
@@ -96,8 +118,7 @@ app.controller( 'GameController' , [ '$scope', 'playerSequencer', 'httpFactory',
 
     }
 
-
-    $scope.startLevel( );
+    $scope.$emit( 'playerWon' );
 
   };
 
@@ -105,47 +126,18 @@ app.controller( 'GameController' , [ '$scope', 'playerSequencer', 'httpFactory',
 
     $scope.$emit( 'notAMatch' );
 
-    $scope.removeWrongBeats( );
+    // $scope.removeWrongBeats( );
 
   };
 
-  $scope.removeWrongBeats = function ( ) {
+  // $scope.removeWrongBeats = function ( ) {
 
-    var wrongBeats = $scope.playerSequencer.getWrongBeats( $scope.targetSequencer );
+  //   var wrongBeats = $scope.playerSequencer.getWrongBeats( $scope.targetSequencer );
 
-    $scope.$broadcast( 'toggleWrongBeatsOff', wrongBeats );
+  //   $scope.$broadcast( 'toggleWrongBeatsOff', wrongBeats );
 
-  };
+  // };
 
-  $scope.buildLevel = function ( ) {
-
-    var levelSettings = levelFactory[ $scope.level ];
-
-    var levelSequencer = new Sequencer (
-
-      levelSettings.tempo,
-
-      levelSettings.tickNumber,
-
-      levelSettings.soundIDs
-
-    );
-
-    for( var i = 0; i < levelSettings.beatsToToggle.length; i++ ) {
-
-      var sequenceIndex = levelSettings.beatsToToggle[ i ][ 0 ];
-
-      var beatIndex = levelSettings.beatsToToggle[ i ][ 1 ];
-
-      levelSequencer.toggleBeat( sequenceIndex, beatIndex );
-
-    }
-
-    var savedSequencer = levelSequencer.save( );
-
-    httpFactory.postSequencer( $scope.level, savedSequencer, $scope.getSequencer );
-
-  };
 
 
   /////////////////
@@ -156,20 +148,16 @@ app.controller( 'GameController' , [ '$scope', 'playerSequencer', 'httpFactory',
   //
   /////////////////
 
-  //when target sequencer is created, set pointer to TS as property of game controller
-  //then pass that to the player sequencer controller
   $scope.$on( 'madeTargetSequencer', function ( event, targetSequencer ) {
 
     $scope.targetSequencer = targetSequencer;
 
-    //I feel like this should live in a difference place
     $scope.$broadcast( 'playTwice' );
 
     $scope.$broadcast( 'createPlayerSequencer', $scope.targetSequencer );
 
   });
 
-  //when player sequencer is created, set pointer to PS as property of game controller
   $scope.$on( 'madePlayerSequencer', function ( event, playerSequencer ) {
 
     $scope.playerSequencer = playerSequencer;
@@ -210,11 +198,41 @@ app.controller( 'GameController' , [ '$scope', 'playerSequencer', 'httpFactory',
 
 
   //BELOW HERE ARE ALL TEMPORARY FUNCTIONS THAT WON'T BE NEEDED ONCE WE ARE RETRIEVING SOUNDS PROPERLY
+  $scope.buildLevel = function ( ) {
+
+    var levelSettings = levelFactory[ $scope.level ];
+
+    var levelSequencer = new Sequencer (
+
+      levelSettings.tempo,
+
+      levelSettings.tickNumber,
+
+      levelSettings.soundIDs
+
+    );
+
+    for( var i = 0; i < levelSettings.beatsToToggle.length; i++ ) {
+
+      var sequenceIndex = levelSettings.beatsToToggle[ i ][ 0 ];
+
+      var beatIndex = levelSettings.beatsToToggle[ i ][ 1 ];
+
+      levelSequencer.toggleBeat( sequenceIndex, beatIndex );
+
+    }
+
+    var savedSequencer = levelSequencer.save( );
+
+    httpFactory.postSequencer( $scope.level, savedSequencer, $scope.getSequencer );
+
+  };
+
   $scope.saveToDatabase = function( ) {
 
     var savedSequencer = $scope.playerSequencer.save( );
 
-    playerSequencer.store( $scope.inputLevel, savedSequencer, function( response ) {
+    httpFactory.postSequencer( $scope.inputLevel, savedSequencer, function( response ) {
 
       if ( response ) {
 
@@ -228,7 +246,7 @@ app.controller( 'GameController' , [ '$scope', 'playerSequencer', 'httpFactory',
 
   $scope.createSequencer = function( ) {
 
-    var soundIDs = [ 'kick', 'clap', 'hihat' ];
+    var soundIDs = $scope.inputSounds.split( ',' );
 
     var userSequencer = playerSequencer.build( $scope.inputTempo, $scope.inputBeats, soundIDs );
 
