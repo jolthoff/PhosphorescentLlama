@@ -171,6 +171,18 @@ app.controller( 'GameController' , [ '$scope', 'playerSequencer', 'httpFactory',
 
   });
 
+  $scope.$on( 'animateLoop', function (event, animator) {
+
+    $scope.$broadcast( 'targetAnimateLoop', animator );
+
+  });
+
+  $scope.$on( 'targetStopped', function ( ) {
+
+    $scope.$broadcast( 'resetLoop' );
+
+  });
+
   //makes playing sequencers mutually exclusive
   $scope.$on( 'playerSequencerPlaying', function ( ) {
 

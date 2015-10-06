@@ -1,4 +1,4 @@
-app.controller( 'TargetSequencerController', [ '$scope', '$timeout' , function (  $scope, $timeout ) {
+app.controller( 'TargetSequencerController', [ '$scope', '$timeout', function (  $scope, $timeout ) {
 
   //listens for event and creates targetSequencer from server data
   //sends targetSequencer back to gameController
@@ -48,15 +48,21 @@ app.controller( 'TargetSequencerController', [ '$scope', '$timeout' , function (
 
   });
 
+  $scope.$on( 'targetAnimateLoop', function ( event, animator ) {
+
+    $scope.sequencer.play( animator );
+
+  });
+
   $scope.playToggle = function ( ) {
 
     if ( $scope.sequencer._playing ) {
 
       $scope.sequencer.stop( );
 
-    } else {
+      $scope.$emit( 'targetStopped' );
 
-      $scope.sequencer.play( );
+    } else {
 
       $scope.$emit( 'targetSequencerPlaying' );
 

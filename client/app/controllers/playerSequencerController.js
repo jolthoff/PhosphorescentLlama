@@ -43,6 +43,14 @@ app.controller( 'PlayerSequencerController', [ '$scope', 'playerSequencer', '$ti
 
     $scope.stop( );
 
+    $scope.$emit( 'animateLoop', $scope.animateLoop );
+
+  });
+
+  $scope.$on( 'resetLoop', function ( ) {
+
+    $scope.resetLoopRender( );
+
   });
 
   $scope.$on( 'toggleWrongBeatsOff', function ( event, wrongBeats ) {
@@ -77,13 +85,7 @@ app.controller( 'PlayerSequencerController', [ '$scope', 'playerSequencer', '$ti
 
       $scope.stop( );
 
-      for( var i = 0; i < $scope.tickNumber; i++ ) {
-
-        var unselector = '.' + i;
-
-        angular.element(unselector).removeClass('current');
-
-      }
+      $scope.resetLoopRender( );
 
     } else {
 
@@ -92,6 +94,18 @@ app.controller( 'PlayerSequencerController', [ '$scope', 'playerSequencer', '$ti
       $scope.$emit( 'playerSequencerPlaying' );
 
     }
+
+  };
+
+  $scope.resetLoopRender = function ( ) {
+
+    for( var i = 0; i < $scope.tickNumber; i++ ) {
+
+        var unselector = '.' + i;
+
+        angular.element(unselector).removeClass('current');
+
+      }
 
   };
 
